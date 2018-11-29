@@ -6,6 +6,7 @@ import 'package:tenge_flutter/bean/ListBean.dart';
 import 'package:tenge_flutter/network/NetworkUtils.dart';
 import 'package:tenge_flutter/utils/DateUtil.dart';
 import 'package:fluwx/fluwx.dart' as fluwx;
+import 'package:tenge_flutter/utils/ShareUtil.dart';
 
 class CriticPage extends StatefulWidget {
   @override
@@ -85,14 +86,20 @@ class CriticPageState extends State<CriticPage> {
   }
 
   _share() {
-    fluwx
-        .share(fluwx.WeChatShareTextModel(
-            text: 'share text',
-            transaction: "text${DateTime.now().millisecondsSinceEpoch}",
-            scene: fluwx.WeChatScene.TIMELINE))
-        .then((data) {
-      print(data);
-    });
+//    fluwx
+//        .share(fluwx.WeChatShareTextModel(
+//            text: 'share text',
+//            transaction: "text${DateTime.now().millisecondsSinceEpoch}",
+//            scene: fluwx.WeChatScene.TIMELINE))
+//        .then((data) {
+//      print(data);
+//    });
+    ShareUtil.wechatShareWebpageTimeLine(
+        ShareUtil.getShareUrl(_listBean.result[_currentPageIndex].type,
+            _listBean.result[_currentPageIndex].id),
+        'assets://assets/images/share_icon.png',
+        _listBean.result[_currentPageIndex].summary,
+        _listBean.result[_currentPageIndex].title);
   }
 
   _pageChange(int index) {
@@ -226,6 +233,7 @@ class CriticItemState extends State<CriticItem> {
         new Text(_critic == null || _critic.authorbrief == null
             ? 'empty'
             : _critic.authorbrief),
+        new Image.asset('assets/images/share_icon.png')
       ],
     ));
   }
