@@ -5,7 +5,6 @@ import 'package:tenge_flutter/bean/CriticBean.dart';
 import 'package:tenge_flutter/bean/ListBean.dart';
 import 'package:tenge_flutter/network/NetworkUtils.dart';
 import 'package:tenge_flutter/utils/DateUtil.dart';
-import 'package:fluwx/fluwx.dart' as fluwx;
 import 'package:tenge_flutter/utils/ShareUtil.dart';
 
 class CriticPage extends StatefulWidget {

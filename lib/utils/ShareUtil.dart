@@ -1,8 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:fluwx/fluwx.dart' as fluwx;
 
 class ShareUtil {
-
   /***
    * 微信朋友圈分享  文字
    */
@@ -23,9 +21,9 @@ class ShareUtil {
   static weChatShareTextSession(String text) {
     fluwx
         .share(fluwx.WeChatShareTextModel(
-        text: text,
-        transaction: "text${DateTime.now().millisecondsSinceEpoch}",
-        scene: fluwx.WeChatScene.SESSION))
+            text: text,
+            transaction: "text${DateTime.now().millisecondsSinceEpoch}",
+            scene: fluwx.WeChatScene.SESSION))
         .then((data) {
       print(data);
     });
@@ -34,7 +32,8 @@ class ShareUtil {
   /***
    * 微信朋友圈分享  网址
    */
-  static wechatShareWebpageTimeLine(String url, String thumbnail, String title, String description) {
+  static wechatShareWebpageTimeLine(
+      String url, String thumbnail, String title, String description) {
     var model = fluwx.WeChatShareWebPageModel(
         webPage: url,
         title: title,
@@ -48,7 +47,8 @@ class ShareUtil {
   /***
    * 微信好友分享  网址
    */
-  static wechatShareWebpageSession(String url, String thumbnail, String title, String description) {
+  static wechatShareWebpageSession(
+      String url, String thumbnail, String title, String description) {
     var model = fluwx.WeChatShareWebPageModel(
         webPage: url,
         title: title,
@@ -62,7 +62,8 @@ class ShareUtil {
   /***
    * 微信朋友圈分享  视频
    */
-  static wechatShareVideoTimeLine(String videoUrl, String lowBandUrl, String thumbnail, String description, String title) {
+  static wechatShareVideoTimeLine(String videoUrl, String lowBandUrl,
+      String thumbnail, String description, String title) {
     var model = new fluwx.WeChatShareVideoModel(
         videoUrl: videoUrl,
         transaction: "video",
@@ -77,7 +78,8 @@ class ShareUtil {
   /***
    * 微信好友分享  视频
    */
-  static wechatShareVideoSession(String videoUrl, String lowBandUrl, String thumbnail, String description, String title) {
+  static wechatShareVideoSession(String videoUrl, String lowBandUrl,
+      String thumbnail, String description, String title) {
     var model = new fluwx.WeChatShareVideoModel(
         videoUrl: videoUrl,
         transaction: "video",
@@ -92,7 +94,8 @@ class ShareUtil {
   /***
    * 微信朋友圈分享  图片
    */
-  static wechatShareImageTimeLine(String imageUrl, String thumbnail, String description) {
+  static wechatShareImageTimeLine(
+      String imageUrl, String thumbnail, String description) {
     fluwx.share(fluwx.WeChatShareImageModel(
         image: imageUrl,
         thumbnail: thumbnail,
@@ -104,7 +107,8 @@ class ShareUtil {
   /***
    * 微信好友分享  图片
    */
-  static wechatShareImageSession(String imageUrl, String thumbnail, String description) {
+  static wechatShareImageSession(
+      String imageUrl, String thumbnail, String description) {
     fluwx.share(fluwx.WeChatShareImageModel(
         image: imageUrl,
         thumbnail: thumbnail,
