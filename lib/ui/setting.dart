@@ -53,7 +53,6 @@ class LogoFadeState extends State<SettingPage> {
 
   @override
   Widget build(BuildContext context) {
-    FlutterQq.registerQQ('1104005798');
     return new Column(
       //一个Column布局，主轴为垂直方向，起点在上沿。
       mainAxisAlignment: MainAxisAlignment.spaceAround,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tenge_flutter/bean/CriticBean.dart';
 import 'package:tenge_flutter/bean/ListBean.dart';
 import 'package:tenge_flutter/network/NetworkUtils.dart';
+import 'package:tenge_flutter/ui/share.dart';
 import 'package:tenge_flutter/utils/DateUtil.dart';
 import 'package:tenge_flutter/utils/ShareUtil.dart';
 
@@ -78,7 +79,7 @@ class CriticPageState extends State<CriticPage> {
         ),
         new Container(
           alignment: new Alignment(0.9, 0.8),
-          child: new IconButton(icon: new Icon(Icons.share), onPressed: _share),
+          child: new IconButton(icon: new Icon(Icons.share), onPressed: _showShareDialog),
         )
       ],
     );
@@ -99,6 +100,16 @@ class CriticPageState extends State<CriticPage> {
         'assets://assets/images/share_icon.png',
         _listBean.result[_currentPageIndex].summary,
         _listBean.result[_currentPageIndex].title);
+  }
+
+  Future<void> _showShareDialog() {
+    return showDialog<Null>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return new ShareDialog(currentIndex: _currentPageIndex, listBean: _listBean);
+      }
+    );
   }
 
   _pageChange(int index) {
