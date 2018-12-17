@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_qq/flutter_qq.dart';
+//import 'package:flutter_qq/flutter_qq.dart';
 
 class SettingPage extends StatefulWidget {
   @override
@@ -30,26 +30,26 @@ class LogoFadeState extends State<SettingPage> {
     setState(() => opacityLevel = opacityLevel == 0 ? 1.0 : 0.0);
   }
 
-  Future<Null> _handleLogin() async {
-    try {
-      var qqResult = await FlutterQq.login();
-      var output;
-      if (qqResult.code == 0) {
-        if (qqResult.response == null) {
-          output = "登录成功qqResult.response==null";
-          return;
-        }
-        output = "登录成功" + qqResult.response.toString();
-      } else {
-        output = "登录失败" + qqResult.message;
-      }
-      setState(() {
-        _qqOutput = output;
-      });
-    } catch (error) {
-      print("flutter_plugin_qq_example:" + error.toString());
-    }
-  }
+//  Future<Null> _handleLogin() async {
+//    try {
+//      var qqResult = await FlutterQq.login();
+//      var output;
+//      if (qqResult.code == 0) {
+//        if (qqResult.response == null) {
+//          output = "登录成功qqResult.response==null";
+//          return;
+//        }
+//        output = "登录成功" + qqResult.response.toString();
+//      } else {
+//        output = "登录失败" + qqResult.message;
+//      }
+//      setState(() {
+//        _qqOutput = output;
+//      });
+//    } catch (error) {
+//      print("flutter_plugin_qq_example:" + error.toString());
+//    }
+//  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +75,7 @@ class LogoFadeState extends State<SettingPage> {
         ),
         new RaisedButton(
           child: new Text('login'),
-          onPressed: _handleLogin,
+//          onPressed: _handleLogin,
         )
       ],
     );

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_qq/flutter_qq.dart';
-import 'package:tenge_flutter/ui/critic.dart';
-import 'package:tenge_flutter/ui/diagram.dart';
-import 'package:tenge_flutter/ui/novel.dart';
-import 'package:tenge_flutter/ui/setting.dart';
+import 'package:flutter_tenge/ui/critic.dart';
+import 'package:flutter_tenge/ui/diagram.dart';
+import 'package:flutter_tenge/ui/novel.dart';
+import 'package:flutter_tenge/ui/setting.dart';
+//import 'package:flutter_qq/flutter_qq.dart';
 import 'package:fluwx/fluwx.dart' as fluwx;
 
 class Homepage extends StatefulWidget {
@@ -21,7 +21,7 @@ class HomepageState extends State<Homepage> {
   @override
   void initState() {
     super.initState();
-    FlutterQq.registerQQ('1104005798');
+//    FlutterQq.registerQQ('1104005798');
     fluwx.register(
         appId: 'wx066029c349d9494b', doOnAndroid: true, doOnIOS: true);
   }

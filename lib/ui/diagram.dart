@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tenge_flutter/bean/ListBean.dart';
-import 'package:tenge_flutter/network/NetworkUtils.dart';
+import 'package:flutter_tenge/bean/ListBean.dart';
+import 'package:flutter_tenge/network/NetworkUtils.dart';
 
 class DiagramPage extends StatefulWidget {
   @override

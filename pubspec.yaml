@@ -1,5 +1,5 @@
-name: tenge_flutter
-description: tenge application.
+name: flutter_tenge
+description: A new Flutter application.
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -21,8 +21,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   transparent_image: "^0.1.0"
   http: ^0.12.0
-  fluwx: 0.5.1
-  flutter_qq: 0.0.4
+  fluwx: 0.5.2
 
 dev_dependencies:
   flutter_test:

@@ -1,12 +1,12 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:tenge_flutter/bean/CriticBean.dart';
-import 'package:tenge_flutter/bean/ListBean.dart';
-import 'package:tenge_flutter/network/NetworkUtils.dart';
-import 'package:tenge_flutter/ui/share.dart';
-import 'package:tenge_flutter/utils/DateUtil.dart';
-import 'package:tenge_flutter/utils/ShareUtil.dart';
+import 'package:flutter_tenge/bean/CriticBean.dart';
+import 'package:flutter_tenge/bean/ListBean.dart';
+import 'package:flutter_tenge/network/NetworkUtils.dart';
+import 'package:flutter_tenge/utils/DateUtil.dart';
+import 'package:flutter_tenge/ui/share.dart';
+import 'package:flutter_tenge/utils/ShareUtil.dart';
 
 class CriticPage extends StatefulWidget {
   @override

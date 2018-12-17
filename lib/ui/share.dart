@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tenge_flutter/bean/ListBean.dart';
-import 'package:tenge_flutter/utils/ShareUtil.dart';
-import 'package:flutter_qq/flutter_qq.dart';
+import 'package:flutter_tenge/bean/ListBean.dart';
+import 'package:flutter_tenge/utils/ShareUtil.dart';
+//import 'package:flutter_qq/flutter_qq.dart';
 
 class ShareDialog extends Dialog {
   final int currentIndex;
@@ -29,54 +29,54 @@ class ShareDialog extends Dialog {
           listBean.result[currentIndex].title);
     }
 
-    Future<Null> _shareQQ() async {
-      ShareQQContent shareContent = new ShareQQContent(
-          shareType: SHARE_TO_QQ_TYPE.IMAGE,
-          title: listBean.result[currentIndex].title,
-          targetUrl: ShareUtil.getShareUrl(listBean.result[currentIndex].type,
-              listBean.result[currentIndex].id),
-          summary: listBean.result[currentIndex].summary,
-//          imageLocalUrl: 'assets://assets/images/share_icon.png'
-      );
-      try {
-        var qqResult = await FlutterQq.shareToQQ(shareContent);
-        var output;
-        if (qqResult.code == 0) {
-          output = "分享成功";
-        } else if (qqResult.code == 1) {
-          output = "分享失败" + qqResult.message;
-        } else {
-          output = "用户取消";
-        }
-      } catch (error) {
-        print("flutter_plugin_qq_example:" + error.toString());
-
-      }
-    }
-
-    Future<Null> _shareZone() async {
-      ShareQzoneContent shareContent = new ShareQzoneContent(
-        shareType: SHARE_TO_QZONE_TYPE.IMAGE_TEXT,
-        title: listBean.result[currentIndex].title,
-        targetUrl: ShareUtil.getShareUrl(listBean.result[currentIndex].type,
-            listBean.result[currentIndex].id),
-        summary: listBean.result[currentIndex].summary,
-        imageUrl: "http://inews.gtimg.com/newsapp_bt/0/876781763/1000",
-      );
-      try {
-        var qqResult = await FlutterQq.shareToQzone(shareContent);
-        var output;
-        if (qqResult.code == 0) {
-          output = "分享成功";
-        } else if (qqResult.code == 1) {
-          output = "分享失败" + qqResult.message;
-        } else {
-          output = "用户取消";
-        }
-      } catch (error) {
-        print("flutter_plugin_qq_example:" + error.toString());
-      }
-    }
+//    Future<Null> _shareQQ() async {
+//      ShareQQContent shareContent = new ShareQQContent(
+//          shareType: SHARE_TO_QQ_TYPE.IMAGE,
+//          title: listBean.result[currentIndex].title,
+//          targetUrl: ShareUtil.getShareUrl(listBean.result[currentIndex].type,
+//              listBean.result[currentIndex].id),
+//          summary: listBean.result[currentIndex].summary,
+////          imageLocalUrl: 'assets://assets/images/share_icon.png'
+//      );
+//      try {
+//        var qqResult = await FlutterQq.shareToQQ(shareContent);
+//        var output;
+//        if (qqResult.code == 0) {
+//          output = "分享成功";
+//        } else if (qqResult.code == 1) {
+//          output = "分享失败" + qqResult.message;
+//        } else {
+//          output = "用户取消";
+//        }
+//      } catch (error) {
+//        print("flutter_plugin_qq_example:" + error.toString());
+//
+//      }
+//    }
+//
+//    Future<Null> _shareZone() async {
+//      ShareQzoneContent shareContent = new ShareQzoneContent(
+//        shareType: SHARE_TO_QZONE_TYPE.IMAGE_TEXT,
+//        title: listBean.result[currentIndex].title,
+//        targetUrl: ShareUtil.getShareUrl(listBean.result[currentIndex].type,
+//            listBean.result[currentIndex].id),
+//        summary: listBean.result[currentIndex].summary,
+//        imageUrl: "http://inews.gtimg.com/newsapp_bt/0/876781763/1000",
+//      );
+//      try {
+//        var qqResult = await FlutterQq.shareToQzone(shareContent);
+//        var output;
+//        if (qqResult.code == 0) {
+//          output = "分享成功";
+//        } else if (qqResult.code == 1) {
+//          output = "分享失败" + qqResult.message;
+//        } else {
+//          output = "用户取消";
+//        }
+//      } catch (error) {
+//        print("flutter_plugin_qq_example:" + error.toString());
+//      }
+//    }
 
     return new Material(
       //创建透明层
@@ -113,11 +113,11 @@ class ShareDialog extends Dialog {
                   child: new Container(
                     child: new Text("QQ分享"),
                   ),
-                  onPressed: _shareQQ,
+//                  onPressed: _shareQQ,
                 ),
                 new RaisedButton(
                   child: new Text('QQ ZONE分享'),
-                  onPressed: _shareZone,
+//                  onPressed: _shareZone,
                 )
               ],
             ),

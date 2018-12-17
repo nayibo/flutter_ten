@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tenge_flutter/ui/homepage.dart';
+import 'package:flutter_tenge/ui/homepage.dart';
 
 void main() => runApp(MyApp());
 
