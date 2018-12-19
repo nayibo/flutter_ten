@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tenge/ui/contentPage.dart';
 import 'package:flutter_tenge/ui/critic.dart';
 import 'package:flutter_tenge/ui/diagram.dart';
 import 'package:flutter_tenge/ui/novel.dart';
 import 'package:flutter_tenge/ui/setting.dart';
+
 //import 'package:flutter_qq/flutter_qq.dart';
 import 'package:fluwx/fluwx.dart' as fluwx;
 
@@ -29,25 +31,25 @@ class HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        backgroundColor: Colors.white,
         body: new GestureDetector(
-          onVerticalDragDown: (DragDownDetails details) {
-            if (details.globalPosition.direction > 1.0) {
-              //up
-              _changeOpacity(0.0);
-            } else {
-              //down
-              _changeOpacity(1.0);
-            }
-          },
-          child: new Container(
-              child: new Stack(
+      onVerticalDragDown: (DragDownDetails details) {
+        if (details.globalPosition.direction > 1.0) {
+          //up
+          _changeOpacity(0.0);
+        } else {
+          //down
+          _changeOpacity(1.0);
+        }
+      },
+      child: new Container(
+          color: Colors.white,
+          child: new Stack(
             children: <Widget>[
               new PageView(
                   children: [
-                    new CriticPage(),
-                    new NovelPage(),
-                    new DiagramPage(),
+                    new ContentPage(type: "critic"),
+                    new ContentPage(type: "novel"),
+                    new ContentPage(type: "diagram"),
                     new SettingPage(),
                   ],
                   onPageChanged: _onPageChanged,
@@ -88,7 +90,7 @@ class HomepageState extends State<Homepage> {
                       ))),
             ],
           )),
-        ));
+    ));
   }
 
   void _onPageChanged(int page) {

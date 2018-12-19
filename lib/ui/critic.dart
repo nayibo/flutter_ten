@@ -3,10 +3,13 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_tenge/bean/CriticBean.dart';
 import 'package:flutter_tenge/bean/ListBean.dart';
+import 'package:flutter_tenge/constant/font.dart';
+import 'package:flutter_tenge/constant/sp.dart';
 import 'package:flutter_tenge/network/NetworkUtils.dart';
 import 'package:flutter_tenge/utils/DateUtil.dart';
 import 'package:flutter_tenge/ui/share.dart';
 import 'package:flutter_tenge/utils/ShareUtil.dart';
+import 'package:flutter_tenge/utils/SharedPreferencesUtil.dart';
 
 class CriticPage extends StatefulWidget {
   @override
@@ -32,55 +35,63 @@ class CriticPageState extends State<CriticPage> {
     return new Stack(
       children: <Widget>[
         new Container(
-          color: Colors.white,
-          padding: const EdgeInsets.fromLTRB(
-            0,
-            32.0,
-            0,
-            0,
+          color: Colors.transparent,
+//          margin: const EdgeInsets.fromLTRB(0, 44.0, 0, 0),
+          padding: const EdgeInsets.fromLTRB(0, 44.0, 0, 0),
+          child: new PageView.builder(
+            onPageChanged: _pageChange,
+            controller: _pageController,
+            itemBuilder: (BuildContext context, int index) {
+              print("CriticPageState itemBuilder");
+              return _buildItem(context, index);
+            },
+            itemCount: _listBean == null
+                ? 0
+                : _listBean.result == null ? 0 : _listBean.result.length,
           ),
-          child: new Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              new Row(
-                children: <Widget>[
-                  new Text((_listBean != null &&
-                          _listBean.result != null &&
-                          _listBean.result.length > _currentPageIndex)
-                      ? DateUtil.getDateStrByMs(
-                          DateUtil.formatCSharpMiliSecondtoMiliSecond(
-                              _listBean.result[_currentPageIndex].publishtime),
-                          format: DateFormat.YEAR_MONTH_DAY)
-                      : "empty date"),
-                  new Text((_listBean != null &&
-                          _listBean.result != null &&
-                          _listBean.result.length > _currentPageIndex)
-                      ? DateUtil.getWeekDayByMs(
-                          DateUtil.formatCSharpMiliSecondtoMiliSecond(
-                              _listBean.result[_currentPageIndex].publishtime))
-                      : "empty week")
-                ],
-              ),
-              new Expanded(
-                child: new PageView.builder(
-                  onPageChanged: _pageChange,
-                  controller: _pageController,
-                  itemBuilder: (BuildContext context, int index) {
-                    print("CriticPageState itemBuilder");
-                    return _buildItem(context, index);
-                  },
-                  itemCount: _listBean == null
-                      ? 0
-                      : _listBean.result == null ? 0 : _listBean.result.length,
-                ),
-              )
-            ],
-          ),
+//          new Column(
+//            mainAxisAlignment: MainAxisAlignment.start,
+//            children: <Widget>[
+//              new Row(
+//                children: <Widget>[
+
+//                  new Text((_listBean != null &&
+//                          _listBean.result != null &&
+//                          _listBean.result.length > _currentPageIndex)
+//                      ? DateUtil.getDateStrByMs(
+//                          DateUtil.formatCSharpMiliSecondtoMiliSecond(
+//                              _listBean.result[_currentPageIndex].publishtime),
+//                          format: DateFormat.YEAR_MONTH_DAY)
+//                      : "empty date"),
+//                  new Text((_listBean != null &&
+//                          _listBean.result != null &&
+//                          _listBean.result.length > _currentPageIndex)
+//                      ? DateUtil.getWeekDayByMs(
+//                          DateUtil.formatCSharpMiliSecondtoMiliSecond(
+//                              _listBean.result[_currentPageIndex].publishtime))
+//                      : "empty week")
+//                ],
+//              ),
+//              new Expanded(
+//                child: new PageView.builder(
+//                  onPageChanged: _pageChange,
+//                  controller: _pageController,
+//                  itemBuilder: (BuildContext context, int index) {
+//                    print("CriticPageState itemBuilder");
+//                    return _buildItem(context, index);
+//                  },
+//                  itemCount: _listBean == null
+//                      ? 0
+//                      : _listBean.result == null ? 0 : _listBean.result.length,
+//                ),
+//              )
+//            ],
+//          ),
         ),
-        new Container(
-          alignment: new Alignment(0.9, 0.8),
-          child: new IconButton(icon: new Icon(Icons.share), onPressed: _showShareDialog),
-        )
+//        new Container(
+//          alignment: new Alignment(0.9, 0.8),
+//          child: new IconButton(icon: new Icon(Icons.share), onPressed: _showShareDialog),
+//        )
       ],
     );
   }
@@ -104,12 +115,12 @@ class CriticPageState extends State<CriticPage> {
 
   Future<void> _showShareDialog() {
     return showDialog<Null>(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return new ShareDialog(currentIndex: _currentPageIndex, listBean: _listBean);
-      }
-    );
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return new ShareDialog(
+              currentIndex: _currentPageIndex, listBean: _listBean);
+        });
   }
 
   _pageChange(int index) {
@@ -160,8 +171,15 @@ class CriticItemState extends State<CriticItem> {
   }
 
   CriticBean _critic;
-
+  TextStyle textStyle =
+      new TextStyle(fontSize: 18, color: const Color(0xFF666666));
   final int id;
+
+  @override
+  void initState() {
+    super.initState();
+    loadAsync();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -178,72 +196,154 @@ class CriticItemState extends State<CriticItem> {
           width: window.physicalSize.width / window.devicePixelRatio,
           fit: BoxFit.fill,
         ),
-        new Text(_critic == null ? 'empty' : _critic.title),
-        new Row(
-          children: <Widget>[
-            new Text(_critic == null ? 'empty' : '作者: ' + _critic.author),
-            new Container(
-              height: 12.0,
-              width: 1.0,
-              color: Colors.grey,
-              margin: const EdgeInsets.only(left: 10.0, right: 10.0, top: 4.0),
-            ),
-            new Text(
-                _critic == null ? 'empty' : '阅读量: ' + _critic.times.toString())
-          ],
-        ),
         new Container(
-            color: Colors.grey,
-            child: new Text(_critic == null ? 'empty' : _critic.text1)),
-        new Text("剧情简介"),
-        new Image.network(
-          _critic == null ? '' : "http://images.shigeten.net/" + _critic.image1,
-          height:
-              (window.physicalSize.width * 9) / (16 * window.devicePixelRatio),
-          width: window.physicalSize.width / window.devicePixelRatio,
-          fit: BoxFit.fill,
+          color: Colors.white,
+          padding: const EdgeInsets.fromLTRB(16.0, 15.0, 16.0, 0),
+          child: new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              new Text(_critic == null ? 'empty' : _critic.title,
+                  style: new TextStyle(
+                      fontSize: 21.0, color: const Color(0xFF222222))),
+              new Row(
+                children: <Widget>[
+                  new Text(_critic == null ? 'empty' : '作者: ' + _critic.author,
+                      style: new TextStyle(
+                          fontSize: 12.0, color: const Color(0xFF999999))),
+                  new Container(
+                    height: 12.0,
+                    width: 1.0,
+                    color: const Color(0xFF999999),
+                    margin: const EdgeInsets.only(
+                        left: 10.0, right: 10.0, top: 4.0),
+                  ),
+                  new Text(
+                      _critic == null
+                          ? 'empty'
+                          : '阅读量: ' + _critic.times.toString(),
+                      style: new TextStyle(
+                          fontSize: 12.0, color: const Color(0xFF999999)))
+                ],
+              ),
+              new Container(
+                  margin: const EdgeInsets.fromLTRB(0, 35.0, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(17.0, 17.0, 17.0, 17.0),
+                  color: const Color(0x60eaeaea),
+                  child: new Text(_critic == null ? 'empty' : _critic.text1,
+                      style: textStyle)),
+              new Container(
+                margin: const EdgeInsets.fromLTRB(0, 20.0, 0, 10.0),
+                height: 1.0,
+                color: const Color(0x60eaeaea),
+              ),
+              new Text("剧情简介",
+                  style: new TextStyle(
+                      fontSize: 18.0, color: const Color(0xFF222222))),
+              new Container(
+                  margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
+                  child: new Image.network(
+                    _critic == null
+                        ? ''
+                        : "http://images.shigeten.net/" + _critic.image1,
+                    height: (window.physicalSize.width * 9) /
+                        (16 * window.devicePixelRatio),
+                    width: window.physicalSize.width / window.devicePixelRatio,
+                    fit: BoxFit.fill,
+                  )),
+              new Text(
+                  _critic == null
+                      ? 'empty'
+                      : _critic.text2
+                          .toString()
+                          .replaceAll("剧情介绍\r\n", "")
+                          .replaceAll("剧情简介\r\n", "")
+                          .replaceAll("剧情简介 \r\n", ""),
+                  style: textStyle),
+              new Container(
+                margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
+                height: 1.0,
+                color: const Color(0x60eaeaea),
+              ),
+              new Text(_critic == null ? 'empty' : _critic.realtitle,
+                  style: new TextStyle(
+                      fontSize: 18.0, color: const Color(0xFF222222))),
+              new Container(
+                  margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
+                  child: new Image.network(
+                    _critic == null
+                        ? ''
+                        : "http://images.shigeten.net/" + _critic.image2,
+                    height: (window.physicalSize.width * 9) /
+                        (16 * window.devicePixelRatio),
+                    width: window.physicalSize.width / window.devicePixelRatio,
+                    fit: BoxFit.fill,
+                  )),
+              new Text(_critic == null ? 'empty' : _critic.text3,
+                  style: textStyle),
+              new Text(_critic == null ? 'empty' : _critic.text4,
+                  style: textStyle),
+              new Text(_critic == null ? 'empty' : _critic.text5,
+                  style: textStyle),
+              new Container(
+                  margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 0),
+                  child: new Image.network(
+                    _critic == null
+                        ? ''
+                        : "http://images.shigeten.net/" + _critic.image3,
+                    height: (window.physicalSize.width * 9) /
+                        (16 * window.devicePixelRatio),
+                    width: window.physicalSize.width / window.devicePixelRatio,
+                    fit: BoxFit.fill,
+                  )),
+              new Container(
+                  margin: const EdgeInsets.fromLTRB(0, 1.0, 0, 0),
+                  child: new Image.network(
+                    _critic == null
+                        ? ''
+                        : "http://images.shigeten.net/" + _critic.image4,
+                    height: (window.physicalSize.width * 9) /
+                        (16 * window.devicePixelRatio),
+                    width: window.physicalSize.width / window.devicePixelRatio,
+                    fit: BoxFit.fill,
+                  )),
+              new Container(
+                  margin: const EdgeInsets.fromLTRB(0, 1.0, 0, 0),
+                  child: new Image.network(
+                    _critic == null
+                        ? ''
+                        : "http://images.shigeten.net/" + _critic.image5,
+                    height: _critic == null ||
+                            _critic.image5 == null ||
+                            _critic.image5 == ""
+                        ? 0
+                        : (window.physicalSize.width * 9) /
+                            (16 * window.devicePixelRatio),
+                    width: window.physicalSize.width / window.devicePixelRatio,
+                    fit: BoxFit.fill,
+                  )),
+              new Container(
+                margin: const EdgeInsets.fromLTRB(0, 26.0, 0, 10.0),
+                height: 1.0,
+                color: const Color(0x60eaeaea),
+              ),
+              new Container(
+                  margin: const EdgeInsets.fromLTRB(0, 8.0, 0, 10.0),
+                  child: new Text(_critic == null ? 'empty' : _critic.author,
+                      style: new TextStyle(
+                          fontSize: 18.0,
+                          color: const Color(0xFF464646),
+                          fontWeight: FontWeight.bold))),
+              new Container(
+                  margin: const EdgeInsets.fromLTRB(0, 0, 0, 10.0),
+                  child: new Text(
+                      _critic == null || _critic.authorbrief == null
+                          ? '十个 每晚十点推送:一篇影评,一篇美文,一组美图,每晚入睡前用上十分钟读到最美内容.'
+                          : _critic.authorbrief,
+                      style: new TextStyle(
+                          color: const Color(0xFF777777), fontSize: 16.0)))
+            ],
+          ),
         ),
-        new Text(_critic == null ? 'empty' : _critic.text2),
-        new Text(_critic == null ? 'empty' : _critic.realtitle),
-        new Image.network(
-          _critic == null ? '' : "http://images.shigeten.net/" + _critic.image2,
-          height:
-              (window.physicalSize.width * 9) / (16 * window.devicePixelRatio),
-          width: window.physicalSize.width / window.devicePixelRatio,
-          fit: BoxFit.fill,
-        ),
-        new Text(_critic == null ? 'empty' : _critic.text3),
-        new Text(_critic == null ? 'empty' : _critic.text4),
-        new Text(_critic == null ? 'empty' : _critic.text5),
-        new Image.network(
-          _critic == null ? '' : "http://images.shigeten.net/" + _critic.image3,
-          height:
-              (window.physicalSize.width * 9) / (16 * window.devicePixelRatio),
-          width: window.physicalSize.width / window.devicePixelRatio,
-          fit: BoxFit.fill,
-        ),
-        new Image.network(
-          _critic == null ? '' : "http://images.shigeten.net/" + _critic.image4,
-          height:
-              (window.physicalSize.width * 9) / (16 * window.devicePixelRatio),
-          width: window.physicalSize.width / window.devicePixelRatio,
-          fit: BoxFit.fill,
-        ),
-        new Image.network(
-          _critic == null ? '' : "http://images.shigeten.net/" + _critic.image5,
-          height:
-              _critic == null || _critic.image5 == null || _critic.image5 == ""
-                  ? 0
-                  : (window.physicalSize.width * 9) /
-                      (16 * window.devicePixelRatio),
-          width: window.physicalSize.width / window.devicePixelRatio,
-          fit: BoxFit.fill,
-        ),
-        new Text(_critic == null ? 'empty' : _critic.author),
-        new Text(_critic == null || _critic.authorbrief == null
-            ? 'empty'
-            : _critic.authorbrief),
-        new Image.asset('assets/images/share_icon.png')
       ],
     ));
   }
@@ -267,5 +367,39 @@ class CriticItemState extends State<CriticItem> {
         errorCallback: (e) {
           print("_getCritic network error: $e");
         });
+  }
+
+  void loadAsync() async {
+    await SpUtil.getInstance();
+    initFont();
+  }
+
+  void initFont() {
+    setState(() {
+      int size = 1;
+      print("_initFont: " + SpUtil.getInt(SPConstant.SP_FONT).toString());
+      if (null != SpUtil.getInt(SPConstant.SP_FONT)) {
+        size = SpUtil.getInt(SPConstant.SP_FONT);
+      }
+
+      switch (size) {
+        case 1:
+          textStyle = new TextStyle(
+              fontSize: FontConstant.FONT_CONTENT_SMALL,
+              color: const Color(0xFF666666));
+          break;
+        case 2:
+          textStyle = new TextStyle(
+              fontSize: FontConstant.FONT_CONTENT_MID,
+              color: const Color(0xFF666666));
+          break;
+        case 3:
+          textStyle = new TextStyle(
+              fontSize: FontConstant.FONT_CONTENT_BIG,
+              color: const Color(0xFF666666));
+          break;
+        default:
+      }
+    });
   }
 }

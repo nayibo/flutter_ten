@@ -29,6 +29,7 @@ class CriticBean {
     title = jsonMap["title"];
     realtitle = jsonMap["realtitle"];
     author = jsonMap["author"];
+    authorbrief = jsonMap["authorbrief"];
     times = jsonMap["times"];
     text1 = jsonMap["text1"];
     text2 = jsonMap["text2"];
