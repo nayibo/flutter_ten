@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tenge/constant/common.dart';
 import 'package:flutter_tenge/ui/contentPage.dart';
 import 'package:flutter_tenge/ui/critic.dart';
 import 'package:flutter_tenge/ui/diagram.dart';
 import 'package:flutter_tenge/ui/novel.dart';
 import 'package:flutter_tenge/ui/setting.dart';
+import 'package:flutter_tenge/utils/FontUtil.dart';
+import 'package:flutter_tenge/widget/AllowMultipleGestureRecognizer.dart';
 
 //import 'package:flutter_qq/flutter_qq.dart';
 import 'package:fluwx/fluwx.dart' as fluwx;
@@ -26,20 +29,43 @@ class HomepageState extends State<Homepage> {
 //    FlutterQq.registerQQ('1104005798');
     fluwx.register(
         appId: 'wx066029c349d9494b', doOnAndroid: true, doOnIOS: true);
+    loadFontAsync();
+  }
+
+  void loadFontAsync() async {
+    await FontUtil.getInstance();
   }
 
   @override
   Widget build(BuildContext context) {
+    double _dyStart = null;
     return new Scaffold(
-        body: new GestureDetector(
-      onVerticalDragDown: (DragDownDetails details) {
-        if (details.globalPosition.direction > 1.0) {
-          //up
-          _changeOpacity(0.0);
-        } else {
-          //down
-          _changeOpacity(1.0);
-        }
+        body: new RawGestureDetector(
+      behavior: HitTestBehavior.opaque,
+      gestures: {
+        AllowMultipleGestureRecognizer: GestureRecognizerFactoryWithHandlers<
+            AllowMultipleGestureRecognizer>(
+          () => AllowMultipleGestureRecognizer(),
+          (AllowMultipleGestureRecognizer instance) {
+            instance.onStart = (DragStartDetails details) {
+              _dyStart = details.globalPosition.dy;
+            };
+            instance.onUpdate = (DragUpdateDetails details) {
+              if (_dyStart == null) {
+                _dyStart = details.globalPosition.dy;
+              }
+              if (details.globalPosition.dy - _dyStart < 0.0) {
+                //up
+                _changeOpacity(0.0);
+              }
+              if (details.globalPosition.dy - _dyStart > 0.0) {
+                //down
+                _changeOpacity(1.0);
+              }
+              _dyStart = details.globalPosition.dy;
+            };
+          },
+        )
       },
       child: new Container(
           color: Colors.white,
@@ -61,31 +87,67 @@ class HomepageState extends State<Homepage> {
                       opacity: _opacityLevel,
                       duration: new Duration(milliseconds: 500),
                       child: new Container(
-                        height: 58.0,
-                        child: new BottomNavigationBar(
-                          items: [
-                            new BottomNavigationBarItem(
-                                icon: new Icon(Icons.add),
-                                title: new Text('critic'),
-                                backgroundColor: Colors.green),
-                            new BottomNavigationBarItem(
-                                icon: new Icon(Icons.add),
-                                title: new Text('novel'),
-                                backgroundColor: Colors.red),
-                            new BottomNavigationBarItem(
-                                icon: new Icon(Icons.add),
-                                title: new Text('diagram'),
-                                backgroundColor: Colors.green),
-                            new BottomNavigationBarItem(
-                                icon: new Icon(Icons.add),
-                                title: new Text('setting'),
-                                backgroundColor: Colors.red),
-                          ],
-                          currentIndex: _page,
-                          onTap: (int index) {
-                            _pageController.jumpToPage(index);
-                            _onPageChanged(index);
-                          },
+                        child: new Theme(
+                          data: Theme.of(context).copyWith(
+                              // sets the background color of the `BottomNavigationBar`
+                              canvasColor:
+                                  FontUtil.getBottomBarBackgroundColor(),
+                              // sets the active color of the `BottomNavigationBar` if `Brightness` is light
+                              primaryColor: Colors.red,
+                              textTheme: Theme.of(context).textTheme.copyWith(
+                                  caption:
+                                      new TextStyle(color: Colors.yellow))),
+                          // sets the inactive color of the `BottomNavigationBar`
+                          child: new BottomNavigationBar(
+                            type: BottomNavigationBarType.fixed,
+                            items: [
+                              new BottomNavigationBarItem(
+                                  icon: new Image.asset(
+                                      FontUtil.getBottomBarIcon(
+                                          CommonConstant.PAGE_CRITIC),
+                                      height: 35.0),
+                                  activeIcon: new Image.asset(
+                                      FontUtil.getBottomBarActiveIcon(
+                                          CommonConstant.PAGE_CRITIC),
+                                      height: 35.0),
+                                  title: Container(height: 0.0)),
+                              new BottomNavigationBarItem(
+                                  icon: new Image.asset(
+                                      FontUtil.getBottomBarIcon(
+                                          CommonConstant.PAGE_DIAGRAM),
+                                      height: 35.0),
+                                  activeIcon: new Image.asset(
+                                      FontUtil.getBottomBarActiveIcon(
+                                          CommonConstant.PAGE_DIAGRAM),
+                                      height: 35.0),
+                                  title: Container(height: 0.0)),
+                              new BottomNavigationBarItem(
+                                  icon: new Image.asset(
+                                      FontUtil.getBottomBarIcon(
+                                          CommonConstant.PAGE_NOVEL),
+                                      height: 35.0),
+                                  activeIcon: new Image.asset(
+                                      FontUtil.getBottomBarActiveIcon(
+                                          CommonConstant.PAGE_NOVEL),
+                                      height: 35.0),
+                                  title: Container(height: 0.0)),
+                              new BottomNavigationBarItem(
+                                  icon: new Image.asset(
+                                      FontUtil.getBottomBarIcon(
+                                          CommonConstant.PAGE_PERSONAL),
+                                      height: 35.0),
+                                  activeIcon: new Image.asset(
+                                      FontUtil.getBottomBarActiveIcon(
+                                          CommonConstant.PAGE_PERSONAL),
+                                      height: 35.0),
+                                  title: Container(height: 0.0)),
+                            ],
+                            currentIndex: _page,
+                            onTap: (int index) {
+                              _pageController.jumpToPage(index);
+                              _onPageChanged(index);
+                            },
+                          ),
                         ),
                       ))),
             ],

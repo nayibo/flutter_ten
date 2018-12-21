@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tenge/constant/sp.dart';
+import 'package:flutter_tenge/utils/SharedPreferencesUtil.dart';
 //import 'package:flutter_qq/flutter_qq.dart';
 
 class SettingPage extends StatefulWidget {
@@ -76,8 +78,25 @@ class LogoFadeState extends State<SettingPage> {
         new RaisedButton(
           child: new Text('login'),
 //          onPressed: _handleLogin,
-        )
+        ),
+//        new RaisedButton(child: new Text('small'), onPressed: _setFont(1)),
+//        new RaisedButton(child: new Text('mid'), onPressed: _setFont(2)),
+//        new RaisedButton(child: new Text('big'), onPressed: _setFont(3)),
+//        new RaisedButton(
+//            child: new Text('day'), onPressed: _setNightMode(false)),
+//        new RaisedButton(
+//            child: new Text('night'), onPressed: _setNightMode(true))
       ],
     );
+  }
+
+  _setFont(int flag) async {
+    await SpUtil.getInstance();
+    SpUtil.putInt(SPConstant.SP_FONT, flag);
+  }
+
+  _setNightMode(bool flag) async {
+    await SpUtil.getInstance();
+    SpUtil.putBool(SPConstant.SP_NIGHT_MODE, flag);
   }
 }
