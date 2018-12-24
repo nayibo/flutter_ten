@@ -73,9 +73,9 @@ class HomepageState extends State<Homepage> {
             children: <Widget>[
               new PageView(
                   children: [
-                    new ContentPage(type: "critic"),
-                    new ContentPage(type: "novel"),
-                    new ContentPage(type: "diagram"),
+                    new ContentPage(type: CommonConstant.PAGE_CRITIC),
+                    new ContentPage(type: CommonConstant.PAGE_NOVEL),
+                    new ContentPage(type: CommonConstant.PAGE_DIAGRAM),
                     new SettingPage(),
                   ],
                   onPageChanged: _onPageChanged,

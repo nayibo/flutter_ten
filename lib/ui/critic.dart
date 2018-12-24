@@ -38,7 +38,6 @@ class CriticPageState extends State<CriticPage> {
         new Container(
           color: Colors.transparent,
 //          margin: const EdgeInsets.fromLTRB(0, 44.0, 0, 0),
-          padding: const EdgeInsets.fromLTRB(0, 44.0, 0, 0),
           child: new PageView.builder(
             onPageChanged: _pageChange,
             controller: _pageController,
@@ -186,7 +185,9 @@ class CriticItemState extends State<CriticItem> {
   @override
   Widget build(BuildContext context) {
     return new SingleChildScrollView(
-        controller: new ScrollController(),
+      controller: new ScrollController(),
+      child: new Container(
+        padding: const EdgeInsets.fromLTRB(0, 44.0, 0, 0),
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
@@ -229,6 +230,7 @@ class CriticItemState extends State<CriticItem> {
                     ],
                   ),
                   new Container(
+                      width: window.physicalSize.width,
                       margin: const EdgeInsets.fromLTRB(0, 35.0, 0, 0),
                       padding:
                           const EdgeInsets.fromLTRB(17.0, 17.0, 17.0, 17.0),
@@ -355,7 +357,9 @@ class CriticItemState extends State<CriticItem> {
               ),
             ),
           ],
-        ));
+        ),
+      ),
+    );
   }
 
   _getCritic(int id) async {

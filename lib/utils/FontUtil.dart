@@ -215,4 +215,55 @@ class FontUtil {
       }
     }
   }
+
+  static TextStyle getAuthorFont() {
+    if (_isNightMode) {
+      return new TextStyle(
+          fontSize: FontConstant.FONT_AUTHOR_SIZE,
+          color: Color(FontConstant.FONT_AUTHOR_COLOR_NIGHT));
+    } else {
+      return new TextStyle(
+          fontSize: FontConstant.FONT_AUTHOR_SIZE,
+          color: Color(FontConstant.FONT_AUTHOR_COLOR_DAY));
+    }
+  }
+
+  static Color getAuthorVerticalLineColor() {
+    if (_isNightMode) {
+      return Color(FontConstant.FONT_AUTHOR_VERTICAL_LINE_COLOR_NIGHT);
+    } else {
+      return Color(FontConstant.FONT_AUTHOR_VERTICAL_LINE_COLOR_DAY);
+    }
+  }
+
+  static Color getSummaryBackgroundColor() {
+    if (_isNightMode) {
+      return Color(FontConstant.FONT_SUMMARY_BACKGROUND_COLOR_NIGHT);
+    } else {
+      return Color(FontConstant.FONT_SUMMARY_BACKGROUND_COLOR_DAY);
+    }
+  }
+
+  static TextStyle getAuthorBelowFont() {
+    if (_isNightMode) {
+      return new TextStyle(
+          fontSize: FontConstant.FONT_AUTHOR_BELOW_SIZE,
+          color: Color(FontConstant.FONT_AUTHOR_BELOW_COLOR_NIGHT),
+          fontWeight: FontWeight.bold
+      );
+    } else {
+      return new TextStyle(
+          fontSize: FontConstant.FONT_AUTHOR_BELOW_SIZE,
+          color: Color(FontConstant.FONT_AUTHOR_BELOW_COLOR_DAY),
+          fontWeight: FontWeight.bold
+      );
+    }
+  }
+
+  static TextStyle getAuthorBrief() {
+    return new TextStyle(
+      fontSize: FontConstant.FONT_AUTHOR_BRIEF_SIZE,
+      color: Color(FontConstant.FONT_AUTHOR_BRIEF_COLOR),
+    );
+  }
 }
