@@ -148,6 +148,54 @@ class FontUtil {
     }
   }
 
+  static TextStyle getSummaryFontWithMode(int mode) {
+    if (!_isNightMode) {
+      switch (mode) {
+        case FontConstant.FONT_SMALL:
+          return new TextStyle(
+              fontSize: FontConstant.FONT_SUMMARY_SMALL,
+              color: Color(FontConstant.FONT_SUMMARY_COLOR_DAY));
+          break;
+        case FontConstant.FONT_MID:
+          return new TextStyle(
+              fontSize: FontConstant.FONT_SUMMARY_MID,
+              color: Color(FontConstant.FONT_SUMMARY_COLOR_DAY));
+          break;
+        case FontConstant.FONT_BIG:
+          return new TextStyle(
+              fontSize: FontConstant.FONT_SUMMARY_BIG,
+              color: Color(FontConstant.FONT_SUMMARY_COLOR_DAY));
+          break;
+        default:
+          return new TextStyle(
+              fontSize: FontConstant.FONT_SUMMARY_SMALL,
+              color: Color(FontConstant.FONT_SUMMARY_COLOR_DAY));
+      }
+    } else {
+      switch (mode) {
+        case FontConstant.FONT_SMALL:
+          return new TextStyle(
+              fontSize: FontConstant.FONT_SUMMARY_SMALL,
+              color: Color(FontConstant.FONT_SUMMARY_COLOR_NIGHT));
+          break;
+        case FontConstant.FONT_MID:
+          return new TextStyle(
+              fontSize: FontConstant.FONT_SUMMARY_MID,
+              color: Color(FontConstant.FONT_SUMMARY_COLOR_NIGHT));
+          break;
+        case FontConstant.FONT_BIG:
+          return new TextStyle(
+              fontSize: FontConstant.FONT_SUMMARY_BIG,
+              color: Color(FontConstant.FONT_SUMMARY_COLOR_NIGHT));
+          break;
+        default:
+          return new TextStyle(
+              fontSize: FontConstant.FONT_SUMMARY_SMALL,
+              color: Color(FontConstant.FONT_SUMMARY_COLOR_NIGHT));
+      }
+    }
+  }
+
   static Color getBottomBarBackgroundColor() {
     if (_isNightMode) {
       return Color(FontConstant.FONT_BOTTOMBAR_BACKGROUNDCOLOR_NIGHT);

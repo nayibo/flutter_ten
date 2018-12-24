@@ -6,7 +6,6 @@ import 'package:flutter_tenge/bean/ListBean.dart';
 import 'package:flutter_tenge/constant/font.dart';
 import 'package:flutter_tenge/constant/sp.dart';
 import 'package:flutter_tenge/network/NetworkUtils.dart';
-import 'package:flutter_tenge/utils/DateUtil.dart';
 import 'package:flutter_tenge/ui/share.dart';
 import 'package:flutter_tenge/utils/FontUtil.dart';
 import 'package:flutter_tenge/utils/ShareUtil.dart';
@@ -36,7 +35,7 @@ class CriticPageState extends State<CriticPage> {
     return new Stack(
       children: <Widget>[
         new Container(
-          color: Colors.transparent,
+          color: Colors.white,
 //          margin: const EdgeInsets.fromLTRB(0, 44.0, 0, 0),
           child: new PageView.builder(
             onPageChanged: _pageChange,

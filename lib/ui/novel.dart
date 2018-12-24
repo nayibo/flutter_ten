@@ -25,7 +25,7 @@ class NovelPageState extends State<NovelPage> {
   Widget build(BuildContext context) {
     _getList();
     return new Container(
-      color: Colors.transparent,
+      color: Colors.white,
       child: new PageView.builder(
         onPageChanged: _pageChange,
         controller: _pageController,
@@ -86,8 +86,6 @@ class NovelItemState extends State<NovelItem> {
   }
 
   NovelBean _novel;
-  TextStyle textStyle =
-      new TextStyle(fontSize: 18, color: const Color(0xFF666666));
   final int id;
 
   @override
@@ -199,39 +197,9 @@ class NovelItemState extends State<NovelItem> {
 
   void loadAsync() async {
     await SpUtil.getInstance();
-    initFont();
   }
 
   void loadFontAsync() async {
     await FontUtil.getInstance();
-  }
-
-  void initFont() {
-    setState(() {
-      int size = 1;
-      print("_initFont: " + SpUtil.getInt(SPConstant.SP_FONT).toString());
-      if (null != SpUtil.getInt(SPConstant.SP_FONT)) {
-        size = SpUtil.getInt(SPConstant.SP_FONT);
-      }
-
-      switch (size) {
-        case 1:
-          textStyle = new TextStyle(
-              fontSize: FontConstant.FONT_CONTENT_SMALL,
-              color: const Color(0xFF666666));
-          break;
-        case 2:
-          textStyle = new TextStyle(
-              fontSize: FontConstant.FONT_CONTENT_MID,
-              color: const Color(0xFF666666));
-          break;
-        case 3:
-          textStyle = new TextStyle(
-              fontSize: FontConstant.FONT_CONTENT_BIG,
-              color: const Color(0xFF666666));
-          break;
-        default:
-      }
-    });
   }
 }
