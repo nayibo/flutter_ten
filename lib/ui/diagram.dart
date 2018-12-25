@@ -9,6 +9,10 @@ import 'package:flutter_tenge/utils/FontUtil.dart';
 import 'package:flutter_tenge/utils/SharedPreferencesUtil.dart';
 
 class DiagramPage extends StatefulWidget {
+  ScrollController scrollController;
+
+  DiagramPage({this.scrollController});
+
   @override
   State<StatefulWidget> createState() {
     return new DiagramPageState();
@@ -20,10 +24,13 @@ class DiagramPageState extends State<DiagramPage> {
   int _currentPageIndex = 0;
   var _pageController = new PageController(initialPage: 0);
 
+  DiagramPageState() {
+    print("DiagramPageState construtor");
+    _getList();
+  }
+
   @override
   Widget build(BuildContext context) {
-    _getList();
-
     return new Container(
       color: Colors.white,
       child: new PageView.builder(
@@ -44,7 +51,9 @@ class DiagramPageState extends State<DiagramPage> {
     NetworkUtils.get("http://api.shigeten.net/api/Diagram/GetDiagramList",
         (data) {
       if (data != null) {
-        _listBean = new ListBean.fromJson(data);
+        setState(() {
+          _listBean = new ListBean.fromJson(data);
+        });
       }
     }, errorCallback: (e) {
       print("network error: $e");
@@ -63,7 +72,7 @@ class DiagramPageState extends State<DiagramPage> {
     if (_listBean != null &&
         _listBean.result != null &&
         _listBean.result.length > index) {
-      return new DiagramItem(id: _listBean.result[index].id);
+      return new DiagramItem(id: _listBean.result[index].id, scrollController: widget.scrollController);
     } else {
       return null;
     }
@@ -71,7 +80,8 @@ class DiagramPageState extends State<DiagramPage> {
 }
 
 class DiagramItem extends StatefulWidget {
-  DiagramItem({Key key, this.id}) : super(key: key);
+  ScrollController scrollController;
+  DiagramItem({Key key, this.id, this.scrollController}) : super(key: key);
 
   final int id;
 
@@ -99,7 +109,7 @@ class DiagramItemState extends State<DiagramItem> {
   @override
   Widget build(BuildContext context) {
     return new SingleChildScrollView(
-      controller: new ScrollController(),
+      controller: widget.scrollController,
       child: new Container(
         color: Colors.white,
         padding: const EdgeInsets.fromLTRB(0.0, 44.0, 0.0, 115.0),

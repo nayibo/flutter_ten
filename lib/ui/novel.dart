@@ -3,13 +3,15 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_tenge/bean/ListBean.dart';
 import 'package:flutter_tenge/bean/NovelBean.dart';
-import 'package:flutter_tenge/constant/font.dart';
-import 'package:flutter_tenge/constant/sp.dart';
 import 'package:flutter_tenge/network/NetworkUtils.dart';
 import 'package:flutter_tenge/utils/FontUtil.dart';
 import 'package:flutter_tenge/utils/SharedPreferencesUtil.dart';
 
 class NovelPage extends StatefulWidget {
+  ScrollController scrollController;
+
+  NovelPage({this.scrollController});
+
   @override
   State<StatefulWidget> createState() {
     return new NovelPageState();
@@ -21,9 +23,13 @@ class NovelPageState extends State<NovelPage> {
   int _currentPageIndex = 0;
   var _pageController = new PageController(initialPage: 0);
 
+  NovelPageState() {
+    print("NovelPageState construtor");
+    _getList();
+  }
+
   @override
   Widget build(BuildContext context) {
-    _getList();
     return new Container(
       color: Colors.white,
       child: new PageView.builder(
@@ -43,7 +49,9 @@ class NovelPageState extends State<NovelPage> {
   _getList() async {
     NetworkUtils.get("http://api.shigeten.net/api/Novel/GetNovelList", (data) {
       if (data != null) {
-        _listBean = new ListBean.fromJson(data);
+        setState(() {
+          _listBean = new ListBean.fromJson(data);
+        });
       }
     }, errorCallback: (e) {
       print("network error: $e");
@@ -62,7 +70,7 @@ class NovelPageState extends State<NovelPage> {
     if (_listBean != null &&
         _listBean.result != null &&
         _listBean.result.length > index) {
-      return new NovelItem(id: _listBean.result[index].id);
+      return new NovelItem(id: _listBean.result[index].id, scrollController: widget.scrollController);
     } else {
       return null;
     }
@@ -70,7 +78,8 @@ class NovelPageState extends State<NovelPage> {
 }
 
 class NovelItem extends StatefulWidget {
-  NovelItem({Key key, this.id}) : super(key: key);
+  ScrollController scrollController;
+  NovelItem({Key key, this.id, this.scrollController}) : super(key: key);
 
   final int id;
 
@@ -98,7 +107,7 @@ class NovelItemState extends State<NovelItem> {
   @override
   Widget build(BuildContext context) {
     return new SingleChildScrollView(
-      controller: new ScrollController(),
+      controller: widget.scrollController,
       child: new Container(
         color: Colors.white,
         padding: const EdgeInsets.fromLTRB(16.0, 44.0, 16.0, 0.0),

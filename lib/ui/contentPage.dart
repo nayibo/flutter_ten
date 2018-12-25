@@ -6,27 +6,46 @@ import 'package:flutter_tenge/ui/critic.dart';
 import 'package:flutter_tenge/ui/diagram.dart';
 import 'package:flutter_tenge/ui/novel.dart';
 
-class ContentPage extends StatefulWidget {
-  ContentPage({this.type});
+typedef ScrollToBottomCallback = void Function();
 
-  String type;
+class ContentPage extends StatefulWidget {
+  ScrollToBottomCallback scrollToBottomCallback;
+
+  ContentPage({this.type, this.scrollToBottomCallback});
+
+  String type = CommonConstant.PAGE_CRITIC;
 
   @override
   State<StatefulWidget> createState() {
-    return new ContentPageState(contentType: type);
+    return new ContentPageState();
   }
 }
 
 class ContentPageState extends State<ContentPage> {
-  ContentPageState({this.contentType});
+  ScrollController scrollController = new ScrollController();
 
-  String contentType = CommonConstant.PAGE_CRITIC;
+  @override
+  void initState() {
+    super.initState();
+    scrollController.addListener(() {
+//      print("listener pixels: " + scrollController.position.pixels.toString() + " max: " + scrollController.position.maxScrollExtent.toString() + " equal: " + (scrollController.position.pixels ==
+//          scrollController.position.maxScrollExtent).toString());
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        print("call scrollToBottomCallback");
+        widget.scrollToBottomCallback();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return new Container(
         padding: new EdgeInsets.fromLTRB(
-            0.0, MediaQueryData.fromWindow(window).padding.top, 0.0, 0.0),
+            0.0, MediaQueryData
+            .fromWindow(window)
+            .padding
+            .top, 0.0, 0.0),
         decoration: new BoxDecoration(
             color: Color(0xE6F4F4F4),
             image: new DecorationImage(
@@ -44,30 +63,31 @@ class ContentPageState extends State<ContentPage> {
                       height: 44, width: 107),
                   new Expanded(
                       child: new Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      new Image.asset('assets/images/date_0.png',
-                          height: 44, width: 20),
-                      new Image.asset('assets/images/date_1.png',
-                          height: 44, width: 20),
-                      new Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          new Image.asset('assets/images/week_1.png',
-                              height: 20, width: 42),
-                          new Row(
+                          new Image.asset('assets/images/date_0.png',
+                              height: 44, width: 20),
+                          new Image.asset('assets/images/date_1.png',
+                              height: 44, width: 20),
+                          new Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              new Image.asset('assets/images/month_divide.png',
-                                  height: 24, width: 15),
-                              new Image.asset('assets/images/month_12.png',
-                                  height: 24, width: 27),
+                              new Image.asset('assets/images/week_1.png',
+                                  height: 20, width: 42),
+                              new Row(
+                                children: <Widget>[
+                                  new Image.asset(
+                                      'assets/images/month_divide.png',
+                                      height: 24, width: 15),
+                                  new Image.asset('assets/images/month_12.png',
+                                      height: 24, width: 27),
+                                ],
+                              )
                             ],
                           )
                         ],
-                      )
-                    ],
-                  ))
+                      ))
                 ],
               ),
             ),
@@ -76,18 +96,18 @@ class ContentPageState extends State<ContentPage> {
   }
 
   StatefulWidget _getPage() {
-    switch (contentType) {
+    switch (widget.type) {
       case CommonConstant.PAGE_CRITIC:
-        return new CriticPage();
+        return new CriticPage(scrollController: scrollController);
         break;
       case CommonConstant.PAGE_NOVEL:
-        return new NovelPage();
+        return new NovelPage(scrollController: scrollController);
         break;
       case CommonConstant.PAGE_DIAGRAM:
-        return new DiagramPage();
+        return new DiagramPage(scrollController: scrollController);
         break;
       default:
-        return new CriticPage();
+        return new CriticPage(scrollController: scrollController);
     }
   }
 }

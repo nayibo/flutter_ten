@@ -12,6 +12,9 @@ import 'package:flutter_tenge/utils/ShareUtil.dart';
 import 'package:flutter_tenge/utils/SharedPreferencesUtil.dart';
 
 class CriticPage extends StatefulWidget {
+  ScrollController scrollController;
+  CriticPage({this.scrollController});
+
   @override
   State<StatefulWidget> createState() {
     print("CriticPage build");
@@ -134,7 +137,7 @@ class CriticPageState extends State<CriticPage> {
     if (_listBean != null &&
         _listBean.result != null &&
         _listBean.result.length > index) {
-      return new CriticItem(id: _listBean.result[index].id);
+      return new CriticItem(id: _listBean.result[index].id, scrollController: widget.scrollController);
     } else {
       return null;
     }
@@ -154,7 +157,8 @@ class CriticPageState extends State<CriticPage> {
 }
 
 class CriticItem extends StatefulWidget {
-  CriticItem({Key key, this.id}) : super(key: key);
+  ScrollController scrollController;
+  CriticItem({Key key, this.id, this.scrollController}) : super(key: key);
 
   final int id;
 
@@ -168,7 +172,7 @@ class CriticItemState extends State<CriticItem> {
   CriticItemState({this.id}) {
     _getCritic(id);
   }
-
+  ScrollController controller;
   CriticBean _critic;
   TextStyle textStyle =
       new TextStyle(fontSize: 18, color: const Color(0xFF666666));
@@ -184,7 +188,7 @@ class CriticItemState extends State<CriticItem> {
   @override
   Widget build(BuildContext context) {
     return new SingleChildScrollView(
-      controller: new ScrollController(),
+      controller: widget.scrollController,
       child: new Container(
         padding: const EdgeInsets.fromLTRB(0, 44.0, 0, 0),
         child: new Column(
