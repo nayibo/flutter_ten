@@ -28,11 +28,8 @@ class ContentPageState extends State<ContentPage> {
   void initState() {
     super.initState();
     scrollController.addListener(() {
-//      print("listener pixels: " + scrollController.position.pixels.toString() + " max: " + scrollController.position.maxScrollExtent.toString() + " equal: " + (scrollController.position.pixels ==
-//          scrollController.position.maxScrollExtent).toString());
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
-        print("call scrollToBottomCallback");
         widget.scrollToBottomCallback();
       }
     });

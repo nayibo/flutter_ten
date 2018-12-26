@@ -19,17 +19,30 @@ class NovelPage extends StatefulWidget {
 }
 
 class NovelPageState extends State<NovelPage> {
+  bool _showLoading = true;
   ListBean _listBean;
   int _currentPageIndex = 0;
   var _pageController = new PageController(initialPage: 0);
 
-  NovelPageState() {
-    print("NovelPageState construtor");
+  @override
+  void initState() {
+    super.initState();
     _getList();
   }
 
-  @override
-  Widget build(BuildContext context) {
+  _getNovelBody() {
+    if (_showLoading) {
+      return _getLoadingWidget();
+    } else {
+      return _getPageViewWidget();
+    }
+  }
+
+  Widget _getLoadingWidget() {
+    return new Center(child: new CircularProgressIndicator());
+  }
+
+  Widget _getPageViewWidget() {
     return new Container(
       color: Colors.white,
       child: new PageView.builder(
@@ -46,14 +59,21 @@ class NovelPageState extends State<NovelPage> {
     );
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return _getNovelBody();
+  }
+
   _getList() async {
     NetworkUtils.get("http://api.shigeten.net/api/Novel/GetNovelList", (data) {
+      _showLoading = false;
       if (data != null) {
         setState(() {
           _listBean = new ListBean.fromJson(data);
         });
       }
     }, errorCallback: (e) {
+      _showLoading = false;
       print("network error: $e");
     });
   }
@@ -80,7 +100,6 @@ class NovelPageState extends State<NovelPage> {
 class NovelItem extends StatefulWidget {
   ScrollController scrollController;
   NovelItem({Key key, this.id, this.scrollController}) : super(key: key);
-
   final int id;
 
   @override
@@ -94,6 +113,7 @@ class NovelItemState extends State<NovelItem> {
     _getNovel(id);
   }
 
+  bool _showLoading = true;
   NovelBean _novel;
   final int id;
 
@@ -104,8 +124,19 @@ class NovelItemState extends State<NovelItem> {
     loadAsync();
   }
 
-  @override
-  Widget build(BuildContext context) {
+  _getItemBody() {
+    if (_showLoading) {
+      return _getLoadingWidget();
+    } else {
+      return _getItemWidget();
+    }
+  }
+
+  Widget _getLoadingWidget() {
+    return new Center(child: new CircularProgressIndicator());
+  }
+
+  Widget _getItemWidget() {
     return new SingleChildScrollView(
       controller: widget.scrollController,
       child: new Container(
@@ -129,7 +160,7 @@ class NovelItemState extends State<NovelItem> {
                   width: 1.0,
                   color: FontUtil.getAuthorVerticalLineColor(),
                   margin:
-                      const EdgeInsets.only(left: 10.0, right: 10.0, top: 4.0),
+                  const EdgeInsets.only(left: 10.0, right: 10.0, top: 4.0),
                 ),
                 new Text(
                     _novel == null
@@ -145,11 +176,11 @@ class NovelItemState extends State<NovelItem> {
                       ? ''
                       : "http://images.shigeten.net/" + _novel.image,
                   height: _novel == null ||
-                          _novel.image == null ||
-                          _novel.image == ""
+                      _novel.image == null ||
+                      _novel.image == ""
                       ? 0
                       : (window.physicalSize.width * 9) /
-                          (16 * window.devicePixelRatio),
+                      (16 * window.devicePixelRatio),
                   width: window.physicalSize.width / window.devicePixelRatio,
                   fit: BoxFit.fill,
                 )),
@@ -183,6 +214,11 @@ class NovelItemState extends State<NovelItem> {
     );
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return _getItemBody();
+  }
+
   _getNovel(int id) async {
     if (id == null) {
       return;
@@ -192,6 +228,7 @@ class NovelItemState extends State<NovelItem> {
     NetworkUtils.get(
         "http://api.shigeten.net/api/Novel/GetNovelContent",
         (data) {
+          _showLoading = false;
           if (data != null) {
             setState(() {
               _novel = new NovelBean.fromJson(data);
@@ -200,6 +237,7 @@ class NovelItemState extends State<NovelItem> {
         },
         params: params,
         errorCallback: (e) {
+          _showLoading = false;
           print("_getCritic network error: $e");
         });
   }

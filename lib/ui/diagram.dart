@@ -20,17 +20,30 @@ class DiagramPage extends StatefulWidget {
 }
 
 class DiagramPageState extends State<DiagramPage> {
+  bool _showLoading = true;
   ListBean _listBean;
   int _currentPageIndex = 0;
   var _pageController = new PageController(initialPage: 0);
 
-  DiagramPageState() {
-    print("DiagramPageState construtor");
+  @override
+  void initState() {
+    super.initState();
     _getList();
   }
 
-  @override
-  Widget build(BuildContext context) {
+  _getDiagramBody() {
+    if (_showLoading) {
+      return _getLoadingWidget();
+    } else {
+      return _getPageViewWidget();
+    }
+  }
+
+  Widget _getLoadingWidget() {
+    return new Center(child: new CircularProgressIndicator());
+  }
+
+  Widget _getPageViewWidget() {
     return new Container(
       color: Colors.white,
       child: new PageView.builder(
@@ -47,15 +60,22 @@ class DiagramPageState extends State<DiagramPage> {
     );
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return _getDiagramBody();
+  }
+
   _getList() async {
     NetworkUtils.get("http://api.shigeten.net/api/Diagram/GetDiagramList",
         (data) {
+      _showLoading = false;
       if (data != null) {
         setState(() {
           _listBean = new ListBean.fromJson(data);
         });
       }
     }, errorCallback: (e) {
+      _showLoading = false;
       print("network error: $e");
     });
   }
@@ -72,7 +92,9 @@ class DiagramPageState extends State<DiagramPage> {
     if (_listBean != null &&
         _listBean.result != null &&
         _listBean.result.length > index) {
-      return new DiagramItem(id: _listBean.result[index].id, scrollController: widget.scrollController);
+      return new DiagramItem(
+          id: _listBean.result[index].id,
+          scrollController: widget.scrollController);
     } else {
       return null;
     }
@@ -81,6 +103,7 @@ class DiagramPageState extends State<DiagramPage> {
 
 class DiagramItem extends StatefulWidget {
   ScrollController scrollController;
+
   DiagramItem({Key key, this.id, this.scrollController}) : super(key: key);
 
   final int id;
@@ -96,6 +119,7 @@ class DiagramItemState extends State<DiagramItem> {
     _getDiagram(id);
   }
 
+  bool _showLoading = true;
   DiagramBean _diagram;
   final int id;
 
@@ -106,8 +130,19 @@ class DiagramItemState extends State<DiagramItem> {
     loadAsync();
   }
 
-  @override
-  Widget build(BuildContext context) {
+  _getItemBody() {
+    if (_showLoading) {
+      return _getLoadingWidget();
+    } else {
+      return _getItemWidget();
+    }
+  }
+
+  Widget _getLoadingWidget() {
+    return new Center(child: new CircularProgressIndicator());
+  }
+
+  Widget _getItemWidget() {
     return new SingleChildScrollView(
       controller: widget.scrollController,
       child: new Container(
@@ -171,6 +206,11 @@ class DiagramItemState extends State<DiagramItem> {
     );
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return _getItemBody();
+  }
+
   _getDiagram(int id) async {
     if (id == null) {
       return;
@@ -180,6 +220,7 @@ class DiagramItemState extends State<DiagramItem> {
     NetworkUtils.get(
         "http://api.shigeten.net/api/Diagram/GetDiagramContent",
         (data) {
+          _showLoading = false;
           if (data != null) {
             setState(() {
               _diagram = new DiagramBean.fromJson(data);
@@ -188,6 +229,7 @@ class DiagramItemState extends State<DiagramItem> {
         },
         params: params,
         errorCallback: (e) {
+          _showLoading = false;
           print("_getCritic network error: $e");
         });
   }

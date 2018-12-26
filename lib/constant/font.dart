@@ -38,4 +38,16 @@ class FontConstant {
 
   static final double FONT_AUTHOR_BRIEF_SIZE = 16.0;
   static final int FONT_AUTHOR_BRIEF_COLOR = 0xFF777777;
+
+  static final int FONT_LOGIN_BACKGROUND_COLOR_NIGHT = 0xFF2C2C3A;
+  static final int FONT_LOGIN_BACKGROUND_COLOR_DAY = 0xFFEE5656;
+
+  static final double FONT_USERNAME_SIZE = 14.0;
+  static final int FONT_USERNAME_COLOR_NIGHT = 0xFF818699;
+  static final int FONT_USERNAME_COLOR_DAY = 0xFFFFFFFF;
+
+  static final double FONT_SETTING_ITEM_SIZE = 14.0;
+
+  static final int FONT_LINE_SHIXIN_COLOR_DAY = 0x4D636363;
+  static final int FONT_LINE_SHIXIN_COLOR_NIGHT = 0x4D636363;
 }

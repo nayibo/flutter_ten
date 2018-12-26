@@ -297,14 +297,12 @@ class FontUtil {
       return new TextStyle(
           fontSize: FontConstant.FONT_AUTHOR_BELOW_SIZE,
           color: Color(FontConstant.FONT_AUTHOR_BELOW_COLOR_NIGHT),
-          fontWeight: FontWeight.bold
-      );
+          fontWeight: FontWeight.bold);
     } else {
       return new TextStyle(
           fontSize: FontConstant.FONT_AUTHOR_BELOW_SIZE,
           color: Color(FontConstant.FONT_AUTHOR_BELOW_COLOR_DAY),
-          fontWeight: FontWeight.bold
-      );
+          fontWeight: FontWeight.bold);
     }
   }
 
@@ -313,5 +311,95 @@ class FontUtil {
       fontSize: FontConstant.FONT_AUTHOR_BRIEF_SIZE,
       color: Color(FontConstant.FONT_AUTHOR_BRIEF_COLOR),
     );
+  }
+
+  static Color getLoginBackgroundColor() {
+    if (_isNightMode) {
+      return Color(FontConstant.FONT_LOGIN_BACKGROUND_COLOR_NIGHT);
+    } else {
+      return Color(FontConstant.FONT_LOGIN_BACKGROUND_COLOR_DAY);
+    }
+  }
+
+  static TextStyle getUserNameFont() {
+    if (_isNightMode) {
+      return new TextStyle(
+        fontSize: FontConstant.FONT_USERNAME_SIZE,
+        color: Color(FontConstant.FONT_USERNAME_COLOR_NIGHT),
+      );
+    } else {
+      return new TextStyle(
+        fontSize: FontConstant.FONT_USERNAME_SIZE,
+        color: Color(FontConstant.FONT_USERNAME_COLOR_DAY),
+      );
+    }
+  }
+
+  static String getFavoriteIcon() {
+    if (_isNightMode) {
+      return 'assets/images/setting_favorite_night.png';
+    } else {
+      return 'assets/images/setting_favorite.png';
+    }
+  }
+
+  static String getFontIcon() {
+    if (_isNightMode) {
+      return 'assets/images/setting_font_night.png';
+    } else {
+      return 'assets/images/setting_font.png';
+    }
+  }
+
+  static String getAboutUsIcon() {
+    if (_isNightMode) {
+      return 'assets/images/setting_aboutus_night.png';
+    } else {
+      return 'assets/images/setting_aboutus.png';
+    }
+  }
+
+  static String getFeedbackIcon() {
+    if (_isNightMode) {
+      return 'assets/images/setting_feedback_night.png';
+    } else {
+      return 'assets/images/setting_feedback.png';
+    }
+  }
+
+  static String getNightModeIcon() {
+    if (_isNightMode) {
+      return 'assets/images/setting_nightmodel_night.png';
+    } else {
+      return 'assets/images/setting_nightmodel.png';
+    }
+  }
+
+  static String getSettingArrowIcon() {
+    if (_isNightMode) {
+      return 'assets/images/setting_arrow_night.png';
+    } else {
+      return 'assets/images/setting_arrow.png';
+    }
+  }
+
+  static TextStyle getSettingItemFont() {
+    if (_isNightMode) {
+      return new TextStyle(
+          fontSize: FontConstant.FONT_SETTING_ITEM_SIZE,
+          color: Color(FontConstant.FONT_CONTENT_TITLE_COLOR_NIGHT));
+    } else {
+      return new TextStyle(
+          fontSize: FontConstant.FONT_SETTING_ITEM_SIZE,
+          color: Color(FontConstant.FONT_CONTENT_TITLE_COLOR_DAY));
+    }
+  }
+
+  static Color getLineShixinColor() {
+    if (_isNightMode) {
+      return Color(FontConstant.FONT_LINE_SHIXIN_COLOR_NIGHT);
+    } else {
+      return Color(FontConstant.FONT_LINE_SHIXIN_COLOR_DAY);
+    }
   }
 }

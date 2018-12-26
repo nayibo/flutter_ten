@@ -13,6 +13,7 @@ import 'package:flutter_tenge/utils/SharedPreferencesUtil.dart';
 
 class CriticPage extends StatefulWidget {
   ScrollController scrollController;
+
   CriticPage({this.scrollController});
 
   @override
@@ -26,20 +27,31 @@ class CriticPageState extends State<CriticPage> {
   ListBean _listBean;
   int _currentPageIndex = 0;
   var _pageController = new PageController(initialPage: 0);
+  bool _showLoading = true;
 
-  CriticPageState() {
-    print("CriticPageState construtor");
+  @override
+  void initState() {
+    super.initState();
     _getList();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    print("CriticPageState build");
+  _getCriticBody() {
+    if (_showLoading) {
+      return _getLoadingWidget();
+    } else {
+      return _getPageViewWidget();
+    }
+  }
+
+  Widget _getLoadingWidget() {
+    return new Center(child: new CircularProgressIndicator());
+  }
+
+  Widget _getPageViewWidget() {
     return new Stack(
       children: <Widget>[
         new Container(
           color: Colors.white,
-//          margin: const EdgeInsets.fromLTRB(0, 44.0, 0, 0),
           child: new PageView.builder(
             onPageChanged: _pageChange,
             controller: _pageController,
@@ -51,51 +63,15 @@ class CriticPageState extends State<CriticPage> {
                 ? 0
                 : _listBean.result == null ? 0 : _listBean.result.length,
           ),
-//          new Column(
-//            mainAxisAlignment: MainAxisAlignment.start,
-//            children: <Widget>[
-//              new Row(
-//                children: <Widget>[
-
-//                  new Text((_listBean != null &&
-//                          _listBean.result != null &&
-//                          _listBean.result.length > _currentPageIndex)
-//                      ? DateUtil.getDateStrByMs(
-//                          DateUtil.formatCSharpMiliSecondtoMiliSecond(
-//                              _listBean.result[_currentPageIndex].publishtime),
-//                          format: DateFormat.YEAR_MONTH_DAY)
-//                      : "empty date"),
-//                  new Text((_listBean != null &&
-//                          _listBean.result != null &&
-//                          _listBean.result.length > _currentPageIndex)
-//                      ? DateUtil.getWeekDayByMs(
-//                          DateUtil.formatCSharpMiliSecondtoMiliSecond(
-//                              _listBean.result[_currentPageIndex].publishtime))
-//                      : "empty week")
-//                ],
-//              ),
-//              new Expanded(
-//                child: new PageView.builder(
-//                  onPageChanged: _pageChange,
-//                  controller: _pageController,
-//                  itemBuilder: (BuildContext context, int index) {
-//                    print("CriticPageState itemBuilder");
-//                    return _buildItem(context, index);
-//                  },
-//                  itemCount: _listBean == null
-//                      ? 0
-//                      : _listBean.result == null ? 0 : _listBean.result.length,
-//                ),
-//              )
-//            ],
-//          ),
         ),
-//        new Container(
-//          alignment: new Alignment(0.9, 0.8),
-//          child: new IconButton(icon: new Icon(Icons.share), onPressed: _showShareDialog),
-//        )
       ],
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    print("CriticPageState build");
+    return _getCriticBody();
   }
 
   _share() {
@@ -137,7 +113,9 @@ class CriticPageState extends State<CriticPage> {
     if (_listBean != null &&
         _listBean.result != null &&
         _listBean.result.length > index) {
-      return new CriticItem(id: _listBean.result[index].id, scrollController: widget.scrollController);
+      return new CriticItem(
+          id: _listBean.result[index].id,
+          scrollController: widget.scrollController);
     } else {
       return null;
     }
@@ -147,10 +125,13 @@ class CriticPageState extends State<CriticPage> {
     NetworkUtils.get("http://api.shigeten.net/api/Critic/GetCriticList",
         (data) {
       if (data != null) {
-        _listBean = new ListBean.fromJson(data);
+        _showLoading = false;
+        setState(() {
+          _listBean = new ListBean.fromJson(data);
+        });
       }
-      setState(() {});
     }, errorCallback: (e) {
+      _showLoading = false;
       print("_getList network error: $e");
     });
   }
@@ -158,8 +139,8 @@ class CriticPageState extends State<CriticPage> {
 
 class CriticItem extends StatefulWidget {
   ScrollController scrollController;
-  CriticItem({Key key, this.id, this.scrollController}) : super(key: key);
 
+  CriticItem({Key key, this.id, this.scrollController}) : super(key: key);
   final int id;
 
   @override
@@ -172,7 +153,8 @@ class CriticItemState extends State<CriticItem> {
   CriticItemState({this.id}) {
     _getCritic(id);
   }
-  ScrollController controller;
+
+  bool _showLoading = true;
   CriticBean _critic;
   TextStyle textStyle =
       new TextStyle(fontSize: 18, color: const Color(0xFF666666));
@@ -181,12 +163,24 @@ class CriticItemState extends State<CriticItem> {
   @override
   void initState() {
     super.initState();
+    _getCritic(id);
     loadFontAsync();
     loadAsync();
   }
 
-  @override
-  Widget build(BuildContext context) {
+  _getItemBody() {
+    if (_showLoading) {
+      return _getLoadingWidget();
+    } else {
+      return _getItemWidget();
+    }
+  }
+
+  Widget _getLoadingWidget() {
+    return new Center(child: new CircularProgressIndicator());
+  }
+
+  Widget _getItemWidget() {
     return new SingleChildScrollView(
       controller: widget.scrollController,
       child: new Container(
@@ -365,6 +359,11 @@ class CriticItemState extends State<CriticItem> {
     );
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return _getItemBody();
+  }
+
   _getCritic(int id) async {
     if (id == null) {
       return;
@@ -374,6 +373,7 @@ class CriticItemState extends State<CriticItem> {
     NetworkUtils.get(
         "http://api.shigeten.net/api/Critic/GetCriticContent",
         (data) {
+          _showLoading = false;
           if (data != null) {
             setState(() {
               _critic = new CriticBean.fromJson(data);
@@ -382,6 +382,7 @@ class CriticItemState extends State<CriticItem> {
         },
         params: params,
         errorCallback: (e) {
+          _showLoading = false;
           print("_getCritic network error: $e");
         });
   }

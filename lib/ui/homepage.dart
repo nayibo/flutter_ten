@@ -65,7 +65,6 @@ class HomepageState extends State<Homepage> {
                 //down
                 homepageBottomBar.refresh(1.0);
               }
-//              print("dy: " + (details.globalPosition.dy - _dyStart).toString() + " distance: " + details.globalPosition.distanceSquared.toString());
               _dyStart = details.globalPosition.dy;
             };
           },
