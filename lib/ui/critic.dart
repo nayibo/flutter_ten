@@ -6,6 +6,7 @@ import 'package:flutter_tenge/bean/ListBean.dart';
 import 'package:flutter_tenge/constant/font.dart';
 import 'package:flutter_tenge/constant/sp.dart';
 import 'package:flutter_tenge/network/NetworkUtils.dart';
+import 'package:flutter_tenge/ui/callback.dart';
 import 'package:flutter_tenge/ui/share.dart';
 import 'package:flutter_tenge/utils/FontUtil.dart';
 import 'package:flutter_tenge/utils/ShareUtil.dart';
@@ -13,8 +14,9 @@ import 'package:flutter_tenge/utils/SharedPreferencesUtil.dart';
 
 class CriticPage extends StatefulWidget {
   ScrollController scrollController;
+  ScrollToNextPageCallback scrollToNextPageCallback;
 
-  CriticPage({this.scrollController});
+  CriticPage({this.scrollController, this.scrollToNextPageCallback});
 
   @override
   State<StatefulWidget> createState() {
@@ -105,6 +107,7 @@ class CriticPageState extends State<CriticPage> {
     setState(() {
       if (_currentPageIndex != index) {
         _currentPageIndex = index;
+        widget.scrollToNextPageCallback( _listBean.result[_currentPageIndex].publishtime);
       }
     });
   }
@@ -128,6 +131,9 @@ class CriticPageState extends State<CriticPage> {
         _showLoading = false;
         setState(() {
           _listBean = new ListBean.fromJson(data);
+          if (_listBean.result.length > 0) {
+            widget.scrollToNextPageCallback(_listBean.result[0].publishtime);
+          }
         });
       }
     }, errorCallback: (e) {

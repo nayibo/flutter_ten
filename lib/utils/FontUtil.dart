@@ -402,4 +402,260 @@ class FontUtil {
       return Color(FontConstant.FONT_LINE_SHIXIN_COLOR_DAY);
     }
   }
+
+  static String getHeaderLogoIcon(String pageType) {
+    switch (pageType) {
+      case CommonConstant.PAGE_CRITIC:
+        if (_isNightMode) {
+          return 'assets/images/logo_critic_night.png';
+        } else {
+          return 'assets/images/logo_critic.png';
+        }
+        break;
+      case CommonConstant.PAGE_NOVEL:
+        if (_isNightMode) {
+          return 'assets/images/logo_novel_night.png';
+        } else {
+          return 'assets/images/logo_novel.png';
+        }
+        break;
+      case CommonConstant.PAGE_DIAGRAM:
+        if (_isNightMode) {
+          return 'assets/images/logo_diagram_night.png';
+        } else {
+          return 'assets/images/logo_diagram.png';
+        }
+        break;
+      default:
+        if (_isNightMode) {
+          return 'assets/images/logo_critic_night.png';
+        } else {
+          return 'assets/images/logo_critic.png';
+        }
+    }
+  }
+
+  static String getDateIcon(int date) {
+    if (_isNightMode) {
+      switch (date) {
+        case 0:
+          return 'assets/images/date_0_night.png';
+          break;
+        case 1:
+          return 'assets/images/date_1_night.png';
+          break;
+        case 2:
+          return 'assets/images/date_2_night.png';
+          break;
+        case 3:
+          return 'assets/images/date_3_night.png';
+          break;
+        case 4:
+          return 'assets/images/date_4_night.png';
+          break;
+        case 5:
+          return 'assets/images/date_5_night.png';
+          break;
+        case 6:
+          return 'assets/images/date_6_night.png';
+          break;
+        case 7:
+          return 'assets/images/date_7_night.png';
+          break;
+        case 8:
+          return 'assets/images/date_8_night.png';
+          break;
+        case 9:
+          return 'assets/images/date_9_night.png';
+          break;
+        default:
+          return 'assets/images/date_0_night.png';
+      }
+    } else {
+      switch (date) {
+        case 0:
+          return 'assets/images/date_0.png';
+          break;
+        case 1:
+          return 'assets/images/date_1.png';
+          break;
+        case 2:
+          return 'assets/images/date_2.png';
+          break;
+        case 3:
+          return 'assets/images/date_3.png';
+          break;
+        case 4:
+          return 'assets/images/date_4.png';
+          break;
+        case 5:
+          return 'assets/images/date_5.png';
+          break;
+        case 6:
+          return 'assets/images/date_6.png';
+          break;
+        case 7:
+          return 'assets/images/date_7.png';
+          break;
+        case 8:
+          return 'assets/images/date_8.png';
+          break;
+        case 9:
+          return 'assets/images/date_9.png';
+          break;
+        default:
+          return 'assets/images/date_0.png';
+      }
+    }
+  }
+
+  static String getMonthIcon(int month) {
+    if (_isNightMode) {
+      switch (month) {
+        case DateTime.january:
+          return 'assets/images/month_1_night.png';
+          break;
+        case DateTime.february:
+          return 'assets/images/month_2_night.png';
+          break;
+        case DateTime.march:
+          return 'assets/images/month_3_night.png';
+          break;
+        case DateTime.april:
+          return 'assets/images/month_4_night.png';
+          break;
+        case DateTime.may:
+          return 'assets/images/month_5_night.png';
+          break;
+        case DateTime.june:
+          return 'assets/images/month_6_night.png';
+          break;
+        case DateTime.july:
+          return 'assets/images/month_7_night.png';
+          break;
+        case DateTime.august:
+          return 'assets/images/month_8_night.png';
+          break;
+        case DateTime.september:
+          return 'assets/images/month_9_night.png';
+          break;
+        case DateTime.october:
+          return 'assets/images/month_10_night.png';
+          break;
+        case DateTime.november:
+          return 'assets/images/month_11_night.png';
+          break;
+        case DateTime.december:
+          return 'assets/images/month_12_night.png';
+          break;
+        default:
+          return 'assets/images/month_1_night.png';
+      }
+    } else {
+      switch (month) {
+        case DateTime.january:
+          return 'assets/images/month_1.png';
+          break;
+        case DateTime.february:
+          return 'assets/images/month_2.png';
+          break;
+        case DateTime.march:
+          return 'assets/images/month_3.png';
+          break;
+        case DateTime.april:
+          return 'assets/images/month_4.png';
+          break;
+        case DateTime.may:
+          return 'assets/images/month_5.png';
+          break;
+        case DateTime.june:
+          return 'assets/images/month_6.png';
+          break;
+        case DateTime.july:
+          return 'assets/images/month_7.png';
+          break;
+        case DateTime.august:
+          return 'assets/images/month_8.png';
+          break;
+        case DateTime.september:
+          return 'assets/images/month_9.png';
+          break;
+        case DateTime.october:
+          return 'assets/images/month_10.png';
+          break;
+        case DateTime.november:
+          return 'assets/images/month_11.png';
+          break;
+        case DateTime.december:
+          return 'assets/images/month_12.png';
+          break;
+        default:
+          return 'assets/images/month_1.png';
+      }
+    }
+  }
+
+  static String getWeekDayIcon(int weekDay) {
+    if (_isNightMode) {
+      switch (weekDay) {
+        case DateTime.monday:
+          return 'assets/images/week_1_night.png';
+          break;
+        case DateTime.tuesday:
+          return 'assets/images/week_2_night.png';
+          break;
+        case DateTime.wednesday:
+          return 'assets/images/week_3_night.png';
+          break;
+        case DateTime.thursday:
+          return 'assets/images/week_4_night.png';
+          break;
+        case DateTime.friday:
+          return 'assets/images/week_5_night.png';
+          break;
+        case DateTime.saturday:
+          return 'assets/images/week_6_night.png';
+          break;
+        case DateTime.sunday:
+          return 'assets/images/week_7_night.png';
+          break;
+        default:
+          return 'assets/images/week_0_night.png';
+      }
+    } else {
+      switch (weekDay) {
+        case DateTime.monday:
+          return 'assets/images/week_1.png';
+          break;
+        case DateTime.tuesday:
+          return 'assets/images/week_2.png';
+          break;
+        case DateTime.wednesday:
+          return 'assets/images/week_3.png';
+          break;
+        case DateTime.thursday:
+          return 'assets/images/week_4.png';
+          break;
+        case DateTime.friday:
+          return 'assets/images/week_5.png';
+          break;
+        case DateTime.saturday:
+          return 'assets/images/week_6.png';
+          break;
+        case DateTime.sunday:
+          return 'assets/images/week_7.png';
+          break;
+        default:
+          return 'assets/images/week_1.png';
+      }
+    }
+  }
+
+  static String getMonthDivider() {
+    if (_isNightMode) {
+      return 'assets/images/month_divide_night.png';
+    } else {
+      return 'assets/images/month_divide.png';
+    }
+  }
 }

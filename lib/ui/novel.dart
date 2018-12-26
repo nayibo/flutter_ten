@@ -4,13 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tenge/bean/ListBean.dart';
 import 'package:flutter_tenge/bean/NovelBean.dart';
 import 'package:flutter_tenge/network/NetworkUtils.dart';
+import 'package:flutter_tenge/ui/callback.dart';
 import 'package:flutter_tenge/utils/FontUtil.dart';
 import 'package:flutter_tenge/utils/SharedPreferencesUtil.dart';
 
 class NovelPage extends StatefulWidget {
   ScrollController scrollController;
+  ScrollToNextPageCallback scrollToNextPageCallback;
 
-  NovelPage({this.scrollController});
+  NovelPage({this.scrollController, this.scrollToNextPageCallback});
 
   @override
   State<StatefulWidget> createState() {
@@ -70,6 +72,9 @@ class NovelPageState extends State<NovelPage> {
       if (data != null) {
         setState(() {
           _listBean = new ListBean.fromJson(data);
+          if (_listBean.result.length > 0) {
+            widget.scrollToNextPageCallback(_listBean.result[0].publishtime);
+          }
         });
       }
     }, errorCallback: (e) {
@@ -82,6 +87,7 @@ class NovelPageState extends State<NovelPage> {
     setState(() {
       if (_currentPageIndex != index) {
         _currentPageIndex = index;
+        widget.scrollToNextPageCallback( _listBean.result[_currentPageIndex].publishtime);
       }
     });
   }
