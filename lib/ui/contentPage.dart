@@ -1,18 +1,20 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_tenge/constant/common.dart';
 import 'package:flutter_tenge/ui/callback.dart';
 import 'package:flutter_tenge/ui/critic.dart';
 import 'package:flutter_tenge/ui/diagram.dart';
 import 'package:flutter_tenge/ui/header.dart';
 import 'package:flutter_tenge/ui/novel.dart';
+import 'package:flutter_tenge/ui/shareicon.dart';
 import 'package:flutter_tenge/utils/FontUtil.dart';
 
 class ContentPage extends StatefulWidget {
-  ScrollToBottomCallback scrollToBottomCallback;
+  ScrollCallback scrollCallback;
 
-  ContentPage({this.type, this.scrollToBottomCallback});
+  ContentPage({this.type, this.scrollCallback});
 
   String type = CommonConstant.PAGE_CRITIC;
 
@@ -25,17 +27,30 @@ class ContentPage extends StatefulWidget {
 class ContentPageState extends State<ContentPage> {
   ScrollController scrollController = new ScrollController();
   HomepageHeader homepageHeader;
+  ShareIcon shareIcon;
 
   @override
   void initState() {
     super.initState();
+    shareIcon = new ShareIcon();
+    homepageHeader = new HomepageHeader(type: widget.type);
     scrollController.addListener(() {
+      if (scrollController.position.userScrollDirection == ScrollDirection.reverse) {
+        widget.scrollCallback(0.0);
+        shareIcon.refresh(0.0);
+      }
+
+      if (scrollController.position.userScrollDirection == ScrollDirection.forward) {
+        widget.scrollCallback(1.0);
+        shareIcon.refresh(1.0);
+      }
+
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
-        widget.scrollToBottomCallback();
+        widget.scrollCallback(1.0);
+        shareIcon.refresh(1.0);
       }
     });
-    homepageHeader = new HomepageHeader(type: widget.type);
   }
 
   @override
@@ -50,6 +65,7 @@ class ContentPageState extends State<ContentPage> {
         child: new Stack(
           children: <Widget>[
             _getPage(),
+            shareIcon,
             homepageHeader,
           ],
         ));

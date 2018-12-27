@@ -38,63 +38,34 @@ class HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
-    double _dyStart = null;
     return new Scaffold(
-        body: new RawGestureDetector(
-      behavior: HitTestBehavior.opaque,
-      gestures: {
-        AllowMultipleGestureRecognizer: GestureRecognizerFactoryWithHandlers<
-            AllowMultipleGestureRecognizer>(
-          () => AllowMultipleGestureRecognizer(),
-          (AllowMultipleGestureRecognizer instance) {
-            instance.onStart = (DragStartDetails details) {
-              _dyStart = details.globalPosition.dy;
-            };
-            instance.onUpdate = (DragUpdateDetails details) {
-              if (_dyStart == null) {
-                _dyStart = details.globalPosition.dy;
-              }
-              if (details.globalPosition.dy - _dyStart < 0.0) {
-                //up
-                homepageBottomBar.refresh(0.0);
-              }
-              if (details.globalPosition.dy - _dyStart > 0.0) {
-                //down
-                homepageBottomBar.refresh(1.0);
-              }
-              _dyStart = details.globalPosition.dy;
-            };
-          },
-        )
-      },
-      child: new Container(
-          color: Colors.white,
-          child: new Stack(
-            children: <Widget>[
-              new PageView(
-                  children: [
-                    new ContentPage(
-                        type: CommonConstant.PAGE_CRITIC,
-                        scrollToBottomCallback: () {
-                          homepageBottomBar.refresh(1.0);
-                        }),
-                    new ContentPage(
-                        type: CommonConstant.PAGE_NOVEL,
-                        scrollToBottomCallback: () {
-                          homepageBottomBar.refresh(1.0);
-                        }),
-                    new ContentPage(
-                        type: CommonConstant.PAGE_DIAGRAM,
-                        scrollToBottomCallback: () {
-                          homepageBottomBar.refresh(1.0);
-                        }),
-                    new SettingPage(),
-                  ],
-                  controller: _pageController,
-                  physics: new NeverScrollableScrollPhysics()),
-              homepageBottomBar,
-            ],
-          )),
-    ));
+        body: new Container(
+            color: Colors.white,
+            child: new Stack(
+              children: <Widget>[
+                new PageView(
+                    children: [
+                      new ContentPage(
+                          type: CommonConstant.PAGE_CRITIC,
+                          scrollCallback: (double level) {
+                            homepageBottomBar.refresh(level);
+                          }),
+                      new ContentPage(
+                          type: CommonConstant.PAGE_NOVEL,
+                          scrollCallback: (double level) {
+                            homepageBottomBar.refresh(level);
+                          }),
+                      new ContentPage(
+                          type: CommonConstant.PAGE_DIAGRAM,
+                          scrollCallback: (double level) {
+                            homepageBottomBar.refresh(level);
+                          }),
+                      new SettingPage(),
+                    ],
+                    controller: _pageController,
+                    physics: new NeverScrollableScrollPhysics()),
+                homepageBottomBar,
+              ],
+            )));
   }
 }
