@@ -658,4 +658,77 @@ class FontUtil {
       return 'assets/images/month_divide.png';
     }
   }
+
+  static String getShareDialogFavoriteIcon() {
+    if (_isNightMode) {
+      return 'assets/images/share_favorite_night.png';
+    } else {
+      return 'assets/images/share_favorite.png';
+    }
+  }
+
+  static String getShareDialogWeixinIcon() {
+    if (_isNightMode) {
+      return 'assets/images/share_weixin_night.png';
+    } else {
+      return 'assets/images/share_weixin.png';
+    }
+  }
+
+  static String getShareDialogPengyouquanIcon() {
+    if (_isNightMode) {
+      return 'assets/images/share_pengyouquan_night.png';
+    } else {
+      return 'assets/images/share_pengyouquan.png';
+    }
+  }
+
+  static String getShareDialogWeiboIcon() {
+    if (_isNightMode) {
+      return 'assets/images/share_weibo_night.png';
+    } else {
+      return 'assets/images/share_weibo.png';
+    }
+  }
+
+  static String getShareDialogQQIcon() {
+    if (_isNightMode) {
+      return 'assets/images/share_qq_bound_night.png';
+    } else {
+      return 'assets/images/share_qq_bound.png';
+    }
+  }
+
+  static String getShareDialogQQZONEIcon() {
+    if (_isNightMode) {
+      return 'assets/images/share_qqzone_bound_night.png';
+    } else {
+      return 'assets/images/share_qqzone_bound.png';
+    }
+  }
+
+  static String getShareIcon(String type) {
+    switch (type) {
+      case CommonConstant.SHARE_TYPE_FAVORITE:
+        return getShareDialogFavoriteIcon();
+        break;
+      case CommonConstant.SHARE_TYPE_WEIXIN:
+        return getShareDialogWeixinIcon();
+        break;
+      case CommonConstant.SHARE_TYPE_PENGYOUQUAN:
+        return getShareDialogPengyouquanIcon();
+        break;
+      case CommonConstant.SHARE_TYPE_WEIBO:
+        return getShareDialogWeiboIcon();
+        break;
+      case CommonConstant.SHARE_TYPE_QQ:
+        return getShareDialogQQIcon();
+        break;
+      case CommonConstant.SHARE_TYPE_QQZONE:
+        return getShareDialogQQZONEIcon();
+        break;
+      default:
+        return getShareDialogFavoriteIcon();
+    }
+  }
 }
