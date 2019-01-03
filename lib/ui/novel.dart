@@ -73,7 +73,7 @@ class NovelPageState extends State<NovelPage> {
         setState(() {
           _listBean = new ListBean.fromJson(data);
           if (_listBean.result.length > 0) {
-            widget.scrollToNextPageCallback(_listBean.result[0].publishtime);
+            widget.scrollToNextPageCallback(_listBean.result[0]);
           }
         });
       }
@@ -87,7 +87,7 @@ class NovelPageState extends State<NovelPage> {
     setState(() {
       if (_currentPageIndex != index) {
         _currentPageIndex = index;
-        widget.scrollToNextPageCallback( _listBean.result[_currentPageIndex].publishtime);
+        widget.scrollToNextPageCallback( _listBean.result[_currentPageIndex]);
       }
     });
   }

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_tenge/bean/ListBean.dart';
 import 'package:flutter_tenge/constant/common.dart';
 import 'package:flutter_tenge/ui/callback.dart';
 import 'package:flutter_tenge/ui/critic.dart';
@@ -93,7 +94,8 @@ class ContentPageState extends State<ContentPage> {
     }
   }
 
-  _homepageHeaderCallback(int publishtime) {
-    homepageHeader.refresh(publishtime);
+  _homepageHeaderCallback(ListItem item) {
+    homepageHeader.refresh(item.publishtime);
+    shareIcon.setShareData(item);
   }
 }

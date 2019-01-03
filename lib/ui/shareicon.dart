@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tenge/bean/ListBean.dart';
 import 'package:flutter_tenge/ui/share.dart';
+import 'package:flutter_tenge/utils/sqflite.dart';
 
 class ShareIcon extends StatefulWidget {
   ShareIconState _state = new ShareIconState();
-  int _currentPageIndex = 0;
-  ListBean _listBean;
+  ListItem _listItem;
+  bool _isFavorite = false;
 
   @override
   State<StatefulWidget> createState() {
@@ -16,9 +17,18 @@ class ShareIcon extends StatefulWidget {
     _state.refresh(level);
   }
 
-  setShareData(int index, ListBean listbean) {
-    _currentPageIndex = index;
-    _listBean = listbean;
+  setShareData(ListItem listItem) {
+    _listItem = listItem;
+    _getIsFavorite();
+  }
+
+  _getIsFavorite() {
+    var dbHelper = DBHelper();
+    Future<bool> result =
+    dbHelper.isFavorite(_listItem.id.toString(), _listItem.type.toString());
+    result.then((value) {
+      _isFavorite = value;
+    });
   }
 }
 
@@ -52,8 +62,7 @@ class ShareIconState extends State<ShareIcon> {
         context: context,
         barrierDismissible: true,
         builder: (BuildContext context) {
-          return new ShareDialog(
-              currentIndex: widget._currentPageIndex, listBean: widget._listBean);
+          return new ShareDialog(listItem: widget._listItem, isFavorite: widget._isFavorite,);
         });
   }
 }

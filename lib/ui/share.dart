@@ -1,36 +1,105 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tenge/bean/Favorite.dart';
 import 'package:flutter_tenge/bean/ListBean.dart';
 import 'package:flutter_tenge/constant/common.dart';
 import 'package:flutter_tenge/utils/FontUtil.dart';
 import 'package:flutter_tenge/utils/ShareUtil.dart';
+import 'package:flutter_tenge/utils/sqflite.dart';
 //import 'package:flutter_qq/flutter_qq.dart';
 
 class ShareDialog extends Dialog {
-  final int currentIndex;
-  final ListBean listBean;
+  final ListItem listItem;
+  bool isFavorite = false;
 
-  ShareDialog({Key key, @required this.currentIndex, @required this.listBean})
-      : super(key: key);
+  ShareDialog({Key key, @required this.listItem, @required this.isFavorite}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    _shareTimeLine() {
-      ShareUtil.wechatShareWebpageTimeLine(
-          ShareUtil.getShareUrl(listBean.result[currentIndex].type,
-              listBean.result[currentIndex].id),
-          'assets://assets/images/share_icon.png',
-          listBean.result[currentIndex].summary,
-          listBean.result[currentIndex].title);
-    }
+    return new Material(
+      //创建透明层
+      type: MaterialType.transparency, //透明类型
+      child: new Container(
+          margin: new EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 100.0),
+          decoration: ShapeDecoration(
+            color: Colors.transparent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(8.0),
+              ),
+            ),
+          ),
+          child: new Stack(
+            children: <Widget>[
+              new Container(
+                margin: new EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 70.0),
+                child: new Text("分享至",
+                    style: new TextStyle(fontSize: 18.0, color: Colors.white)),
+                alignment: Alignment(0.0, 0.3),
+              ),
+              new Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  new Expanded(
+                    flex: 1,
+                    child: new ShareItemWidget(
+                        shareTypeUp: CommonConstant.SHARE_TYPE_FAVORITE,
+                        pressUp: _favorite,
+                        shareTypeDown: CommonConstant.SHARE_TYPE_WEIBO,
+                        pressDown: null,
+                        isFavorite: isFavorite),
+                  ),
+                  new Expanded(
+                    flex: 1,
+                    child: new ShareItemWidget(
+                        shareTypeUp: CommonConstant.SHARE_TYPE_WEIXIN,
+                        pressUp: null,
+                        shareTypeDown: CommonConstant.SHARE_TYPE_QQ,
+                        pressDown: null,
+                        isFavorite: false),
+                  ),
+                  new Expanded(
+                    flex: 1,
+                    child: new ShareItemWidget(
+                        shareTypeUp: CommonConstant.SHARE_TYPE_PENGYOUQUAN,
+                        pressUp: null,
+                        shareTypeDown: CommonConstant.SHARE_TYPE_QQZONE,
+                        pressDown: null,
+                        isFavorite: false),
+                  ),
+                ],
+              ),
+            ],
+          )),
+    );
+  }
 
-    _shareSession() {
-      ShareUtil.wechatShareWebpageSession(
-          ShareUtil.getShareUrl(listBean.result[currentIndex].type,
-              listBean.result[currentIndex].id),
-          'assets://assets/images/share_icon.png',
-          listBean.result[currentIndex].summary,
-          listBean.result[currentIndex].title);
-    }
+  _favorite() {
+    var dbHelper = DBHelper();
+    FavoriteBean favoriteBean = new FavoriteBean(
+        id: listItem.id,
+        title: listItem.title,
+        type: listItem.type,
+        summary: listItem.summary,
+        publishtime: listItem.publishtime);
+    dbHelper.insertFavorite(favoriteBean);
+    dbHelper.getFavoriteList();
+  }
+
+  _shareTimeLine() {
+    ShareUtil.wechatShareWebpageTimeLine(
+        ShareUtil.getShareUrl(listItem.type, listItem.id),
+        'assets://assets/images/share_icon.png',
+        listItem.summary,
+        listItem.title);
+  }
+
+  _shareSession() {
+    ShareUtil.wechatShareWebpageSession(
+        ShareUtil.getShareUrl(listItem.type, listItem.id),
+        'assets://assets/images/share_icon.png',
+        listItem.summary,
+        listItem.title);
+  }
 
 //    Future<Null> _shareQQ() async {
 //      ShareQQContent shareContent = new ShareQQContent(
@@ -80,62 +149,21 @@ class ShareDialog extends Dialog {
 //        print("flutter_plugin_qq_example:" + error.toString());
 //      }
 //    }
-
-    return new Material(
-      //创建透明层
-      type: MaterialType.transparency, //透明类型
-      child: new Container(
-          margin: new EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 100.0),
-          decoration: ShapeDecoration(
-            color: Colors.transparent,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(8.0),
-              ),
-            ),
-          ),
-          child: new Stack(
-            children: <Widget>[
-              new Container(
-                margin: new EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 70.0),
-                child: new Text("分享至",
-                    style: new TextStyle(fontSize: 18.0, color: Colors.white)),
-                alignment: Alignment(0.0, 0.3),
-              ),
-              new Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  new Expanded(
-                    flex: 1,
-                    child: new ShareItemWidget(
-                        shareTypeDown: CommonConstant.SHARE_TYPE_FAVORITE,
-                        shareTypeUp: CommonConstant.SHARE_TYPE_WEIBO),
-                  ),
-                  new Expanded(
-                    flex: 1,
-                    child: new ShareItemWidget(
-                        shareTypeDown: CommonConstant.SHARE_TYPE_WEIXIN,
-                        shareTypeUp: CommonConstant.SHARE_TYPE_QQ),
-                  ),
-                  new Expanded(
-                    flex: 1,
-                    child: new ShareItemWidget(
-                        shareTypeDown: CommonConstant.SHARE_TYPE_PENGYOUQUAN,
-                        shareTypeUp: CommonConstant.SHARE_TYPE_QQZONE),
-                  ),
-                ],
-              ),
-            ],
-          )),
-    );
-  }
 }
 
 class ShareItemWidget extends StatefulWidget {
   String shareTypeUp;
   String shareTypeDown;
+  VoidCallback pressUp;
+  VoidCallback pressDown;
+  bool isFavorite;
 
-  ShareItemWidget({this.shareTypeUp, this.shareTypeDown});
+  ShareItemWidget(
+      {this.shareTypeUp,
+      this.shareTypeDown,
+      this.pressUp,
+      this.pressDown,
+      this.isFavorite});
 
   @override
   State<StatefulWidget> createState() {
@@ -169,7 +197,6 @@ class ShareItemWidgetState extends State<ShareItemWidget>
           _alignmentY = animation.value * animation.value * 3.25 -
               4.85 * animation.value +
               2.5;
-          print("animation value: " + animation.value.toString());
         });
       });
 
@@ -187,19 +214,23 @@ class ShareItemWidgetState extends State<ShareItemWidget>
           new Container(
             child: new IconButton(
                 iconSize: 60.0,
-                icon: new Image.asset(FontUtil.getShareIcon(widget.shareTypeUp),
-                    height: 60.0, width: 60.0),
-                onPressed: null),
+                icon: new Image.asset(
+                    FontUtil.getShareIcon(
+                        widget.shareTypeUp, widget.isFavorite),
+                    height: 60.0,
+                    width: 60.0),
+                onPressed: widget.pressUp),
           ),
           new Container(
             margin: new EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
             child: new IconButton(
                 iconSize: 60.0,
                 icon: new Image.asset(
-                    FontUtil.getShareIcon(widget.shareTypeDown),
+                    FontUtil.getShareIcon(
+                        widget.shareTypeDown, widget.isFavorite),
                     height: 60.0,
                     width: 60.0),
-                onPressed: null),
+                onPressed: widget.pressDown),
           ),
         ],
       ),

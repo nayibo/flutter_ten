@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_tenge/constant/sp.dart';
+import 'package:flutter_tenge/constant/data.dart';
 import 'package:flutter_tenge/utils/FontUtil.dart';
 import 'package:flutter_tenge/utils/SharedPreferencesUtil.dart';
 //import 'package:flutter_qq/flutter_qq.dart';

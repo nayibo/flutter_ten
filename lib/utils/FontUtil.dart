@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_tenge/constant/common.dart';
+import 'package:flutter_tenge/constant/data.dart';
 import 'package:flutter_tenge/constant/font.dart';
-import 'package:flutter_tenge/constant/sp.dart';
 import 'package:flutter_tenge/utils/SharedPreferencesUtil.dart';
 import 'package:synchronized/synchronized.dart';
 
@@ -659,11 +659,19 @@ class FontUtil {
     }
   }
 
-  static String getShareDialogFavoriteIcon() {
-    if (_isNightMode) {
-      return 'assets/images/share_favorite_night.png';
+  static String getShareDialogFavoriteIcon(bool isFavorite) {
+    if (isFavorite) {
+      if (_isNightMode) {
+        return 'assets/images/share_favorite_selected_night.png';
+      } else {
+        return 'assets/images/share_favorite_selected.png';
+      }
     } else {
-      return 'assets/images/share_favorite.png';
+      if (_isNightMode) {
+        return 'assets/images/share_favorite_night.png';
+      } else {
+        return 'assets/images/share_favorite.png';
+      }
     }
   }
 
@@ -707,10 +715,10 @@ class FontUtil {
     }
   }
 
-  static String getShareIcon(String type) {
+  static String getShareIcon(String type, bool isFavorite) {
     switch (type) {
       case CommonConstant.SHARE_TYPE_FAVORITE:
-        return getShareDialogFavoriteIcon();
+        return getShareDialogFavoriteIcon(isFavorite);
         break;
       case CommonConstant.SHARE_TYPE_WEIXIN:
         return getShareDialogWeixinIcon();
@@ -728,7 +736,7 @@ class FontUtil {
         return getShareDialogQQZONEIcon();
         break;
       default:
-        return getShareDialogFavoriteIcon();
+        return getShareDialogFavoriteIcon(isFavorite);
     }
   }
 }

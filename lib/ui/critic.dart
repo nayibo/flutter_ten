@@ -3,8 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_tenge/bean/CriticBean.dart';
 import 'package:flutter_tenge/bean/ListBean.dart';
+import 'package:flutter_tenge/constant/data.dart';
 import 'package:flutter_tenge/constant/font.dart';
-import 'package:flutter_tenge/constant/sp.dart';
 import 'package:flutter_tenge/network/NetworkUtils.dart';
 import 'package:flutter_tenge/ui/callback.dart';
 import 'package:flutter_tenge/ui/share.dart';
@@ -99,7 +99,7 @@ class CriticPageState extends State<CriticPage> {
         barrierDismissible: true,
         builder: (BuildContext context) {
           return new ShareDialog(
-              currentIndex: _currentPageIndex, listBean: _listBean);
+              listItem: _listBean.result[_currentPageIndex]);
         });
   }
 
@@ -107,7 +107,7 @@ class CriticPageState extends State<CriticPage> {
     setState(() {
       if (_currentPageIndex != index) {
         _currentPageIndex = index;
-        widget.scrollToNextPageCallback( _listBean.result[_currentPageIndex].publishtime);
+        widget.scrollToNextPageCallback(_listBean.result[_currentPageIndex]);
       }
     });
   }
@@ -132,7 +132,7 @@ class CriticPageState extends State<CriticPage> {
         setState(() {
           _listBean = new ListBean.fromJson(data);
           if (_listBean.result.length > 0) {
-            widget.scrollToNextPageCallback(_listBean.result[0].publishtime);
+            widget.scrollToNextPageCallback(_listBean.result[0]);
           }
         });
       }
