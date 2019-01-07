@@ -3,6 +3,10 @@ class CommonConstant {
   static const String PAGE_DIAGRAM = "page_diagram";
   static const String PAGE_NOVEL = "page_novel";
   static const String PAGE_PERSONAL = "page_personal";
+  static const int TYPE_AD = 0;
+  static const int TYPE_FILM_CRITIC = 1;
+  static const int TYPE_NOVEL = 2;
+  static const int TYPE_BEAUTY_DIAGRAM = 3;
 
   static const String SHARE_TYPE_FAVORITE = "share_type_favorite";
   static const String SHARE_TYPE_WEIXIN = "share_type_weixin";

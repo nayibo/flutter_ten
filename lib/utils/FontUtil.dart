@@ -739,4 +739,81 @@ class FontUtil {
         return getShareDialogFavoriteIcon(isFavorite);
     }
   }
+
+  static Color getTitleBarBackgroundColor() {
+    if (_isNightMode) {
+      return Color(FontConstant.FONT_TITLE_BACKGROUND_COLOR_NIGHT);
+    } else {
+      return Color(FontConstant.FONT_TITLE_BACKGROUND_COLOR_DAY);
+    }
+  }
+
+  static String getTitleBarBackIcon() {
+    if (_isNightMode) {
+      return 'assets/images/back_night.png';
+    } else {
+      return 'assets/images/back.png';
+    }
+  }
+
+  static Color getTitleColor() {
+    if (_isNightMode) {
+      return Color(FontConstant.FONT_TITLE_COLOR_NIGHT);
+    } else {
+      return Color(FontConstant.FONT_TITLE_COLOR_DAY);
+    }
+  }
+
+  static Color getArticleBgColor(int type) {
+    switch(type) {
+      case CommonConstant.TYPE_FILM_CRITIC:
+        return Color(FontConstant.FONT_ARTICLE_BACKGROUND_COLOR_FILM);
+        break;
+      case CommonConstant.TYPE_NOVEL:
+        if (_isNightMode) {
+          return Color(FontConstant.FONT_ARTICLE_BACKGROUND_COLOR_NIGHT);
+        } else {
+          return Color(FontConstant.FONT_ARTICLE_BACKGROUND_COLOR_DAY);
+        }
+        break;
+      case CommonConstant.TYPE_BEAUTY_DIAGRAM:
+        return Color(FontConstant.FONT_ARTICLE_BACKGROUND_COLOR_DIAGRAM);
+        break;
+      default:
+        return Color(FontConstant.FONT_ARTICLE_BACKGROUND_COLOR_FILM);
+        break;
+    }
+  }
+
+  static Color getFeedbackFontColor() {
+    if (_isNightMode) {
+      return Color(FontConstant.FONT_FEEDBACK_COLOR_NIGHT);
+    } else {
+      return Color(FontConstant.FONT_FEEDBACK_COLOR_DAY);
+    }
+  }
+
+  static Color getFavoriteDateTvColor() {
+    if (_isNightMode) {
+      return Color(FontConstant.FONT_FAVORITEDATETV_COLOR_NIGHT);
+    } else {
+      return Color(FontConstant.FONT_FAVORITEDATETV_COLOR_DAY);
+    }
+  }
+
+  static Color getFavoriteTitleColor() {
+    if (_isNightMode) {
+      return Color(FontConstant.FONT_FAVORITETITLE_COLOR_NIGHT);
+    } else {
+      return Color(FontConstant.FONT_FAVORITETITLE_COLOR_DAY);
+    }
+  }
+
+  static Color getFavoriteSummaryColor() {
+    if (_isNightMode) {
+      return Color(FontConstant.FONT_FAVORITESUMMART_COLOR_NIGHT);
+    } else {
+      return Color(FontConstant.FONT_FAVORITESUMMART_COLOR_DAY);
+    }
+  }
 }

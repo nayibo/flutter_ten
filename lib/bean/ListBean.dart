@@ -15,6 +15,8 @@ class ListBean {
 }
 
 class ListItem {
+  ListItem();
+
   int id;
   int type;
   int publishtime;

@@ -93,16 +93,6 @@ class CriticPageState extends State<CriticPage> {
         _listBean.result[_currentPageIndex].title);
   }
 
-  Future<void> _showShareDialog() {
-    return showDialog<Null>(
-        context: context,
-        barrierDismissible: true,
-        builder: (BuildContext context) {
-          return new ShareDialog(
-              listItem: _listBean.result[_currentPageIndex]);
-        });
-  }
-
   _pageChange(int index) {
     setState(() {
       if (_currentPageIndex != index) {
@@ -201,7 +191,7 @@ class CriticItemState extends State<CriticItem> {
               height: (window.physicalSize.width * 9) /
                   (16 * window.devicePixelRatio),
               width: window.physicalSize.width / window.devicePixelRatio,
-              fit: BoxFit.fill,
+              fit: BoxFit.cover,
             ),
             new Container(
               color: Colors.white,
@@ -258,7 +248,7 @@ class CriticItemState extends State<CriticItem> {
                             (16 * window.devicePixelRatio),
                         width:
                             window.physicalSize.width / window.devicePixelRatio,
-                        fit: BoxFit.fill,
+                        fit: BoxFit.cover,
                       )),
                   new Text(
                       _critic == null
@@ -287,7 +277,7 @@ class CriticItemState extends State<CriticItem> {
                             (16 * window.devicePixelRatio),
                         width:
                             window.physicalSize.width / window.devicePixelRatio,
-                        fit: BoxFit.fill,
+                        fit: BoxFit.cover,
                       )),
                   new Text(_critic == null ? 'empty' : _critic.text3,
                       style: textStyle),
@@ -305,7 +295,7 @@ class CriticItemState extends State<CriticItem> {
                             (16 * window.devicePixelRatio),
                         width:
                             window.physicalSize.width / window.devicePixelRatio,
-                        fit: BoxFit.fill,
+                        fit: BoxFit.cover,
                       )),
                   new Container(
                       margin: const EdgeInsets.fromLTRB(0, 1.0, 0, 0),
@@ -317,7 +307,7 @@ class CriticItemState extends State<CriticItem> {
                             (16 * window.devicePixelRatio),
                         width:
                             window.physicalSize.width / window.devicePixelRatio,
-                        fit: BoxFit.fill,
+                        fit: BoxFit.cover,
                       )),
                   new Container(
                       margin: const EdgeInsets.fromLTRB(0, 1.0, 0, 0),
@@ -333,7 +323,7 @@ class CriticItemState extends State<CriticItem> {
                                 (16 * window.devicePixelRatio),
                         width:
                             window.physicalSize.width / window.devicePixelRatio,
-                        fit: BoxFit.fill,
+                        fit: BoxFit.cover,
                       )),
                   new Container(
                     margin: const EdgeInsets.fromLTRB(0, 26.0, 0, 10.0),

@@ -180,7 +180,7 @@ class ShareItemWidgetState extends State<ShareItemWidget>
   @override
   void initState() {
     super.initState();
-    if (widget.shareTypeUp == CommonConstant.SHARE_TYPE_QQ) {
+    if (widget.shareTypeUp == CommonConstant.SHARE_TYPE_WEIXIN) {
       _controller = new AnimationController(
           duration: const Duration(milliseconds: 800),
           value: 0.01,

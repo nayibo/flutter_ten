@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tenge/constant/data.dart';
+import 'package:flutter_tenge/ui/favorite.dart';
 import 'package:flutter_tenge/utils/FontUtil.dart';
 import 'package:flutter_tenge/utils/SharedPreferencesUtil.dart';
 //import 'package:flutter_qq/flutter_qq.dart';
@@ -274,5 +275,7 @@ class SettingPageState extends State<SettingPage> {
     await FontUtil.getInstance();
   }
 
-  _goFavoritePage() {}
+  _goFavoritePage() {
+    Navigator.push(context, new MaterialPageRoute(builder: (context) => new FavoriteListPage()));
+  }
 }
