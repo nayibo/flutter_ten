@@ -75,4 +75,7 @@ class FontConstant {
 
   static final int FONT_FAVORITESUMMART_COLOR_NIGHT = 0xFF5C616E;
   static final int FONT_FAVORITESUMMART_COLOR_DAY = 0xFFB4B4B4;
+
+  static final int FONT_MAIN_BACKGROUND_COLOR_NIGHT = 0xFF1E1E29;
+  static final int FONT_MAIN_BACKGROUND_COLOR_DAY = 0xFFFFFFFF;
 }

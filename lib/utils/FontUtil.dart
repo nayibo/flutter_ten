@@ -816,4 +816,36 @@ class FontUtil {
       return Color(FontConstant.FONT_FAVORITESUMMART_COLOR_DAY);
     }
   }
+
+  static String getAboutBg() {
+    if (_isNightMode) {
+      return 'assets/images/about_us_bg_night.png';
+    } else {
+      return 'assets/images/about_us_bg.png';
+    }
+  }
+
+  static Color getMainBgColor() {
+    if (_isNightMode) {
+      return Color(FontConstant.FONT_MAIN_BACKGROUND_COLOR_NIGHT);
+    } else {
+      return Color(FontConstant.FONT_MAIN_BACKGROUND_COLOR_DAY);
+    }
+  }
+
+  static String getWechatIcon() {
+    if (_isNightMode) {
+      return 'assets/images/feedback_weixin_night.png';
+    } else {
+      return 'assets/images/feedback_weixin.png';
+    }
+  }
+
+  static String getQQIcon() {
+    if (_isNightMode) {
+      return 'assets/images/feedback_qq_night.png';
+    } else {
+      return 'assets/images/feedback_qq.png';
+    }
+  }
 }

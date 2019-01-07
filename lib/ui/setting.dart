@@ -2,7 +2,10 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tenge/constant/data.dart';
+import 'package:flutter_tenge/ui/about.dart';
 import 'package:flutter_tenge/ui/favorite.dart';
+import 'package:flutter_tenge/ui/feedback.dart';
+import 'package:flutter_tenge/ui/fontsetting.dart';
 import 'package:flutter_tenge/utils/FontUtil.dart';
 import 'package:flutter_tenge/utils/SharedPreferencesUtil.dart';
 //import 'package:flutter_qq/flutter_qq.dart';
@@ -53,9 +56,9 @@ class SettingPageState extends State<SettingPage> {
       children: [
         new Container(
             color: FontUtil.getLoginBackgroundColor(),
-            height: 156.0,
+            height: 156.0 + MediaQueryData.fromWindow(window).padding.top,
             width: window.physicalSize.width / window.devicePixelRatio,
-            margin: new EdgeInsets.fromLTRB(
+            padding: new EdgeInsets.fromLTRB(
                 0.0, MediaQueryData.fromWindow(window).padding.top, 0.0, 0.0),
             child: new Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -118,7 +121,7 @@ class SettingPageState extends State<SettingPage> {
             elevation: 0,
             highlightElevation: 0,
             disabledElevation: 0,
-            onPressed: _goFavoritePage,
+            onPressed: _goFontSettingPage,
             child: new Row(
               children: <Widget>[
                 new Expanded(
@@ -152,7 +155,7 @@ class SettingPageState extends State<SettingPage> {
             elevation: 0,
             highlightElevation: 0,
             disabledElevation: 0,
-            onPressed: _goFavoritePage,
+            onPressed: _goAboutPage,
             child: new Row(
               children: <Widget>[
                 new Expanded(
@@ -186,7 +189,7 @@ class SettingPageState extends State<SettingPage> {
             elevation: 0,
             highlightElevation: 0,
             disabledElevation: 0,
-            onPressed: _goFavoritePage,
+            onPressed: _goFeedbackPage,
             child: new Row(
               children: <Widget>[
                 new Expanded(
@@ -220,7 +223,7 @@ class SettingPageState extends State<SettingPage> {
             elevation: 0,
             highlightElevation: 0,
             disabledElevation: 0,
-            onPressed: _goFavoritePage,
+            onPressed: _goNightModePage,
             child: new Row(
               children: <Widget>[
                 new Expanded(
@@ -277,5 +280,21 @@ class SettingPageState extends State<SettingPage> {
 
   _goFavoritePage() {
     Navigator.push(context, new MaterialPageRoute(builder: (context) => new FavoriteListPage()));
+  }
+
+  _goAboutPage() {
+    Navigator.push(context, new MaterialPageRoute(builder: (context) => new AboutPage()));
+  }
+
+  _goFeedbackPage() {
+    Navigator.push(context, new MaterialPageRoute(builder: (context) => new FeedbackPage()));
+  }
+
+  _goFontSettingPage() {
+    Navigator.push(context, new MaterialPageRoute(builder: (context) => new FontSettingPage()));
+  }
+
+  _goNightModePage() {
+
   }
 }

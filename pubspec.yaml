@@ -26,6 +26,8 @@ dependencies:
   fluwx: 0.5.2
   sqflite: any
   path_provider: '>=0.3.0'
+  package_info: ^0.3.2
+  fluttertoast: ^2.2.3
 
 dev_dependencies:
   flutter_test:
