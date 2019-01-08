@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tenge/constant/common.dart';
 import 'package:flutter_tenge/ui/bottom.dart';
+import 'package:flutter_tenge/ui/callback.dart';
 import 'package:flutter_tenge/ui/contentPage.dart';
 import 'package:flutter_tenge/ui/setting.dart';
 import 'package:flutter_tenge/utils/FontUtil.dart';
@@ -40,7 +41,7 @@ class HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return new Scaffold(
         body: new Container(
-            color: Colors.white,
+            color: FontUtil.getMainBgColor(),
             child: new Stack(
               children: <Widget>[
                 new PageView(
@@ -60,7 +61,11 @@ class HomepageState extends State<Homepage> {
                           scrollCallback: (double level) {
                             homepageBottomBar.refresh(level);
                           }),
-                      new SettingPage(),
+                      new SettingPage(
+                        settingNightModeCallback: () {
+                          homepageBottomBar.refreshUI();
+                        },
+                      ),
                     ],
                     controller: _pageController,
                     physics: new NeverScrollableScrollPhysics()),

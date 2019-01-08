@@ -39,12 +39,14 @@ class ContentPageState extends State<ContentPage> {
     shareIcon = new ShareIcon();
     homepageHeader = new HomepageHeader(type: widget.type);
     scrollController.addListener(() {
-      if (scrollController.position.userScrollDirection == ScrollDirection.reverse) {
+      if (scrollController.position.userScrollDirection ==
+          ScrollDirection.reverse) {
         widget.scrollCallback(0.0);
         shareIcon.refresh(0.0);
       }
 
-      if (scrollController.position.userScrollDirection == ScrollDirection.forward) {
+      if (scrollController.position.userScrollDirection ==
+          ScrollDirection.forward) {
         widget.scrollCallback(1.0);
         shareIcon.refresh(1.0);
       }
@@ -59,9 +61,9 @@ class ContentPageState extends State<ContentPage> {
 
   void loadAsync() {
     if (!FontUtil.isReady()) {
-       FontUtil.getInstance().then((FontUtil font) {
-         print('waiting for FontUtil init complete');
-       });
+      FontUtil.getInstance().then((FontUtil font) {
+        print('waiting for FontUtil init complete');
+      });
     }
   }
 
@@ -71,9 +73,9 @@ class ContentPageState extends State<ContentPage> {
         padding: new EdgeInsets.fromLTRB(
             0.0, MediaQueryData.fromWindow(window).padding.top, 0.0, 0.0),
         decoration: new BoxDecoration(
-            color: Color(0xE6F4F4F4),
             image: new DecorationImage(
-                image: new AssetImage("assets/images/topbar.png"))),
+                fit: BoxFit.fill,
+                image: new AssetImage(FontUtil.getTopBarBg()))),
         child: new Stack(
           children: <Widget>[
             _getPage(),

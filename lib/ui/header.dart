@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tenge/constant/common.dart';
 import 'package:flutter_tenge/ui/callback.dart';
@@ -31,14 +33,23 @@ class HomepageHeaderState extends State<HomepageHeader> {
   Widget build(BuildContext context) {
     return new Container(
       height: 44.0,
-      color: Color(0xE6F4F4F4),
       child: new Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           new Image.asset(FontUtil.getHeaderLogoIcon(widget.type),
               height: 44, width: 107),
+          new Container(
+            decoration: new BoxDecoration(
+              image: new DecorationImage(
+                  image: AssetImage(FontUtil.getTopBarBg()), fit: BoxFit.fill),
+            ),
+            width: (window.physicalSize.width / window.devicePixelRatio -
+                82 -
+                107),
+          ),
           new Expanded(
               child: new Row(
+            mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -54,9 +65,9 @@ class HomepageHeaderState extends State<HomepageHeader> {
                   new Row(
                     children: <Widget>[
                       new Image.asset(FontUtil.getMonthDivider(),
-                          height: 24, width: 15),
+                          height: 24, width: 15.3),
                       new Image.asset(FontUtil.getMonthIcon(_month),
-                          height: 24, width: 27),
+                          height: 24, width: 26.7),
                     ],
                   )
                 ],

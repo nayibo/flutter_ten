@@ -14,7 +14,7 @@ class FontSettingPageState extends State<FontSettingPage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: FontUtil.getMainBgColor(),
       body: new Container(
         child: new Column(
           children: <Widget>[
@@ -58,7 +58,7 @@ class FontSettingPageState extends State<FontSettingPage> {
                     flex: 1,
                     child: new RaisedButton(
                       padding: new EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                      color: Colors.white,
+                      color: FontUtil.getMainBgColor(),
                       elevation: 0,
                       highlightElevation: 0,
                       disabledElevation: 0,
@@ -88,7 +88,7 @@ class FontSettingPageState extends State<FontSettingPage> {
                     flex: 1,
                     child: new RaisedButton(
                       padding: new EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                      color: Colors.white,
+                      color: FontUtil.getMainBgColor(),
                       elevation: 0,
                       highlightElevation: 0,
                       disabledElevation: 0,
@@ -117,7 +117,7 @@ class FontSettingPageState extends State<FontSettingPage> {
                     flex: 1,
                     child: new RaisedButton(
                       padding: new EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                      color: Colors.white,
+                      color: FontUtil.getMainBgColor(),
                       elevation: 0,
                       highlightElevation: 0,
                       disabledElevation: 0,

@@ -5,7 +5,7 @@ import 'package:flutter_tenge/utils/FontUtil.dart';
 typedef BottomClickCallback = void Function(int index);
 
 class HomepageBottomBar extends StatefulWidget {
-  HomepageBottomBarState _state  = new HomepageBottomBarState();
+  HomepageBottomBarState _state = new HomepageBottomBarState();
   BottomClickCallback clickCallback;
 
   HomepageBottomBar({this.clickCallback});
@@ -13,6 +13,10 @@ class HomepageBottomBar extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return _state;
+  }
+
+  refreshUI() {
+    _state.refreshUI();
   }
 
   refresh(double level) {
@@ -27,24 +31,29 @@ class HomepageBottomBarState extends State<HomepageBottomBar> {
   @override
   Widget build(BuildContext context) {
     return new Container(
-        alignment: new Alignment(0.0, 1.0),
-        child: new AnimatedOpacity(
-            opacity: _opacityLevel,
-            duration: new Duration(milliseconds: 500),
-            child: new Container(
-              child: new Theme(
+      alignment: new Alignment(0.0, 1.0),
+      child: new AnimatedOpacity(
+        opacity: _opacityLevel,
+        duration: new Duration(milliseconds: 500),
+        child: new Container(
+          child: new Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              new Container(
+                height: 0.5,
+                color: FontUtil.getLineShixinColor(),
+              ),
+              new Theme(
                 data: Theme.of(context).copyWith(
                   // sets the background color of the `BottomNavigationBar`
-                    canvasColor:
-                    FontUtil.getBottomBarBackgroundColor(),
+                    canvasColor: FontUtil.getBottomBarBackgroundColor(),
                     // sets the active color of the `BottomNavigationBar` if `Brightness` is light
                     primaryColor: Colors.red,
                     textTheme: Theme
                         .of(context)
                         .textTheme
                         .copyWith(
-                        caption:
-                        new TextStyle(color: Colors.yellow))),
+                        caption: new TextStyle(color: Colors.yellow))),
                 // sets the inactive color of the `BottomNavigationBar`
                 child: new BottomNavigationBar(
                   type: BottomNavigationBarType.fixed,
@@ -101,9 +110,17 @@ class HomepageBottomBarState extends State<HomepageBottomBar> {
                   },
                 ),
               ),
-            )
-        )
+            ],
+          ),
+        ),
+      ),
     );
+  }
+
+  refreshUI() {
+    if (this.mounted) {
+      setState(() {});
+    }
   }
 
   refresh(double level) {

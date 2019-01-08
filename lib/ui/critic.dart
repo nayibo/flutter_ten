@@ -53,7 +53,7 @@ class CriticPageState extends State<CriticPage> {
     return new Stack(
       children: <Widget>[
         new Container(
-          color: Colors.white,
+          color: FontUtil.getMainBgColor(),
           child: new PageView.builder(
             onPageChanged: _pageChange,
             controller: _pageController,
@@ -152,16 +152,12 @@ class CriticItemState extends State<CriticItem> {
 
   bool _showLoading = true;
   CriticBean _critic;
-  TextStyle textStyle =
-      new TextStyle(fontSize: 18, color: const Color(0xFF666666));
   final int id;
 
   @override
   void initState() {
     super.initState();
     _getCritic(id);
-    loadFontAsync();
-    loadAsync();
   }
 
   _getItemBody() {
@@ -194,7 +190,7 @@ class CriticItemState extends State<CriticItem> {
               fit: BoxFit.cover,
             ),
             new Container(
-              color: Colors.white,
+              color: FontUtil.getMainBgColor(),
               padding: const EdgeInsets.fromLTRB(16.0, 15.0, 16.0, 50.0),
               child: new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -205,12 +201,11 @@ class CriticItemState extends State<CriticItem> {
                     children: <Widget>[
                       new Text(
                           _critic == null ? 'empty' : '作者: ' + _critic.author,
-                          style: new TextStyle(
-                              fontSize: 12.0, color: const Color(0xFF999999))),
+                          style: FontUtil.getAuthorFont()),
                       new Container(
                         height: 12.0,
                         width: 1.0,
-                        color: const Color(0xFF999999),
+                        color: FontUtil.getAuthorVerticalLineColor(),
                         margin: const EdgeInsets.only(
                             left: 10.0, right: 10.0, top: 4.0),
                       ),
@@ -218,8 +213,7 @@ class CriticItemState extends State<CriticItem> {
                           _critic == null
                               ? 'empty'
                               : '阅读量: ' + _critic.times.toString(),
-                          style: new TextStyle(
-                              fontSize: 12.0, color: const Color(0xFF999999)))
+                          style: FontUtil.getAuthorFont())
                     ],
                   ),
                   new Container(
@@ -227,17 +221,17 @@ class CriticItemState extends State<CriticItem> {
                       margin: const EdgeInsets.fromLTRB(0, 35.0, 0, 0),
                       padding:
                           const EdgeInsets.fromLTRB(17.0, 17.0, 17.0, 17.0),
-                      color: const Color(0x60eaeaea),
+                      color: FontUtil.getSummaryBackgroundColor(),
                       child: new Text(_critic == null ? 'empty' : _critic.text1,
-                          style: textStyle)),
+                          style: FontUtil.getSummaryFont())),
                   new Container(
                     margin: const EdgeInsets.fromLTRB(0, 20.0, 0, 10.0),
-                    height: 1.0,
-                    color: const Color(0x60eaeaea),
+                    height: 0.5,
+                    color: FontUtil.getLineShixinColor(),
                   ),
                   new Text("剧情简介",
                       style: new TextStyle(
-                          fontSize: 18.0, color: const Color(0xFF222222))),
+                          fontSize: 18.0, color: FontUtil.getBriefFontColor())),
                   new Container(
                       margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
                       child: new Image.network(
@@ -258,15 +252,15 @@ class CriticItemState extends State<CriticItem> {
                               .replaceAll("剧情介绍\r\n", "")
                               .replaceAll("剧情简介\r\n", "")
                               .replaceAll("剧情简介 \r\n", ""),
-                      style: textStyle),
+                      style: FontUtil.getContentFont()),
                   new Container(
                     margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
-                    height: 1.0,
-                    color: const Color(0x60eaeaea),
+                    height: 0.5,
+                    color: FontUtil.getLineShixinColor(),
                   ),
                   new Text(_critic == null ? 'empty' : _critic.realtitle,
                       style: new TextStyle(
-                          fontSize: 18.0, color: const Color(0xFF222222))),
+                          fontSize: 18.0, color: FontUtil.getBriefFontColor())),
                   new Container(
                       margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
                       child: new Image.network(
@@ -280,11 +274,11 @@ class CriticItemState extends State<CriticItem> {
                         fit: BoxFit.cover,
                       )),
                   new Text(_critic == null ? 'empty' : _critic.text3,
-                      style: textStyle),
+                      style: FontUtil.getContentFont()),
                   new Text(_critic == null ? 'empty' : _critic.text4,
-                      style: textStyle),
+                      style: FontUtil.getContentFont()),
                   new Text(_critic == null ? 'empty' : _critic.text5,
-                      style: textStyle),
+                      style: FontUtil.getContentFont()),
                   new Container(
                       margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 0),
                       child: new Image.network(
@@ -327,25 +321,21 @@ class CriticItemState extends State<CriticItem> {
                       )),
                   new Container(
                     margin: const EdgeInsets.fromLTRB(0, 26.0, 0, 10.0),
-                    height: 1.0,
-                    color: const Color(0x60eaeaea),
+                    height: 0.5,
+                    color: FontUtil.getLineShixinColor(),
                   ),
                   new Container(
                       margin: const EdgeInsets.fromLTRB(0, 8.0, 0, 10.0),
                       child: new Text(
                           _critic == null ? 'empty' : _critic.author,
-                          style: new TextStyle(
-                              fontSize: 18.0,
-                              color: const Color(0xFF464646),
-                              fontWeight: FontWeight.bold))),
+                          style: FontUtil.getAuthorBelowFont())),
                   new Container(
                       margin: const EdgeInsets.fromLTRB(0, 0, 0, 10.0),
                       child: new Text(
                           _critic == null || _critic.authorbrief == null
                               ? '十个 每晚十点推送:一篇影评,一篇美文,一组美图,每晚入睡前用上十分钟读到最美内容.'
                               : _critic.authorbrief,
-                          style: new TextStyle(
-                              color: const Color(0xFF777777), fontSize: 16.0)))
+                          style: FontUtil.getAuthorBrief()))
                 ],
               ),
             ),
@@ -381,43 +371,5 @@ class CriticItemState extends State<CriticItem> {
           _showLoading = false;
           print("_getCritic network error: $e");
         });
-  }
-
-  void loadAsync() async {
-    await SpUtil.getInstance();
-    initFont();
-  }
-
-  void loadFontAsync() async {
-    await FontUtil.getInstance();
-  }
-
-  void initFont() {
-    setState(() {
-      int size = 1;
-      print("_initFont: " + SpUtil.getInt(SPConstant.SP_FONT).toString());
-      if (null != SpUtil.getInt(SPConstant.SP_FONT)) {
-        size = SpUtil.getInt(SPConstant.SP_FONT);
-      }
-
-      switch (size) {
-        case 1:
-          textStyle = new TextStyle(
-              fontSize: FontConstant.FONT_CONTENT_SMALL,
-              color: const Color(0xFF666666));
-          break;
-        case 2:
-          textStyle = new TextStyle(
-              fontSize: FontConstant.FONT_CONTENT_MID,
-              color: const Color(0xFF666666));
-          break;
-        case 3:
-          textStyle = new TextStyle(
-              fontSize: FontConstant.FONT_CONTENT_BIG,
-              color: const Color(0xFF666666));
-          break;
-        default:
-      }
-    });
   }
 }

@@ -47,7 +47,7 @@ class DiagramPageState extends State<DiagramPage> {
 
   Widget _getPageViewWidget() {
     return new Container(
-      color: Colors.white,
+      color: FontUtil.getMainBgColor(),
       child: new PageView.builder(
         onPageChanged: _pageChange,
         controller: _pageController,
@@ -132,8 +132,6 @@ class DiagramItemState extends State<DiagramItem> {
   @override
   void initState() {
     super.initState();
-    loadFontAsync();
-    loadAsync();
   }
 
   _getItemBody() {
@@ -152,7 +150,7 @@ class DiagramItemState extends State<DiagramItem> {
     return new SingleChildScrollView(
       controller: widget.scrollController,
       child: new Container(
-        color: Colors.white,
+        color: FontUtil.getMainBgColor(),
         padding: const EdgeInsets.fromLTRB(0.0, 44.0, 0.0, 115.0),
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -182,8 +180,8 @@ class DiagramItemState extends State<DiagramItem> {
             ),
             new Container(
               margin: const EdgeInsets.fromLTRB(16.0, 15.0, 16.0, 0.0),
-              height: 1.0,
-              color: const Color(0x60eaeaea),
+              height: 0.5,
+              color: FontUtil.getLineShixinColor(),
             ),
             new Container(
               color: FontUtil.getSummaryBackgroundColor(),
@@ -238,13 +236,5 @@ class DiagramItemState extends State<DiagramItem> {
           _showLoading = false;
           print("_getCritic network error: $e");
         });
-  }
-
-  void loadAsync() async {
-    await SpUtil.getInstance();
-  }
-
-  void loadFontAsync() async {
-    await FontUtil.getInstance();
   }
 }

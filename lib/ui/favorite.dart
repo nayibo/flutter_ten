@@ -26,7 +26,7 @@ class FavoriteListState extends State<FavoriteListPage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: FontUtil.getMainBgColor(),
         body: new Container(
           child: new FutureBuilder<List<FavoriteBean>>(
               builder: (context, snapshot) {
@@ -116,7 +116,7 @@ class FavoriteItemState extends State<FavoriteItem> {
   Widget build(BuildContext context) {
     return new Container(
         child: new RaisedButton(
-      color: Colors.white,
+      color: FontUtil.getMainBgColor(),
       elevation: 0,
       highlightElevation: 0,
       disabledElevation: 0,

@@ -467,7 +467,7 @@ class FontUtil {
     if (_isNightMode) {
       switch (date) {
         case 0:
-          return 'assets/images/date_0_night.png';
+          return 'assets/images/2date_1_night.png';
           break;
         case 1:
           return 'assets/images/date_1_night.png';
@@ -930,6 +930,46 @@ class FontUtil {
       return Color(FontConstant.FONT_SIZE_NORMAL_COLOR_NIGHT);
     } else {
       return Color(FontConstant.FONT_SIZE_NORMAL_COLOR_DAY);
+    }
+  }
+
+  static String getLoginAvatarIcon() {
+    if (_isNightMode) {
+      return 'assets/images/avator_login_night.png';
+    } else {
+      return 'assets/images/avator_login.png';
+    }
+  }
+
+  static String getWhiteLine() {
+    if (_isNightMode) {
+      return 'assets/images/avator_whiteline_night.png';
+    } else {
+      return 'assets/images/avator_whiteline.png';
+    }
+  }
+
+  static Color getSettingVersionColor() {
+    if (_isNightMode) {
+      return Color(FontConstant.FONT_SETTINGVERSION_COLOR_NIGHT);
+    } else {
+      return Color(FontConstant.FONT_SETTINGVERSION_COLOR_DAY);
+    }
+  }
+
+  static String getTopBarBg() {
+    if (_isNightMode) {
+      return 'assets/images/topbar_night.png';
+    } else {
+      return 'assets/images/topbar.png';
+    }
+  }
+
+  static Color getBriefFontColor() {
+    if (_isNightMode) {
+      return Color(FontConstant.FONT_BRIEF_COLOR_NIGHT);
+    } else {
+      return Color(FontConstant.FONT_BRIEF_COLOR_DAY);
     }
   }
 }

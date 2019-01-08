@@ -10,7 +10,7 @@ class FontConstant {
   static final double FONT_CONTENT_BIG = 20.0;
 
   static final int FONT_SUMMARY_COLOR_DAY = 0xFF666666;
-  static final int FONT_SUMMARY_COLOR_NIGHT = 0x7B8199;
+  static final int FONT_SUMMARY_COLOR_NIGHT = 0xFF7B8199;
   static final double FONT_SUMMARY_SMALL = 14.0;
   static final double FONT_SUMMARY_MID = 16.0;
   static final double FONT_SUMMARY_BIG = 18.0;
@@ -24,10 +24,10 @@ class FontConstant {
   static final int FONT_AUTHOR_COLOR_NIGHT = 0xFF5C616E;
 
   static final FONT_BOTTOMBAR_BACKGROUNDCOLOR_DAY = 0xFA1C2023;
-  static final FONT_BOTTOMBAR_BACKGROUNDCOLOR_NIGHT = 0x1E1E28;
+  static final FONT_BOTTOMBAR_BACKGROUNDCOLOR_NIGHT = 0xFF1E1E28;
 
-  static final int FONT_AUTHOR_VERTICAL_LINE_COLOR_NIGHT = 0xFFE4E4E4;
-  static final int FONT_AUTHOR_VERTICAL_LINE_COLOR_DAY = 0xFF5C616E;
+  static final int FONT_AUTHOR_VERTICAL_LINE_COLOR_DAY = 0xFFE4E4E4;
+  static final int FONT_AUTHOR_VERTICAL_LINE_COLOR_NIGHT = 0xFF5C616E;
 
   static final int FONT_SUMMARY_BACKGROUND_COLOR_NIGHT = 0x107E7E96;
   static final int FONT_SUMMARY_BACKGROUND_COLOR_DAY = 0x60EAEAEA;
@@ -81,4 +81,10 @@ class FontConstant {
 
   static final int FONT_SIZE_NORMAL_COLOR_NIGHT = 0xFF7B8199;
   static final int FONT_SIZE_NORMAL_COLOR_DAY = 0xFF666666;
+
+  static final int FONT_SETTINGVERSION_COLOR_NIGHT = 0xFF565A68;
+  static final int FONT_SETTINGVERSION_COLOR_DAY = 0xFFD5D5d5;
+
+  static final int FONT_BRIEF_COLOR_NIGHT = 0xFF858D9E;
+  static final int FONT_BRIEF_COLOR_DAY = 0xFF222222;
 }

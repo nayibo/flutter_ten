@@ -9,7 +9,7 @@ class FeedbackPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: FontUtil.getMainBgColor(),
       body: new Container(
         child: new Column(
           children: <Widget>[
@@ -30,7 +30,7 @@ class FeedbackPage extends StatelessWidget {
               margin: new EdgeInsets.fromLTRB(0.0, 80.0, 0.0, 0.0),
               child: new RaisedButton(
                 padding: new EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                color: Colors.white,
+                color: FontUtil.getMainBgColor(),
                 elevation: 0,
                 highlightElevation: 0,
                 disabledElevation: 0,
@@ -72,7 +72,7 @@ class FeedbackPage extends StatelessWidget {
               margin: new EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
               child: new RaisedButton(
                 padding: new EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                color: Colors.white,
+                color: FontUtil.getMainBgColor(),
                 elevation: 0,
                 highlightElevation: 0,
                 disabledElevation: 0,

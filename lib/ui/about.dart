@@ -42,7 +42,7 @@ class AboutPageState extends State<AboutPage> {
               new Container(
                 margin: new EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 30.0),
                 alignment: Alignment.bottomCenter,
-                child: new Text('Ten V' + _packageInfo.version),
+                child: new Text('Ten V' + _packageInfo.version, style: new TextStyle(fontSize: 14.0, color: FontUtil.getSettingVersionColor())),
               )
             ],
           ),

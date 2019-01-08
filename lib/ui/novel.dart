@@ -46,7 +46,7 @@ class NovelPageState extends State<NovelPage> {
 
   Widget _getPageViewWidget() {
     return new Container(
-      color: Colors.white,
+      color: FontUtil.getMainBgColor(),
       child: new PageView.builder(
         onPageChanged: _pageChange,
         controller: _pageController,
@@ -146,7 +146,7 @@ class NovelItemState extends State<NovelItem> {
     return new SingleChildScrollView(
       controller: widget.scrollController,
       child: new Container(
-        color: Colors.white,
+        color: FontUtil.getMainBgColor(),
         padding: const EdgeInsets.fromLTRB(16.0, 44.0, 16.0, 0.0),
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.start,
