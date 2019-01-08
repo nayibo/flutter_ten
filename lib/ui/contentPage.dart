@@ -33,6 +33,9 @@ class ContentPageState extends State<ContentPage> {
   @override
   void initState() {
     super.initState();
+    print('contentPage init begin');
+    loadAsync();
+    print('contentPage init complete');
     shareIcon = new ShareIcon();
     homepageHeader = new HomepageHeader(type: widget.type);
     scrollController.addListener(() {
@@ -52,6 +55,14 @@ class ContentPageState extends State<ContentPage> {
         shareIcon.refresh(1.0);
       }
     });
+  }
+
+  void loadAsync() {
+    if (!FontUtil.isReady()) {
+       FontUtil.getInstance().then((FontUtil font) {
+         print('waiting for FontUtil init complete');
+       });
+    }
   }
 
   @override

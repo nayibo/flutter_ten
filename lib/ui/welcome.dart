@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tenge/ui/homepage.dart';
+import 'package:flutter_tenge/utils/FontUtil.dart';
 
 class WelcomePage extends StatefulWidget {
   @override
@@ -19,7 +20,7 @@ class WelcomePageState extends State<WelcomePage>
   @override
   void initState() {
     super.initState();
-
+    loadAsync();
     _controller = new AnimationController(
         duration: const Duration(milliseconds: 3000), value: 0.01, vsync: this);
 
@@ -34,6 +35,14 @@ class WelcomePageState extends State<WelcomePage>
       });
 
     _controller.forward();
+  }
+
+  void loadAsync() {
+    if (!FontUtil.isReady()) {
+      FontUtil.getInstance().then((FontUtil font) {
+        print('waiting for FontUtil init complete');
+      });
+    }
   }
 
   @override

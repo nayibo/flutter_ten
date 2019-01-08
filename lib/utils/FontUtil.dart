@@ -17,9 +17,13 @@ class FontUtil {
       await _lock.synchronized(() async {
         if (_singleton == null) {
           // 保持本地实例直到完全初始化。
+          print("sp_init_begin");
+          print("FontUtil_init_begin");
           var singleton = FontUtil._();
           await singleton._init();
+          print("sp_init_complete");
           _singleton = singleton;
+          print('FontUtil init complete');
         }
       });
     }
@@ -31,13 +35,37 @@ class FontUtil {
   Future _init() async {
     await SpUtil.getInstance();
     _sizeMode = SpUtil.getInt(SPConstant.SP_FONT);
+    print('sizemode: ' + _sizeMode.toString());
     if (_sizeMode == null) {
       _sizeMode = FontConstant.FONT_SMALL;
     }
     _isNightMode = SpUtil.getBool(SPConstant.SP_NIGHT_MODE);
+    print('night: ' + _isNightMode.toString());
     if (_isNightMode == null) {
       _isNightMode = false;
     }
+  }
+
+  static bool isReady() {
+    return _singleton != null;
+  }
+
+  static Future<bool> setNightModel(bool flag) async {
+    _isNightMode = flag;
+    return SpUtil.putBool(SPConstant.SP_NIGHT_MODE, flag);
+  }
+
+  static Future<bool> setFontSizeMode(int flag) async {
+    _sizeMode = flag;
+    return SpUtil.putInt(SPConstant.SP_FONT, flag);
+  }
+
+  static bool getNightMode() {
+    return _isNightMode;
+  }
+
+  static int getSizeMode() {
+    return _sizeMode;
   }
 
   static TextStyle getContentTitleFont() {
@@ -765,7 +793,7 @@ class FontUtil {
   }
 
   static Color getArticleBgColor(int type) {
-    switch(type) {
+    switch (type) {
       case CommonConstant.TYPE_FILM_CRITIC:
         return Color(FontConstant.FONT_ARTICLE_BACKGROUND_COLOR_FILM);
         break;
@@ -846,6 +874,62 @@ class FontUtil {
       return 'assets/images/feedback_qq_night.png';
     } else {
       return 'assets/images/feedback_qq.png';
+    }
+  }
+
+  static String getFontSizeSmallIcon() {
+    if (_sizeMode == FontConstant.FONT_SMALL) {
+      if (_isNightMode) {
+        return 'assets/images/fontsize_s_selected_night.png';
+      } else {
+        return 'assets/images/fontsize_s_selected.png';
+      }
+    } else {
+      if (_isNightMode) {
+        return 'assets/images/fontsize_s_night.png';
+      } else {
+        return 'assets/images/fontsize_s.png';
+      }
+    }
+  }
+
+  static String getFontSizeMidIcon() {
+    if (_sizeMode == FontConstant.FONT_MID) {
+      if (_isNightMode) {
+        return 'assets/images/fontsize_m_selected_night.png';
+      } else {
+        return 'assets/images/fontsize_m_selected.png';
+      }
+    } else {
+      if (_isNightMode) {
+        return 'assets/images/fontsize_m_night.png';
+      } else {
+        return 'assets/images/fontsize_m.png';
+      }
+    }
+  }
+
+  static String getFontSizeBigIcon() {
+    if (_sizeMode == FontConstant.FONT_BIG) {
+      if (_isNightMode) {
+        return 'assets/images/fontsize_l_selected_night.png';
+      } else {
+        return 'assets/images/fontsize_l_selected.png';
+      }
+    } else {
+      if (_isNightMode) {
+        return 'assets/images/fontsize_l_night.png';
+      } else {
+        return 'assets/images/fontsize_l.png';
+      }
+    }
+  }
+
+  static Color getFontNormalSizeColor() {
+    if (_isNightMode) {
+      return Color(FontConstant.FONT_SIZE_NORMAL_COLOR_NIGHT);
+    } else {
+      return Color(FontConstant.FONT_SIZE_NORMAL_COLOR_DAY);
     }
   }
 }

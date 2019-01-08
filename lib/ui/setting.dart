@@ -18,8 +18,6 @@ class SettingPage extends StatefulWidget {
 }
 
 class SettingPageState extends State<SettingPage> {
-  bool _nightMode = false;
-
 //  Future<Null> _handleLogin() async {
 //    try {
 //      var qqResult = await FlutterQq.login();
@@ -223,6 +221,8 @@ class SettingPageState extends State<SettingPage> {
             elevation: 0,
             highlightElevation: 0,
             disabledElevation: 0,
+            highlightColor: Colors.transparent,
+            splashColor: Colors.transparent,
             onPressed: _goNightModePage,
             child: new Row(
               children: <Widget>[
@@ -240,10 +240,10 @@ class SettingPageState extends State<SettingPage> {
                   ],
                 )),
                 new Switch(
-                  value: _nightMode,
+                  value: FontUtil.getNightMode(),
                   onChanged: (bool value) {
                     setState(() {
-                      _nightMode = value;
+                      FontUtil.setNightModel(value);
                     });
                   },
                 ),
@@ -258,16 +258,6 @@ class SettingPageState extends State<SettingPage> {
         ),
       ],
     );
-  }
-
-  _setFont(int flag) async {
-    await SpUtil.getInstance();
-    SpUtil.putInt(SPConstant.SP_FONT, flag);
-  }
-
-  _setNightMode(bool flag) async {
-    await SpUtil.getInstance();
-    SpUtil.putBool(SPConstant.SP_NIGHT_MODE, flag);
   }
 
   void loadAsync() async {
