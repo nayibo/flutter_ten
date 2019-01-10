@@ -1,3 +1,4 @@
+import 'package:fake_tencent/fake_tencent.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tenge/constant/common.dart';
 import 'package:flutter_tenge/ui/bottom.dart';

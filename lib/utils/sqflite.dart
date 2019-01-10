@@ -91,12 +91,20 @@ class DBHelper {
 
   Future<bool> isFavorite(String id, String type) async {
     var dbClient = await db;
-    List<Map> list = await dbClient
-        .rawQuery('SELECT * FROM ' + DBConstant.DB_TABLE_NAME_FAVORITE + " where id=" +
+    List<Map> list = await dbClient.rawQuery('SELECT * FROM ' +
+        DBConstant.DB_TABLE_NAME_FAVORITE +
+        " where id=" +
         id +
         " and type=" +
         type);
     return list != null && list.isNotEmpty;
+  }
+
+  void deleteAllFavorite() async {
+    var dbClient = await db;
+    await dbClient.transaction((txn) async {
+      return await txn.delete(DBConstant.DB_TABLE_NAME_FAVORITE);
+    });
   }
 
   void deleteFavorite(String id, String type) async {

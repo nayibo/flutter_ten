@@ -6,6 +6,7 @@ import 'package:flutter_tenge/utils/FontUtil.dart';
 import 'package:flutter_tenge/utils/ShareUtil.dart';
 import 'package:flutter_tenge/utils/sqflite.dart';
 //import 'package:flutter_qq/flutter_qq.dart';
+import 'package:fake_tencent/fake_tencent.dart';
 
 class ShareDialog extends Dialog {
   final ListItem listItem;

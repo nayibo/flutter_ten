@@ -1,4 +1,7 @@
-class FavoriteBean {
+import 'package:json_annotation/json_annotation.dart';
+
+@JsonSerializable(nullable: false)
+class FavoriteBean extends Object {
   int userId;
   int id;
   int type;
@@ -17,8 +20,20 @@ class FavoriteBean {
     type = jsonMap["type"];
     summary = jsonMap["summary"];
   }
+
+  Map toJson() {
+    Map map = new Map();
+    map["userId"] = userId;
+    map["id"] = id;
+    map["type"] = type;
+    map["publishtime"] = publishtime;
+    map["title"] = title;
+    map["summary"] = summary;
+    return map;
+  }
 }
 
+@JsonSerializable(nullable: false)
 class FavoriteListData {
   int status;
   String errMsg;

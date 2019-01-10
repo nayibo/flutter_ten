@@ -28,9 +28,15 @@ class NetworkUtils {
   }
 
   static void post(String url, Function callback,
-      {Map<String, String> params, Function errorCallback}) async {
+      {String body, Function errorCallback}) async {
     try {
-      http.Response response = await http.post(url, body: params);
+      http.Response response = await http.post(url,
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          body: body,
+          encoding: Utf8Codec());
       if (callback != null) {
         callback(json.decode(response.body));
       }

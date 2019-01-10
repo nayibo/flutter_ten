@@ -1,15 +1,21 @@
+import 'dart:convert';
 import 'dart:ui';
 
+import 'package:fake_tencent/fake_tencent.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tenge/bean/Favorite.dart';
+import 'package:flutter_tenge/bean/UserBean.dart';
 import 'package:flutter_tenge/constant/data.dart';
+import 'package:flutter_tenge/network/NetworkUtils.dart';
 import 'package:flutter_tenge/ui/about.dart';
 import 'package:flutter_tenge/ui/callback.dart';
 import 'package:flutter_tenge/ui/favorite.dart';
 import 'package:flutter_tenge/ui/feedback.dart';
 import 'package:flutter_tenge/ui/fontsetting.dart';
 import 'package:flutter_tenge/utils/FontUtil.dart';
+import 'package:flutter_tenge/utils/ShareUtil.dart';
 import 'package:flutter_tenge/utils/SharedPreferencesUtil.dart';
-//import 'package:flutter_qq/flutter_qq.dart';
+import 'package:flutter_tenge/utils/sqflite.dart';
 
 class SettingPage extends StatefulWidget {
   SettingNightModeCallback settingNightModeCallback;
@@ -23,32 +29,14 @@ class SettingPage extends StatefulWidget {
 }
 
 class SettingPageState extends State<SettingPage> {
-//  Future<Null> _handleLogin() async {
-//    try {
-//      var qqResult = await FlutterQq.login();
-//      var output;
-//      if (qqResult.code == 0) {
-//        if (qqResult.response == null) {
-//          output = "登录成功qqResult.response==null";
-//          return;
-//        }
-//        output = "登录成功" + qqResult.response.toString();
-//      } else {
-//        output = "登录失败" + qqResult.message;
-//      }
-//      setState(() {
-//        _qqOutput = output;
-//      });
-//    } catch (error) {
-//      print("flutter_plugin_qq_example:" + error.toString());
-//    }
-//  }
+  bool _isLogin = false;
+  String _userName = '';
+  String _userAvatar = '';
 
   @override
   void initState() {
+    _initLogin();
     super.initState();
-    loadFontAsync();
-    loadAsync();
   }
 
   @override
@@ -68,20 +56,23 @@ class SettingPageState extends State<SettingPage> {
               child: new Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  new Stack(
-                    children: <Widget>[
-                      new Container(
-                          padding: new EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
-                          child: new Image.asset(FontUtil.getLoginAvatarIcon(),
-                              width: 73.0, height: 73.0)),
-                      new Image.asset(FontUtil.getWhiteLine(),
-                          width: 83.0, height: 83.0),
-                    ],
-                  ),
+                  new IconButton(
+                      iconSize: 83.0,
+                      icon: new Stack(
+                        children: <Widget>[
+                          new Container(
+                              padding:
+                                  new EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
+                              child: getUserAvatar()),
+                          new Image.asset(FontUtil.getWhiteLine(),
+                              width: 83.0, height: 83.0),
+                        ],
+                      ),
+                      onPressed: _avatarClick),
                   new Container(
                     margin: new EdgeInsets.fromLTRB(0.0, 3.0, 0.0, 0.0),
                     child:
-                        new Text("点击用QQ登录", style: FontUtil.getUserNameFont()),
+                        new Text(_userName, style: FontUtil.getUserNameFont()),
                   ),
                 ],
               )),
@@ -252,7 +243,7 @@ class SettingPageState extends State<SettingPage> {
                     onChanged: (bool value) {
                       setState(() {
                         FontUtil.setNightModel(value);
-                        if(widget.settingNightModeCallback != null) {
+                        if (widget.settingNightModeCallback != null) {
                           widget.settingNightModeCallback();
                         }
                       });
@@ -270,14 +261,6 @@ class SettingPageState extends State<SettingPage> {
         ],
       ),
     );
-  }
-
-  void loadAsync() async {
-    await SpUtil.getInstance();
-  }
-
-  void loadFontAsync() async {
-    await FontUtil.getInstance();
   }
 
   _goFavoritePage() {
@@ -301,4 +284,157 @@ class SettingPageState extends State<SettingPage> {
   }
 
   _goNightModePage() {}
+
+  _avatarClick() {
+    if (!_isLogin) {
+      QQShareUtil.getInstance();
+      QQShareUtil.login(_listenLogin);
+    } else {
+      _logoutClick();
+    }
+  }
+
+  _logoutClick() {
+    showDialog(
+        context: context,
+        builder: (_) => new AlertDialog(
+                title: new Text("退出登录"),
+                content: new Text("退出登录后不能多端同步了诶"),
+                actions: <Widget>[
+                  new FlatButton(
+                    child: new Text("取消"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  new FlatButton(
+                    child: new Text("退出"),
+                    onPressed: () {
+                      _logout();
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ]));
+  }
+
+  _logout() async {
+    _isLogin = false;
+    await SpUtil.getInstance();
+    await SpUtil.putBool(SPConstant.SP_QQ_IS_LOGIN, false);
+    await SpUtil.putString(SPConstant.SP_QQ_OPEN_ID, null);
+    await SpUtil.putString(SPConstant.SP_QQ_ACCESS_TOKEN, null);
+    await SpUtil.putInt(SPConstant.SP_QQ_EXPIRES_TIME_SEC, null);
+    _initLogin();
+  }
+
+  void _listenLogin(FakeTencentLoginResp resp) {
+    String content =
+        'setting login: ${resp.openId} - ${resp.accessToken}- ${resp.expirationDate}';
+    print('setting 登录 ' + content);
+    setLoginInfo(resp);
+  }
+
+  void _listenUserInfo(FakeTencentUserInfoResp resp) {
+    setState(() {
+      print('listen user info ' +
+          resp.nickName.toString() +
+          resp.headImgUrl().toString());
+      _userName = resp.nickName;
+      _userAvatar = resp.headImgUrl();
+    });
+  }
+
+  Future<void> setLoginInfo(FakeTencentLoginResp resp) async {
+    _isLogin = true;
+    await SpUtil.getInstance();
+    await SpUtil.putBool(SPConstant.SP_QQ_IS_LOGIN, true);
+    await SpUtil.putString(SPConstant.SP_QQ_OPEN_ID, resp.openId);
+    await SpUtil.putString(SPConstant.SP_QQ_ACCESS_TOKEN, resp.accessToken);
+    await SpUtil.putInt(SPConstant.SP_QQ_EXPIRES_TIME_SEC, resp.expirationDate);
+    QQShareUtil.getUserInfo(_listenUserInfo);
+    _loginTenGe(resp.openId);
+  }
+
+  Widget getUserAvatar() {
+    if (_isLogin) {
+      return new Container(
+          height: 73.0,
+          width: 73.0,
+          child: new CircleAvatar(
+            backgroundColor: FontUtil.getMainBgColor(),
+            backgroundImage: new NetworkImage(_userAvatar),
+          ));
+    } else {
+      return new Image.asset(FontUtil.getLoginAvatarIcon(),
+          width: 73.0, height: 73.0);
+    }
+  }
+
+  _initLogin() {
+    _isLogin = SpUtil.getBool(SPConstant.SP_QQ_IS_LOGIN);
+
+    if (_isLogin == null) {
+      _isLogin = false;
+    }
+    print('init islogin: ' + _isLogin.toString());
+    if (_isLogin) {
+      QQShareUtil.getInstance();
+      QQShareUtil.getUserInfo(_listenUserInfo);
+    } else {
+      setState(() {
+        _userName = '点击用QQ登录';
+      });
+    }
+  }
+
+  _loginTenGe(String openID) async {
+    if (openID == null) {
+      return;
+    }
+    Map<String, String> params = new Map();
+    params['openId'] = openID;
+    params['type'] = '0';
+    NetworkUtils.get(
+        "http://api.shigeten.net/api/user/Login",
+        (data) {
+          if (data != null) {
+            print('userid: ' + data.toString());
+            UserBean userBean = new UserBean.fromJson(data);
+            SpUtil.putInt(SPConstant.SP_USER_ID, userBean.userId);
+            _syncFavoriteList(userBean.userId);
+          }
+        },
+        params: params,
+        errorCallback: (e) {
+          print("_getCritic network error: $e");
+        });
+  }
+
+  _syncFavoriteList(int userID) async {
+    fetchFavoritesFromDatabase().then(((List<FavoriteBean> favList) {
+      for (int i = 0; i < favList.length; i++) {
+        favList[i].userId = userID;
+      }
+      print('list data: ' + json.encode(favList));
+      NetworkUtils.post(
+          "http://api.shigeten.net/api/user/AddFavorite",
+          (data) {
+            if (data != null) {
+              if (data['result']) {
+                var dbHelper = DBHelper();
+                return dbHelper.deleteAllFavorite();
+              }
+            }
+          },
+          body: json.encode(favList),
+          errorCallback: (e) {
+            print("_getCritic network error: $e");
+          });
+    }));
+  }
+
+  Future<List<FavoriteBean>> fetchFavoritesFromDatabase() async {
+    var dbHelper = DBHelper();
+    return dbHelper.getFavoriteList();
+  }
 }
