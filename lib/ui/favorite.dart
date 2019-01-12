@@ -4,15 +4,42 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tenge/bean/Favorite.dart';
 import 'package:flutter_tenge/bean/ListBean.dart';
 import 'package:flutter_tenge/constant/common.dart';
+import 'package:flutter_tenge/constant/data.dart';
+import 'package:flutter_tenge/network/NetworkUtils.dart';
 import 'package:flutter_tenge/ui/favoritedetail.dart';
 import 'package:flutter_tenge/ui/title.dart';
 import 'package:flutter_tenge/utils/DateUtil.dart';
 import 'package:flutter_tenge/utils/FontUtil.dart';
+import 'package:flutter_tenge/utils/SharedPreferencesUtil.dart';
 import 'package:flutter_tenge/utils/sqflite.dart';
 
 Future<List<FavoriteBean>> fetchFavoritesFromDatabase() async {
   var dbHelper = DBHelper();
   return dbHelper.getFavoriteList();
+}
+
+Future<List<FavoriteBean>> fetchFavoritesFromServer() async {
+  int _userID = SpUtil.getInt(SPConstant.SP_USER_ID);
+  Map<String, String> params = new Map();
+  params['userId'] = _userID.toString();
+  return NetworkUtils.fetchFavoriteList(
+      "http://api.shigeten.net/api/user/GetFavoriteList",
+      params: params);
+}
+
+Future<List<FavoriteBean>> fetchFavorites() async {
+  await SpUtil.getInstance();
+  bool _isLogin = SpUtil.getBool(SPConstant.SP_QQ_IS_LOGIN);
+
+  if (_isLogin == null) {
+    _isLogin = false;
+  }
+
+  if (_isLogin) {
+    return fetchFavoritesFromServer();
+  } else {
+    return fetchFavoritesFromDatabase();
+  }
 }
 
 class FavoriteListPage extends StatefulWidget {
@@ -40,7 +67,7 @@ class FavoriteListState extends State<FavoriteListPage> {
 
                 return new Center(child: new CircularProgressIndicator());
               },
-              future: fetchFavoritesFromDatabase()),
+              future: fetchFavorites()),
         ));
   }
 }

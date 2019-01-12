@@ -1,7 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_tenge/bean/Favorite.dart';
 import 'package:flutter_tenge/ui/homepage.dart';
+import 'package:flutter_tenge/utils/FavoriteUtil.dart';
 import 'package:flutter_tenge/utils/FontUtil.dart';
 
 class WelcomePage extends StatefulWidget {
@@ -10,6 +12,7 @@ class WelcomePage extends StatefulWidget {
     return new WelcomePageState();
   }
 }
+
 
 class WelcomePageState extends State<WelcomePage>
     with SingleTickerProviderStateMixin {
@@ -20,6 +23,11 @@ class WelcomePageState extends State<WelcomePage>
   @override
   void initState() {
     super.initState();
+    FavoriteUtil.getInstance().fetchFavorites().then((
+        List<FavoriteBean> favList) {
+      print("welcome favlist: " + favList.length.toString());
+      FavoriteUtil.getInstance().setFavoriteListData(favList);
+    });
     loadAsync();
     _controller = new AnimationController(
         duration: const Duration(milliseconds: 3000), value: 0.01, vsync: this);

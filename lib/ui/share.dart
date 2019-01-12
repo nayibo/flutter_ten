@@ -1,89 +1,87 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tenge/bean/Favorite.dart';
 import 'package:flutter_tenge/bean/ListBean.dart';
 import 'package:flutter_tenge/constant/common.dart';
+import 'package:flutter_tenge/utils/FavoriteUtil.dart';
 import 'package:flutter_tenge/utils/FontUtil.dart';
 import 'package:flutter_tenge/utils/ShareUtil.dart';
-import 'package:flutter_tenge/utils/sqflite.dart';
-//import 'package:flutter_qq/flutter_qq.dart';
-import 'package:fake_tencent/fake_tencent.dart';
 
 class ShareDialog extends Dialog {
   final ListItem listItem;
   bool isFavorite = false;
 
-  ShareDialog({Key key, @required this.listItem, @required this.isFavorite}) : super(key: key);
+  ShareDialog({Key key, @required this.listItem, @required this.isFavorite})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return new Material(
       //创建透明层
       type: MaterialType.transparency, //透明类型
-      child: new Container(
-          margin: new EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 100.0),
-          decoration: ShapeDecoration(
-            color: Colors.transparent,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(8.0),
+      child: new GestureDetector(
+        onTap: () {
+          Navigator.of(context).pop();
+        },
+        child: new Container(
+            margin: new EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 100.0),
+            decoration: ShapeDecoration(
+              color: Colors.transparent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(8.0),
+                ),
               ),
             ),
-          ),
-          child: new Stack(
-            children: <Widget>[
-              new Container(
-                margin: new EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 70.0),
-                child: new Text("分享至",
-                    style: new TextStyle(fontSize: 18.0, color: Colors.white)),
-                alignment: Alignment(0.0, 0.3),
-              ),
-              new Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  new Expanded(
-                    flex: 1,
-                    child: new ShareItemWidget(
-                        shareTypeUp: CommonConstant.SHARE_TYPE_FAVORITE,
-                        pressUp: _favorite,
-                        shareTypeDown: CommonConstant.SHARE_TYPE_WEIBO,
-                        pressDown: null,
-                        isFavorite: isFavorite),
-                  ),
-                  new Expanded(
-                    flex: 1,
-                    child: new ShareItemWidget(
-                        shareTypeUp: CommonConstant.SHARE_TYPE_WEIXIN,
-                        pressUp: null,
-                        shareTypeDown: CommonConstant.SHARE_TYPE_QQ,
-                        pressDown: null,
-                        isFavorite: false),
-                  ),
-                  new Expanded(
-                    flex: 1,
-                    child: new ShareItemWidget(
-                        shareTypeUp: CommonConstant.SHARE_TYPE_PENGYOUQUAN,
-                        pressUp: null,
-                        shareTypeDown: CommonConstant.SHARE_TYPE_QQZONE,
-                        pressDown: null,
-                        isFavorite: false),
-                  ),
-                ],
-              ),
-            ],
-          )),
+            child: new Stack(
+              children: <Widget>[
+                new Container(
+                  margin: new EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 70.0),
+                  child: new Text("分享至",
+                      style:
+                          new TextStyle(fontSize: 18.0, color: Colors.white)),
+                  alignment: Alignment(0.0, 0.3),
+                ),
+                new Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    new Expanded(
+                      flex: 1,
+                      child: new ShareItemWidget(
+                          listItem: listItem,
+                          shareTypeUp: CommonConstant.SHARE_TYPE_FAVORITE,
+                          pressUp: null,
+                          shareTypeDown: CommonConstant.SHARE_TYPE_WEIBO,
+                          pressDown: null,
+                          isFavorite: isFavorite),
+                    ),
+                    new Expanded(
+                      flex: 1,
+                      child: new ShareItemWidget(
+                          listItem: listItem,
+                          shareTypeUp: CommonConstant.SHARE_TYPE_WEIXIN,
+                          pressUp: null,
+                          shareTypeDown: CommonConstant.SHARE_TYPE_QQ,
+                          pressDown: null,
+                          isFavorite: false),
+                    ),
+                    new Expanded(
+                      flex: 1,
+                      child: new ShareItemWidget(
+                          listItem: listItem,
+                          shareTypeUp: CommonConstant.SHARE_TYPE_PENGYOUQUAN,
+                          pressUp: null,
+                          shareTypeDown: CommonConstant.SHARE_TYPE_QQZONE,
+                          pressDown: null,
+                          isFavorite: false),
+                    ),
+                  ],
+                ),
+              ],
+            )),
+      ),
     );
-  }
-
-  _favorite() {
-    var dbHelper = DBHelper();
-    FavoriteBean favoriteBean = new FavoriteBean(
-        id: listItem.id,
-        title: listItem.title,
-        type: listItem.type,
-        summary: listItem.summary,
-        publishtime: listItem.publishtime);
-    dbHelper.insertFavorite(favoriteBean);
-    dbHelper.getFavoriteList();
   }
 
   _shareTimeLine() {
@@ -158,13 +156,15 @@ class ShareItemWidget extends StatefulWidget {
   VoidCallback pressUp;
   VoidCallback pressDown;
   bool isFavorite;
+  ListItem listItem;
 
   ShareItemWidget(
       {this.shareTypeUp,
       this.shareTypeDown,
       this.pressUp,
       this.pressDown,
-      this.isFavorite});
+      this.isFavorite,
+      this.listItem});
 
   @override
   State<StatefulWidget> createState() {
@@ -177,10 +177,12 @@ class ShareItemWidgetState extends State<ShareItemWidget>
   Animation<double> animation;
   AnimationController _controller;
   double _alignmentY = 2.5;
+  bool _isFavorite;
 
   @override
   void initState() {
     super.initState();
+    _isFavorite = widget.isFavorite;
     if (widget.shareTypeUp == CommonConstant.SHARE_TYPE_WEIXIN) {
       _controller = new AnimationController(
           duration: const Duration(milliseconds: 800),
@@ -216,19 +218,17 @@ class ShareItemWidgetState extends State<ShareItemWidget>
             child: new IconButton(
                 iconSize: 60.0,
                 icon: new Image.asset(
-                    FontUtil.getShareIcon(
-                        widget.shareTypeUp, widget.isFavorite),
+                    FontUtil.getShareIcon(widget.shareTypeUp, _isFavorite),
                     height: 60.0,
                     width: 60.0),
-                onPressed: widget.pressUp),
+                onPressed: _pressUpItem),
           ),
           new Container(
             margin: new EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
             child: new IconButton(
                 iconSize: 60.0,
                 icon: new Image.asset(
-                    FontUtil.getShareIcon(
-                        widget.shareTypeDown, widget.isFavorite),
+                    FontUtil.getShareIcon(widget.shareTypeDown, _isFavorite),
                     height: 60.0,
                     width: 60.0),
                 onPressed: widget.pressDown),
@@ -236,6 +236,25 @@ class ShareItemWidgetState extends State<ShareItemWidget>
         ],
       ),
     );
+  }
+
+  _pressUpItem() async {
+    print("_pressUpItem");
+    if (widget.shareTypeUp == CommonConstant.SHARE_TYPE_FAVORITE) {
+      FavoriteUtil.getInstance()
+          .favorite(widget.listItem)
+          .then(((List<FavoriteBean> favList) {
+        setState(() {
+          FavoriteUtil.getInstance().setFavoriteListData(favList);
+          _isFavorite = FavoriteUtil.getInstance()
+              .isFavorite(widget.listItem.id, widget.listItem.type);
+          print("_pressUpItem setstate: " +
+              favList.length.toString() +
+              "  " +
+              _isFavorite.toString());
+        });
+      }));
+    }
   }
 
   @override

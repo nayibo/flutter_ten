@@ -12,6 +12,7 @@ import 'package:flutter_tenge/ui/callback.dart';
 import 'package:flutter_tenge/ui/favorite.dart';
 import 'package:flutter_tenge/ui/feedback.dart';
 import 'package:flutter_tenge/ui/fontsetting.dart';
+import 'package:flutter_tenge/utils/FavoriteUtil.dart';
 import 'package:flutter_tenge/utils/FontUtil.dart';
 import 'package:flutter_tenge/utils/ShareUtil.dart';
 import 'package:flutter_tenge/utils/SharedPreferencesUtil.dart';
@@ -421,6 +422,10 @@ class SettingPageState extends State<SettingPage> {
           (data) {
             if (data != null) {
               if (data['result']) {
+                FavoriteUtil.getInstance().fetchFavorites().then((
+                    List<FavoriteBean> favList) {
+                  FavoriteUtil.getInstance().setFavoriteListData(favList);
+                });
                 var dbHelper = DBHelper();
                 return dbHelper.deleteAllFavorite();
               }
@@ -428,7 +433,7 @@ class SettingPageState extends State<SettingPage> {
           },
           body: json.encode(favList),
           errorCallback: (e) {
-            print("_getCritic network error: $e");
+            print("_syncFavoriteList network error: $e");
           });
     }));
   }

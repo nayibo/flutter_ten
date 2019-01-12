@@ -1,3 +1,4 @@
+import 'package:flutter_tenge/bean/Favorite.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -27,6 +28,36 @@ class NetworkUtils {
     }
   }
 
+  static Future<List<FavoriteBean>> fetchFavoriteList(String url,
+      {Map<String, String> params}) async {
+    if (params != null && params.isNotEmpty) {
+      StringBuffer sb = new StringBuffer("?");
+      params.forEach((key, value) {
+        sb.write("$key" + "=" + "$value" + "&");
+      });
+      String paramStr = sb.toString();
+      paramStr = paramStr.substring(0, paramStr.length - 1);
+      url += paramStr;
+    }
+
+    try {
+      FavoriteListData favoriteListData;
+      http.Response response = await http.get(url);
+      print("flutter url: " + url);
+      if (json.decode(response.body) != null) {
+        favoriteListData =
+            new FavoriteListData.fromJson(json.decode(response.body));
+        if (favoriteListData == null)
+          print(
+              'future fetchfavoritefromserver: ' + favoriteListData.toString());
+      }
+
+      return favoriteListData.result;
+    } catch (e) {
+      throw Exception('Failed to fetchFavoriteList');
+    }
+  }
+
   static void post(String url, Function callback,
       {String body, Function errorCallback}) async {
     try {
@@ -44,6 +75,40 @@ class NetworkUtils {
       if (errorCallback != null) {
         errorCallback(e);
       }
+    }
+  }
+
+  static Future<bool> postAddFavorite(String url, {String body}) async {
+    print("postAddFavorite");
+    try {
+      http.Response response = await http.post(url,
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          body: body,
+          encoding: Utf8Codec());
+      print("postAddFavorite return : " + json.decode(response.body)['result'].toString());
+      return json.decode(response.body)['result'];
+    } catch (e) {
+      throw Exception('Failed to postAddFavorite : ' + e.toString());
+    }
+  }
+
+  static Future<bool> postDelFavorite(String url, {String body}) async {
+    print("postDelFavorite");
+    try {
+      http.Response response = await http.post(url,
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          body: body,
+          encoding: Utf8Codec());
+      print("postDelFavorite return : " + json.decode(response.body)['result'].toString());
+      return json.decode(response.body)['result'];
+    } catch (e) {
+      throw Exception('Failed to postDelFavorite: ' + e.toString());
     }
   }
 

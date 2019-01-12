@@ -9,7 +9,12 @@ class FavoriteBean extends Object {
   String title;
   String summary;
 
-  FavoriteBean({this.userId, this.id, this.type, this.publishtime, this.title,
+  FavoriteBean(
+      {this.userId,
+      this.id,
+      this.type,
+      this.publishtime,
+      this.title,
       this.summary});
 
   FavoriteBean.fromJson(Map<String, dynamic> jsonMap) {
@@ -38,4 +43,16 @@ class FavoriteListData {
   int status;
   String errMsg;
   List<FavoriteBean> result;
+
+  FavoriteListData();
+
+  FavoriteListData.fromJson(Map<String, dynamic> jsonMap) {
+    result = [];
+    errMsg = jsonMap["errMsg"];
+    status = jsonMap["status"];
+
+    for (var item in jsonMap['result']) {
+      result.add(new FavoriteBean.fromJson(item));
+    }
+  }
 }

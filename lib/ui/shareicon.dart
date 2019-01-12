@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tenge/bean/ListBean.dart';
 import 'package:flutter_tenge/ui/share.dart';
+import 'package:flutter_tenge/utils/FavoriteUtil.dart';
 import 'package:flutter_tenge/utils/sqflite.dart';
 
 class ShareIcon extends StatefulWidget {
@@ -23,12 +24,7 @@ class ShareIcon extends StatefulWidget {
   }
 
   _getIsFavorite() {
-    var dbHelper = DBHelper();
-    Future<bool> result =
-    dbHelper.isFavorite(_listItem.id.toString(), _listItem.type.toString());
-    result.then((value) {
-      _isFavorite = value;
-    });
+    _isFavorite = FavoriteUtil.getInstance().isFavorite(_listItem.id, _listItem.type);
   }
 }
 
