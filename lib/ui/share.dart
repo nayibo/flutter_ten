@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import 'package:fake_tencent/fake_tencent.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tenge/bean/Favorite.dart';
 import 'package:flutter_tenge/bean/ListBean.dart';
@@ -100,54 +99,6 @@ class ShareDialog extends Dialog {
         listItem.title);
   }
 
-//    Future<Null> _shareQQ() async {
-//      ShareQQContent shareContent = new ShareQQContent(
-//          shareType: SHARE_TO_QQ_TYPE.IMAGE,
-//          title: listBean.result[currentIndex].title,
-//          targetUrl: ShareUtil.getShareUrl(listBean.result[currentIndex].type,
-//              listBean.result[currentIndex].id),
-//          summary: listBean.result[currentIndex].summary,
-////          imageLocalUrl: 'assets://assets/images/share_icon.png'
-//      );
-//      try {
-//        var qqResult = await FlutterQq.shareToQQ(shareContent);
-//        var output;
-//        if (qqResult.code == 0) {
-//          output = "分享成功";
-//        } else if (qqResult.code == 1) {
-//          output = "分享失败" + qqResult.message;
-//        } else {
-//          output = "用户取消";
-//        }
-//      } catch (error) {
-//        print("flutter_plugin_qq_example:" + error.toString());
-//
-//      }
-//    }
-//
-//    Future<Null> _shareZone() async {
-//      ShareQzoneContent shareContent = new ShareQzoneContent(
-//        shareType: SHARE_TO_QZONE_TYPE.IMAGE_TEXT,
-//        title: listBean.result[currentIndex].title,
-//        targetUrl: ShareUtil.getShareUrl(listBean.result[currentIndex].type,
-//            listBean.result[currentIndex].id),
-//        summary: listBean.result[currentIndex].summary,
-//        imageUrl: "http://inews.gtimg.com/newsapp_bt/0/876781763/1000",
-//      );
-//      try {
-//        var qqResult = await FlutterQq.shareToQzone(shareContent);
-//        var output;
-//        if (qqResult.code == 0) {
-//          output = "分享成功";
-//        } else if (qqResult.code == 1) {
-//          output = "分享失败" + qqResult.message;
-//        } else {
-//          output = "用户取消";
-//        }
-//      } catch (error) {
-//        print("flutter_plugin_qq_example:" + error.toString());
-//      }
-//    }
 }
 
 class ShareItemWidget extends StatefulWidget {
@@ -231,7 +182,7 @@ class ShareItemWidgetState extends State<ShareItemWidget>
                     FontUtil.getShareIcon(widget.shareTypeDown, _isFavorite),
                     height: 60.0,
                     width: 60.0),
-                onPressed: widget.pressDown),
+                onPressed: _pressDownItem),
           ),
         ],
       ),
@@ -255,6 +206,25 @@ class ShareItemWidgetState extends State<ShareItemWidget>
         });
       }));
     }
+  }
+
+  _pressDownItem() async {
+    print("_pressDownItem : " + widget.shareTypeDown);
+
+    if (widget.shareTypeDown == CommonConstant.SHARE_TYPE_QQ) {
+      QQShareUtil.getInstance();
+      QQShareUtil.shareQQUrl(_listenShareUrl, widget.listItem);
+    }
+
+    if (widget.shareTypeDown == CommonConstant.SHARE_TYPE_QQZONE) {
+      QQShareUtil.getInstance();
+      QQShareUtil.shareQQZONEUrl(_listenShareUrl, widget.listItem);
+    }
+  }
+
+  void _listenShareUrl(FakeTencentShareResp resp) {
+    String content = 'share: ${resp.errorCode} - ${resp.errorMsg}';
+    print('分享' + content);
   }
 
   @override

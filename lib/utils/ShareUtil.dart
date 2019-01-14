@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:fake_tencent/fake_tencent.dart';
+import 'package:flutter_tenge/bean/ListBean.dart';
 import 'package:flutter_tenge/constant/data.dart';
 import 'package:flutter_tenge/utils/SharedPreferencesUtil.dart';
 import 'package:fluwx/fluwx.dart' as fluwx;
@@ -28,13 +29,7 @@ class QQShareUtil {
   void _init() {
     _tencent = new FakeTencent();
     _tencent.registerApp(appId: '1104005798');
-//    _share = _tencent.shareResp().listen(_listenShare);
   }
-
-//  void _listenShare(FakeTencentShareResp resp) {
-//    String content = 'share: ${resp.errorCode} - ${resp.errorMsg}';
-//    print('分享' + content);s
-//  }
 
   static void login(void onData(FakeTencentLoginResp event),
       {Function onError, void onDone(), bool cancelOnError}) {
@@ -48,7 +43,9 @@ class QQShareUtil {
       {Function onError, void onDone(), bool cancelOnError}) {
     if (_tencent != null) {
       _userInfo = _tencent.userInfoResp().listen(onData);
-      print("open id: " + SpUtil.getString(SPConstant.SP_QQ_OPEN_ID) + SpUtil.getString(SPConstant.SP_QQ_ACCESS_TOKEN));
+      print("open id: " +
+          SpUtil.getString(SPConstant.SP_QQ_OPEN_ID) +
+          SpUtil.getString(SPConstant.SP_QQ_ACCESS_TOKEN));
       if (SpUtil.getString(SPConstant.SP_QQ_OPEN_ID) != null &&
           SpUtil.getString(SPConstant.SP_QQ_ACCESS_TOKEN) != null &&
           SpUtil.getInt(SPConstant.SP_QQ_EXPIRES_TIME_SEC) != null) {
@@ -58,6 +55,36 @@ class QQShareUtil {
             expirationDate: SpUtil.getInt(SPConstant.SP_QQ_EXPIRES_TIME_SEC));
       }
       _tencent.getUserInfo();
+    }
+  }
+
+  static void shareQQUrl(void onData(FakeTencentShareResp event), ListItem item,
+      {Function onError, void onDone(), bool cancelOnError}) {
+    if (_tencent != null) {
+      _share = _tencent.shareResp().listen(onData);
+      _tencent.shareWebpage(
+        appName: '十个',
+        scene: FakeTencentScene.SCENE_QQ,
+        title: item.title,
+        summary: item.summary,
+        imageUri: Uri.file('assets://assets/images/share_icon.png'),
+        targetUrl: ShareUtil.getShareUrl(item.type, item.id),
+      );
+    }
+  }
+
+  static void shareQQZONEUrl(void onData(FakeTencentShareResp event), ListItem item,
+      {Function onError, void onDone(), bool cancelOnError}) {
+    if (_tencent != null) {
+      _share = _tencent.shareResp().listen(onData);
+      _tencent.shareWebpage(
+        appName: '十个',
+        scene: FakeTencentScene.SCENE_QZONE,
+        title: item.title,
+        summary: item.summary,
+        imageUri: Uri.file('assets://assets/images/share_icon.png'),
+        targetUrl: ShareUtil.getShareUrl(item.type, item.id),
+      );
     }
   }
 
@@ -165,9 +192,7 @@ class ShareUtil {
     fluwx.share(model);
   }
 
-  /***
-   * 微信朋友圈分享  图片
-   */
+  ///微信朋友圈分享  图片
   static wechatShareImageTimeLine(
       String imageUrl, String thumbnail, String description) {
     fluwx.share(fluwx.WeChatShareImageModel(
@@ -178,9 +203,7 @@ class ShareUtil {
         description: description));
   }
 
-  /***
-   * 微信好友分享  图片
-   */
+  ///微信好友分享  图片
   static wechatShareImageSession(
       String imageUrl, String thumbnail, String description) {
     fluwx.share(fluwx.WeChatShareImageModel(
