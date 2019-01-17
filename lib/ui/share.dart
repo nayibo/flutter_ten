@@ -82,23 +82,6 @@ class ShareDialog extends Dialog {
       ),
     );
   }
-
-  _shareTimeLine() {
-    ShareUtil.wechatShareWebpageTimeLine(
-        ShareUtil.getShareUrl(listItem.type, listItem.id),
-        'assets://assets/images/share_icon.png',
-        listItem.summary,
-        listItem.title);
-  }
-
-  _shareSession() {
-    ShareUtil.wechatShareWebpageSession(
-        ShareUtil.getShareUrl(listItem.type, listItem.id),
-        'assets://assets/images/share_icon.png',
-        listItem.summary,
-        listItem.title);
-  }
-
 }
 
 class ShareItemWidget extends StatefulWidget {
@@ -206,6 +189,24 @@ class ShareItemWidgetState extends State<ShareItemWidget>
         });
       }));
     }
+
+    if (widget.shareTypeUp == CommonConstant.SHARE_TYPE_WEIXIN) {
+      print("_pressUpItem SHARE_TYPE_WEIXIN");
+      WechatShareUtil.wechatShareWebpageSession(
+          WechatShareUtil.getShareUrl(1, 100052),
+          'assets://assets/images/share_icon.png',
+          "summary",
+          "title");
+    }
+
+    if (widget.shareTypeUp == CommonConstant.SHARE_TYPE_PENGYOUQUAN) {
+      print("_pressUpItem SHARE_TYPE_PENGYOUQUAN");
+      WechatShareUtil.wechatShareWebpageTimeLine(
+          WechatShareUtil.getShareUrl(1, 100052),
+          'assets://assets/images/share_icon.png',
+          "summary",
+          "title");
+    }
   }
 
   _pressDownItem() async {
@@ -219,6 +220,10 @@ class ShareItemWidgetState extends State<ShareItemWidget>
     if (widget.shareTypeDown == CommonConstant.SHARE_TYPE_QQZONE) {
       QQShareUtil.getInstance();
       QQShareUtil.shareQQZONEUrl(_listenShareUrl, widget.listItem);
+    }
+
+    if (widget.shareTypeDown == CommonConstant.SHARE_TYPE_WEIBO) {
+
     }
   }
 

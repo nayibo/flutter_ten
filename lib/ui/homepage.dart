@@ -28,7 +28,6 @@ class HomepageState extends State<Homepage> {
     homepageBottomBar = new HomepageBottomBar(clickCallback: (index) {
       _pageController.jumpToPage(index);
     });
-//    FlutterQq.registerQQ('1104005798');
     fluwx.register(
         appId: 'wx066029c349d9494b', doOnAndroid: true, doOnIOS: true);
     loadFontAsync();

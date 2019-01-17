@@ -68,12 +68,13 @@ class QQShareUtil {
         title: item.title,
         summary: item.summary,
         imageUri: Uri.file('assets://assets/images/share_icon.png'),
-        targetUrl: ShareUtil.getShareUrl(item.type, item.id),
+        targetUrl: WechatShareUtil.getShareUrl(item.type, item.id),
       );
     }
   }
 
-  static void shareQQZONEUrl(void onData(FakeTencentShareResp event), ListItem item,
+  static void shareQQZONEUrl(
+      void onData(FakeTencentShareResp event), ListItem item,
       {Function onError, void onDone(), bool cancelOnError}) {
     if (_tencent != null) {
       _share = _tencent.shareResp().listen(onData);
@@ -83,7 +84,7 @@ class QQShareUtil {
         title: item.title,
         summary: item.summary,
         imageUri: Uri.file('assets://assets/images/share_icon.png'),
-        targetUrl: ShareUtil.getShareUrl(item.type, item.id),
+        targetUrl: WechatShareUtil.getShareUrl(item.type, item.id),
       );
     }
   }
@@ -103,7 +104,7 @@ class QQShareUtil {
   }
 }
 
-class ShareUtil {
+class WechatShareUtil {
   /// 微信朋友圈分享  文字
   static weChatShareTextTimeLine(String text) {
     fluwx
@@ -116,9 +117,7 @@ class ShareUtil {
     });
   }
 
-  /***
-   * 微信好友分享  文字
-   */
+  ///微信好友分享  文字
   static weChatShareTextSession(String text) {
     fluwx
         .share(fluwx.WeChatShareTextModel(
@@ -130,9 +129,7 @@ class ShareUtil {
     });
   }
 
-  /***
-   * 微信朋友圈分享  网址
-   */
+  ///微信朋友圈分享  网址
   static wechatShareWebpageTimeLine(
       String url, String thumbnail, String title, String description) {
     var model = fluwx.WeChatShareWebPageModel(
@@ -141,13 +138,11 @@ class ShareUtil {
         thumbnail: thumbnail,
         scene: fluwx.WeChatScene.TIMELINE,
         description: description,
-        transaction: "hh");
+        transaction: "web url");
     fluwx.share(model);
   }
 
-  /***
-   * 微信好友分享  网址
-   */
+  ///微信好友分享  网址
   static wechatShareWebpageSession(
       String url, String thumbnail, String title, String description) {
     var model = fluwx.WeChatShareWebPageModel(
@@ -156,13 +151,11 @@ class ShareUtil {
         thumbnail: thumbnail,
         scene: fluwx.WeChatScene.SESSION,
         description: description,
-        transaction: "hh");
+        transaction: "web url");
     fluwx.share(model);
   }
 
-  /***
-   * 微信朋友圈分享  视频
-   */
+  ///微信朋友圈分享  视频
   static wechatShareVideoTimeLine(String videoUrl, String lowBandUrl,
       String thumbnail, String description, String title) {
     var model = new fluwx.WeChatShareVideoModel(
@@ -176,9 +169,7 @@ class ShareUtil {
     fluwx.share(model);
   }
 
-  /***
-   * 微信好友分享  视频
-   */
+  ///微信好友分享  视频
   static wechatShareVideoSession(String videoUrl, String lowBandUrl,
       String thumbnail, String description, String title) {
     var model = new fluwx.WeChatShareVideoModel(
@@ -212,6 +203,10 @@ class ShareUtil {
         transaction: imageUrl,
         scene: fluwx.WeChatScene.SESSION,
         description: description));
+  }
+
+  static Future isWechatInstall() {
+    return fluwx.isWeChatInstalled();
   }
 
   static final String URL_START = "http://www.shigeten.net/content.aspx?";

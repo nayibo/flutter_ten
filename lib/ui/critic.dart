@@ -76,23 +76,6 @@ class CriticPageState extends State<CriticPage> {
     return _getCriticBody();
   }
 
-  _share() {
-//    fluwx
-//        .share(fluwx.WeChatShareTextModel(
-//            text: 'share text',
-//            transaction: "text${DateTime.now().millisecondsSinceEpoch}",
-//            scene: fluwx.WeChatScene.TIMELINE))
-//        .then((data) {
-//      print(data);
-//    });
-    ShareUtil.wechatShareWebpageTimeLine(
-        ShareUtil.getShareUrl(_listBean.result[_currentPageIndex].type,
-            _listBean.result[_currentPageIndex].id),
-        'assets://assets/images/share_icon.png',
-        _listBean.result[_currentPageIndex].summary,
-        _listBean.result[_currentPageIndex].title);
-  }
-
   _pageChange(int index) {
     setState(() {
       if (_currentPageIndex != index) {
