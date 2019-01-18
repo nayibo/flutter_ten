@@ -861,6 +861,14 @@ class FontUtil {
     }
   }
 
+  static Color getStatusBarBgColor() {
+    if (_isNightMode) {
+      return Color(FontConstant.FONT_MAIN_BACKGROUND_COLOR_NIGHT);
+    } else {
+      return Colors.transparent;
+    }
+  }
+
   static String getWechatIcon() {
     if (_isNightMode) {
       return 'assets/images/feedback_weixin_night.png';

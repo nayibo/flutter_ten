@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_tenge/constant/common.dart';
 import 'package:flutter_tenge/ui/callback.dart';
 import 'package:flutter_tenge/utils/DateUtil.dart';
@@ -28,6 +29,13 @@ class HomepageHeaderState extends State<HomepageHeader> {
   int _date1 = 0;
   int _month = DateTime.january;
   int _weekday = DateTime.monday;
+
+  @override
+  void initState() {
+    super.initState();
+    SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(
+        statusBarColor: FontUtil.getStatusBarBgColor());
+  }
 
   @override
   Widget build(BuildContext context) {

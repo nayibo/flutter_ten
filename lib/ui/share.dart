@@ -119,12 +119,12 @@ class ShareItemWidgetState extends State<ShareItemWidget>
     _isFavorite = widget.isFavorite;
     if (widget.shareTypeUp == CommonConstant.SHARE_TYPE_WEIXIN) {
       _controller = new AnimationController(
-          duration: const Duration(milliseconds: 800),
+          duration: const Duration(milliseconds: 600),
           value: 0.01,
           vsync: this);
     } else {
       _controller = new AnimationController(
-          duration: const Duration(milliseconds: 1000),
+          duration: const Duration(milliseconds: 750),
           value: 0.01,
           vsync: this);
     }
