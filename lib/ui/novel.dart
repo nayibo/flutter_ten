@@ -7,6 +7,7 @@ import 'package:flutter_tenge/network/NetworkUtils.dart';
 import 'package:flutter_tenge/ui/callback.dart';
 import 'package:flutter_tenge/utils/FontUtil.dart';
 import 'package:flutter_tenge/utils/SharedPreferencesUtil.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class NovelPage extends StatefulWidget {
   ScrollController scrollController;
@@ -274,8 +275,9 @@ class NovelListItemStateImage extends State<NovelListViewItem> {
   Widget build(BuildContext context) {
     return new Container(
         margin: const EdgeInsets.fromLTRB(0, 15.0, 0, 0),
-        child: new Image.network(
-          data == null ? '' : "http://images.shigeten.net/" + data.image,
+        child: new FadeInImage.memoryNetwork(
+          placeholder: kTransparentImage,
+          image: data == null ? '' : "http://images.shigeten.net/" + data.image,
           height: data == null || data.image == null || data.image == ""
               ? 0
               : (window.physicalSize.width * 9) /

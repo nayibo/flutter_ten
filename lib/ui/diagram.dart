@@ -7,7 +7,7 @@ import 'package:flutter_tenge/constant/font.dart';
 import 'package:flutter_tenge/network/NetworkUtils.dart';
 import 'package:flutter_tenge/ui/callback.dart';
 import 'package:flutter_tenge/utils/FontUtil.dart';
-import 'package:flutter_tenge/utils/SharedPreferencesUtil.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class DiagramPage extends StatefulWidget {
   ScrollController scrollController;
@@ -158,8 +158,9 @@ class DiagramItemState extends State<DiagramItem> {
           children: <Widget>[
             new Container(
                 margin: const EdgeInsets.fromLTRB(0, 15.0, 0, 0),
-                child: new Image.network(
-                  _diagram == null
+                child: new FadeInImage.memoryNetwork(
+                  placeholder: kTransparentImage,
+                  image: _diagram == null
                       ? ''
                       : "http://images.shigeten.net/" + _diagram.image1,
                   width: window.physicalSize.width / window.devicePixelRatio,

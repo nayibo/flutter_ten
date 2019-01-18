@@ -6,6 +6,7 @@ import 'package:flutter_tenge/bean/ListBean.dart';
 import 'package:flutter_tenge/network/NetworkUtils.dart';
 import 'package:flutter_tenge/ui/callback.dart';
 import 'package:flutter_tenge/utils/FontUtil.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class CriticPage extends StatefulWidget {
   ScrollController scrollController;
@@ -250,8 +251,9 @@ class ListItemStateHeadImage extends State<CriticListViewItem> {
   @override
   Widget build(BuildContext context) {
     return new Container(
-      child: new Image.network(
-        "http://images.shigeten.net/" + url,
+      child: new FadeInImage.memoryNetwork(
+        placeholder: kTransparentImage,
+        image: "http://images.shigeten.net/" + url,
         height:
             (window.physicalSize.width * 9) / (16 * window.devicePixelRatio),
         width: window.physicalSize.width / window.devicePixelRatio,
@@ -343,8 +345,11 @@ class ListItemStateBrief extends State<CriticListViewItem> {
                 fontSize: 18.0, color: FontUtil.getBriefFontColor())),
         new Container(
             margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
-            child: new Image.network(
-              data == null ? '' : "http://images.shigeten.net/" + data.image1,
+            child: new FadeInImage.memoryNetwork(
+              placeholder: kTransparentImage,
+              image: data == null
+                  ? ''
+                  : "http://images.shigeten.net/" + data.image1,
               height: (window.physicalSize.width * 9) /
                   (16 * window.devicePixelRatio),
               width: window.physicalSize.width / window.devicePixelRatio,
@@ -407,8 +412,10 @@ class ListItemStateImage2 extends State<CriticListViewItem> {
   Widget build(BuildContext context) {
     return new Container(
         margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
-        child: new Image.network(
-          data == null ? '' : "http://images.shigeten.net/" + data.image2,
+        child: new FadeInImage.memoryNetwork(
+          placeholder: kTransparentImage,
+          image:
+              data == null ? '' : "http://images.shigeten.net/" + data.image2,
           height:
               (window.physicalSize.width * 9) / (16 * window.devicePixelRatio),
           width: window.physicalSize.width / window.devicePixelRatio,
@@ -462,8 +469,10 @@ class ListItemStateImage3 extends State<CriticListViewItem> {
   Widget build(BuildContext context) {
     return new Container(
         margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 0),
-        child: new Image.network(
-          data == null ? '' : "http://images.shigeten.net/" + data.image3,
+        child: new FadeInImage.memoryNetwork(
+          placeholder: kTransparentImage,
+          image:
+              data == null ? '' : "http://images.shigeten.net/" + data.image3,
           height:
               (window.physicalSize.width * 9) / (16 * window.devicePixelRatio),
           width: window.physicalSize.width / window.devicePixelRatio,
@@ -481,8 +490,10 @@ class ListItemStateImage4 extends State<CriticListViewItem> {
   Widget build(BuildContext context) {
     return new Container(
         margin: const EdgeInsets.fromLTRB(0, 1.0, 0, 0),
-        child: new Image.network(
-          data == null ? '' : "http://images.shigeten.net/" + data.image4,
+        child: new FadeInImage.memoryNetwork(
+          placeholder: kTransparentImage,
+          image:
+              data == null ? '' : "http://images.shigeten.net/" + data.image4,
           height:
               (window.physicalSize.width * 9) / (16 * window.devicePixelRatio),
           width: window.physicalSize.width / window.devicePixelRatio,
@@ -500,8 +511,10 @@ class ListItemStateImage5 extends State<CriticListViewItem> {
   Widget build(BuildContext context) {
     return new Container(
         margin: const EdgeInsets.fromLTRB(0, 1.0, 0, 0),
-        child: new Image.network(
-          data == null ? '' : "http://images.shigeten.net/" + data.image5,
+        child: FadeInImage.memoryNetwork(
+          image:
+              data == null ? '' : "http://images.shigeten.net/" + data.image5,
+          placeholder: kTransparentImage,
           height: data == null || data.image5 == null || data.image5 == ""
               ? 0
               : (window.physicalSize.width * 9) /
