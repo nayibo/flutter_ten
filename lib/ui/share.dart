@@ -192,20 +192,30 @@ class ShareItemWidgetState extends State<ShareItemWidget>
 
     if (widget.shareTypeUp == CommonConstant.SHARE_TYPE_WEIXIN) {
       print("_pressUpItem SHARE_TYPE_WEIXIN");
+      if (widget.listItem == null) {
+        print('listitem null');
+      } else {
+        print('listitem  not null');
+      }
       WechatShareUtil.wechatShareWebpageSession(
-          WechatShareUtil.getShareUrl(1, 100052),
+          WechatShareUtil.getShareUrl(widget.listItem.type, widget.listItem.id),
           'assets://assets/images/share_icon.png',
-          "summary",
-          "title");
+          widget.listItem.summary,
+          widget.listItem.title);
     }
 
     if (widget.shareTypeUp == CommonConstant.SHARE_TYPE_PENGYOUQUAN) {
       print("_pressUpItem SHARE_TYPE_PENGYOUQUAN");
+      if (widget.listItem == null) {
+        print('listitem null');
+      } else {
+        print('listitem  not null');
+      }
       WechatShareUtil.wechatShareWebpageTimeLine(
-          WechatShareUtil.getShareUrl(1, 100052),
+          WechatShareUtil.getShareUrl(widget.listItem.type, widget.listItem.id),
           'assets://assets/images/share_icon.png',
-          "summary",
-          "title");
+          widget.listItem.summary,
+          widget.listItem.title);
     }
   }
 
@@ -223,7 +233,8 @@ class ShareItemWidgetState extends State<ShareItemWidget>
     }
 
     if (widget.shareTypeDown == CommonConstant.SHARE_TYPE_WEIBO) {
-
+      await SINAShareUtil.getInstance();
+      SINAShareUtil.shareWebpage(context, widget.listItem);
     }
   }
 

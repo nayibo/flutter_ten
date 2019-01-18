@@ -30,13 +30,36 @@
 				<string>wx066029c349d9494b</string>
 			</array>
 		</dict>
+		<dict>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>CFBundleURLName</key>
+            <string>com.weibo</string>
+            <key>CFBundleURLSchemes</key>
+            	<array>
+            	    <string>wb3393861383</string>
+            	</array>
+         </dict>
+         <dict>
+         	<key>CFBundleTypeRole</key>
+         	<string>Editor</string>
+         	<key>CFBundleURLName</key>
+         	<string>tencent</string>
+         	<key>CFBundleURLSchemes</key>
+         	<array>
+         		<string>tencent1104005798</string>
+         	</array>
+         </dict>
 	</array>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+	    <string>sinaweibo</string>
+        <string>sinaweibohd</string>
+        <string>weibosdk</string>
+        <string>weibosdk2.5</string>
 		<string>mqq</string>
 		<string>mqqOpensdkSSoLogin</string>
         <string>mqzone</string>
-        <string>sinaweibo</string>
         <string>alipayauth</string>
         <string>alipay</string>
         <string>safepay</string>

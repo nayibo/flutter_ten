@@ -1,10 +1,58 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:fake_tencent/fake_tencent.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_tenge/bean/ListBean.dart';
 import 'package:flutter_tenge/constant/data.dart';
 import 'package:flutter_tenge/utils/SharedPreferencesUtil.dart';
 import 'package:fluwx/fluwx.dart' as fluwx;
+import 'package:fake_weibo/fake_weibo.dart';
+
+class SINAShareUtil {
+  static SINAShareUtil _singleton;
+  static String WEIBO_APP_KEY = '3393861383';
+  static FakeWeibo weibo;
+
+  SINAShareUtil._();
+
+  static SINAShareUtil getInstance() {
+    if (_singleton == null) {
+      if (_singleton == null) {
+        var singleton = SINAShareUtil._();
+        singleton._init();
+        _singleton = singleton;
+      }
+    }
+    return _singleton;
+  }
+
+  void _init() {
+    weibo = new FakeWeibo(
+      appKey: WEIBO_APP_KEY,
+      scope: [
+        FakeWeiboScope.ALL,
+      ],
+    );
+    weibo.registerApp();
+  }
+
+  static void shareWebpage(BuildContext context, ListItem item) async {
+    if (weibo == null) {
+      return;
+    }
+    AssetImage image = new AssetImage('assets/images/share_icon.png');
+    AssetBundleImageKey key =
+    await image.obtainKey(createLocalImageConfiguration(context));
+    ByteData thumbData = await key.bundle.load(key.name);
+    weibo.shareWebpage(
+      title: item.title,
+      description: item.summary,
+      thumbData: thumbData.buffer.asUint8List(),
+      webpageUrl: WechatShareUtil.getShareUrl(item.type, item.id),
+    );
+  }
+}
 
 class QQShareUtil {
   static QQShareUtil _singleton;

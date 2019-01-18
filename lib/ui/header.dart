@@ -37,7 +37,7 @@ class HomepageHeaderState extends State<HomepageHeader> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           new Image.asset(FontUtil.getHeaderLogoIcon(widget.type),
-              height: 44, width: 107),
+              height: 44, width: 106),
           new Container(
             decoration: new BoxDecoration(
               image: new DecorationImage(
@@ -45,7 +45,7 @@ class HomepageHeaderState extends State<HomepageHeader> {
             ),
             width: (window.physicalSize.width / window.devicePixelRatio -
                 82 -
-                107),
+                106),
           ),
           new Expanded(
               child: new Row(
