@@ -1,3 +1,4 @@
+import 'package:flutter_tenge/bean/CriticBean.dart';
 import 'package:flutter_tenge/bean/Favorite.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -28,6 +29,32 @@ class NetworkUtils {
     }
   }
 
+  static Future<CriticBean> fetchCritic(String url,
+      {Map<String, String> params}) async {
+    if (params != null && params.isNotEmpty) {
+      StringBuffer sb = new StringBuffer("?");
+      params.forEach((key, value) {
+        sb.write("$key" + "=" + "$value" + "&");
+      });
+      String paramStr = sb.toString();
+      paramStr = paramStr.substring(0, paramStr.length - 1);
+      url += paramStr;
+    }
+
+    try {
+      CriticBean criticBean;
+      http.Response response = await http.get(url);
+      print("flutter url: " + url);
+      if (json.decode(response.body) != null) {
+        criticBean = new CriticBean.fromJson(json.decode(response.body));
+      }
+
+      return criticBean;
+    } catch (e) {
+      throw Exception('Failed to critic');
+    }
+  }
+
   static Future<List<FavoriteBean>> fetchFavoriteList(String url,
       {Map<String, String> params}) async {
     if (params != null && params.isNotEmpty) {
@@ -47,9 +74,6 @@ class NetworkUtils {
       if (json.decode(response.body) != null) {
         favoriteListData =
             new FavoriteListData.fromJson(json.decode(response.body));
-        if (favoriteListData == null)
-          print(
-              'future fetchfavoritefromserver: ' + favoriteListData.toString());
       }
 
       return favoriteListData.result;
@@ -88,7 +112,8 @@ class NetworkUtils {
           },
           body: body,
           encoding: Utf8Codec());
-      print("postAddFavorite return : " + json.decode(response.body)['result'].toString());
+      print("postAddFavorite return : " +
+          json.decode(response.body)['result'].toString());
       return json.decode(response.body)['result'];
     } catch (e) {
       throw Exception('Failed to postAddFavorite : ' + e.toString());
@@ -105,7 +130,8 @@ class NetworkUtils {
           },
           body: body,
           encoding: Utf8Codec());
-      print("postDelFavorite return : " + json.decode(response.body)['result'].toString());
+      print("postDelFavorite return : " +
+          json.decode(response.body)['result'].toString());
       return json.decode(response.body)['result'];
     } catch (e) {
       throw Exception('Failed to postDelFavorite: ' + e.toString());

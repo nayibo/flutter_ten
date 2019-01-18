@@ -3,14 +3,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_tenge/bean/CriticBean.dart';
 import 'package:flutter_tenge/bean/ListBean.dart';
-import 'package:flutter_tenge/constant/data.dart';
-import 'package:flutter_tenge/constant/font.dart';
 import 'package:flutter_tenge/network/NetworkUtils.dart';
 import 'package:flutter_tenge/ui/callback.dart';
-import 'package:flutter_tenge/ui/share.dart';
 import 'package:flutter_tenge/utils/FontUtil.dart';
-import 'package:flutter_tenge/utils/ShareUtil.dart';
-import 'package:flutter_tenge/utils/SharedPreferencesUtil.dart';
 
 class CriticPage extends StatefulWidget {
   ScrollController scrollController;
@@ -155,176 +150,13 @@ class CriticItemState extends State<CriticItem> {
   }
 
   Widget _getItemWidget() {
-    return new SingleChildScrollView(
-      controller: widget.scrollController,
-      child: new Container(
-        padding: const EdgeInsets.fromLTRB(0, 44.0, 0, 0),
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            new Image.network(
-              _critic == null
-                  ? ''
-                  : "http://images.shigeten.net/" + _critic.imageforplay,
-              height: (window.physicalSize.width * 9) /
-                  (16 * window.devicePixelRatio),
-              width: window.physicalSize.width / window.devicePixelRatio,
-              fit: BoxFit.cover,
-            ),
-            new Container(
-              color: FontUtil.getMainBgColor(),
-              padding: const EdgeInsets.fromLTRB(16.0, 15.0, 16.0, 50.0),
-              child: new Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  new Text(_critic == null ? 'empty' : _critic.title,
-                      style: FontUtil.getContentTitleFont()),
-                  new Row(
-                    children: <Widget>[
-                      new Text(
-                          _critic == null ? 'empty' : '作者: ' + _critic.author,
-                          style: FontUtil.getAuthorFont()),
-                      new Container(
-                        height: 12.0,
-                        width: 1.0,
-                        color: FontUtil.getAuthorVerticalLineColor(),
-                        margin: const EdgeInsets.only(
-                            left: 10.0, right: 10.0, top: 4.0),
-                      ),
-                      new Text(
-                          _critic == null
-                              ? 'empty'
-                              : '阅读量: ' + _critic.times.toString(),
-                          style: FontUtil.getAuthorFont())
-                    ],
-                  ),
-                  new Container(
-                      width: window.physicalSize.width,
-                      margin: const EdgeInsets.fromLTRB(0, 35.0, 0, 0),
-                      padding:
-                          const EdgeInsets.fromLTRB(17.0, 17.0, 17.0, 17.0),
-                      color: FontUtil.getSummaryBackgroundColor(),
-                      child: new Text(_critic == null ? 'empty' : _critic.text1,
-                          style: FontUtil.getSummaryFont())),
-                  new Container(
-                    margin: const EdgeInsets.fromLTRB(0, 20.0, 0, 10.0),
-                    height: 0.5,
-                    color: FontUtil.getLineShixinColor(),
-                  ),
-                  new Text("剧情简介",
-                      style: new TextStyle(
-                          fontSize: 18.0, color: FontUtil.getBriefFontColor())),
-                  new Container(
-                      margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
-                      child: new Image.network(
-                        _critic == null
-                            ? ''
-                            : "http://images.shigeten.net/" + _critic.image1,
-                        height: (window.physicalSize.width * 9) /
-                            (16 * window.devicePixelRatio),
-                        width:
-                            window.physicalSize.width / window.devicePixelRatio,
-                        fit: BoxFit.cover,
-                      )),
-                  new Text(
-                      _critic == null
-                          ? 'empty'
-                          : _critic.text2
-                              .toString()
-                              .replaceAll("剧情介绍\r\n", "")
-                              .replaceAll("剧情简介\r\n", "")
-                              .replaceAll("剧情简介 \r\n", ""),
-                      style: FontUtil.getContentFont()),
-                  new Container(
-                    margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
-                    height: 0.5,
-                    color: FontUtil.getLineShixinColor(),
-                  ),
-                  new Text(_critic == null ? 'empty' : _critic.realtitle,
-                      style: new TextStyle(
-                          fontSize: 18.0, color: FontUtil.getBriefFontColor())),
-                  new Container(
-                      margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
-                      child: new Image.network(
-                        _critic == null
-                            ? ''
-                            : "http://images.shigeten.net/" + _critic.image2,
-                        height: (window.physicalSize.width * 9) /
-                            (16 * window.devicePixelRatio),
-                        width:
-                            window.physicalSize.width / window.devicePixelRatio,
-                        fit: BoxFit.cover,
-                      )),
-                  new Text(_critic == null ? 'empty' : _critic.text3,
-                      style: FontUtil.getContentFont()),
-                  new Text(_critic == null ? 'empty' : _critic.text4,
-                      style: FontUtil.getContentFont()),
-                  new Text(_critic == null ? 'empty' : _critic.text5,
-                      style: FontUtil.getContentFont()),
-                  new Container(
-                      margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 0),
-                      child: new Image.network(
-                        _critic == null
-                            ? ''
-                            : "http://images.shigeten.net/" + _critic.image3,
-                        height: (window.physicalSize.width * 9) /
-                            (16 * window.devicePixelRatio),
-                        width:
-                            window.physicalSize.width / window.devicePixelRatio,
-                        fit: BoxFit.cover,
-                      )),
-                  new Container(
-                      margin: const EdgeInsets.fromLTRB(0, 1.0, 0, 0),
-                      child: new Image.network(
-                        _critic == null
-                            ? ''
-                            : "http://images.shigeten.net/" + _critic.image4,
-                        height: (window.physicalSize.width * 9) /
-                            (16 * window.devicePixelRatio),
-                        width:
-                            window.physicalSize.width / window.devicePixelRatio,
-                        fit: BoxFit.cover,
-                      )),
-                  new Container(
-                      margin: const EdgeInsets.fromLTRB(0, 1.0, 0, 0),
-                      child: new Image.network(
-                        _critic == null
-                            ? ''
-                            : "http://images.shigeten.net/" + _critic.image5,
-                        height: _critic == null ||
-                                _critic.image5 == null ||
-                                _critic.image5 == ""
-                            ? 0
-                            : (window.physicalSize.width * 9) /
-                                (16 * window.devicePixelRatio),
-                        width:
-                            window.physicalSize.width / window.devicePixelRatio,
-                        fit: BoxFit.cover,
-                      )),
-                  new Container(
-                    margin: const EdgeInsets.fromLTRB(0, 26.0, 0, 10.0),
-                    height: 0.5,
-                    color: FontUtil.getLineShixinColor(),
-                  ),
-                  new Container(
-                      margin: const EdgeInsets.fromLTRB(0, 8.0, 0, 10.0),
-                      child: new Text(
-                          _critic == null ? 'empty' : _critic.author,
-                          style: FontUtil.getAuthorBelowFont())),
-                  new Container(
-                      margin: const EdgeInsets.fromLTRB(0, 0, 0, 10.0),
-                      child: new Text(
-                          _critic == null || _critic.authorbrief == null
-                              ? '十个 每晚十点推送:一篇影评,一篇美文,一组美图,每晚入睡前用上十分钟读到最美内容.'
-                              : _critic.authorbrief,
-                          style: FontUtil.getAuthorBrief()))
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+    return ListView.builder(
+        controller: widget.scrollController,
+        padding: const EdgeInsets.fromLTRB(16.0, 44.0, 16.0, 50.0),
+        itemCount: 19,
+        itemBuilder: (context, index) {
+          return new CriticListViewItem(data: _critic, index: index);
+        });
   }
 
   @override
@@ -354,5 +186,370 @@ class CriticItemState extends State<CriticItem> {
           _showLoading = false;
           print("_getCritic network error: $e");
         });
+  }
+}
+
+class CriticListViewItem extends StatefulWidget {
+  final CriticBean data;
+  final int index;
+
+  CriticListViewItem({this.data, this.index});
+
+  @override
+  State<StatefulWidget> createState() {
+    switch (index) {
+      case 0:
+        return new ListItemStateHeadImage(url: data.imageforplay);
+      case 1:
+        return new ListItemStateTitle(title: data.title);
+      case 2:
+        return new ListItemStateAuthor(data: data);
+      case 3:
+        return new ListItemStateText1(data: data);
+      case 4:
+        return new ListItemStateDivider();
+      case 5:
+        return new ListItemStateBrief(data: data);
+      case 6:
+        return new ListItemStateText2(data: data);
+      case 7:
+        return new ListItemStateDivider2();
+      case 8:
+        return new ListItemStateRealTitle(data: data);
+      case 9:
+        return new ListItemStateImage2(data: data);
+      case 10:
+        return new ListItemStateText3(data: data);
+      case 11:
+        return new ListItemStateText4(data: data);
+      case 12:
+        return new ListItemStateText5(data: data);
+      case 13:
+        return new ListItemStateImage3(data: data);
+      case 14:
+        return new ListItemStateImage4(data: data);
+      case 15:
+        return new ListItemStateImage5(data: data);
+      case 16:
+        return new ListItemStateDivider3();
+      case 17:
+        return new ListItemStateAuthorBelow(data: data);
+      case 18:
+        return new ListItemStateAuthorBrief(data: data);
+    }
+
+    return new ListItemStateTitle(title: data.title);
+  }
+}
+
+class ListItemStateHeadImage extends State<CriticListViewItem> {
+  String url;
+
+  ListItemStateHeadImage({this.url});
+
+  @override
+  Widget build(BuildContext context) {
+    return new Container(
+      child: new Image.network(
+        "http://images.shigeten.net/" + url,
+        height:
+            (window.physicalSize.width * 9) / (16 * window.devicePixelRatio),
+        width: window.physicalSize.width / window.devicePixelRatio,
+        fit: BoxFit.cover,
+      ),
+    );
+  }
+}
+
+class ListItemStateTitle extends State<CriticListViewItem> {
+  String title;
+
+  ListItemStateTitle({this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return new Container(
+      padding: const EdgeInsets.fromLTRB(0, 15.0, 0, 0),
+      child: new Text(title, style: FontUtil.getContentTitleFont()),
+    );
+  }
+}
+
+class ListItemStateAuthor extends State<CriticListViewItem> {
+  CriticBean data;
+
+  ListItemStateAuthor({this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    return new Row(
+      children: <Widget>[
+        new Text(data == null ? 'empty' : '作者: ' + data.author,
+            style: FontUtil.getAuthorFont()),
+        new Container(
+          height: 12.0,
+          width: 1.0,
+          color: FontUtil.getAuthorVerticalLineColor(),
+          margin: const EdgeInsets.only(left: 10.0, right: 10.0, top: 4.0),
+        ),
+        new Text(data == null ? 'empty' : '阅读量: ' + data.times.toString(),
+            style: FontUtil.getAuthorFont())
+      ],
+    );
+  }
+}
+
+class ListItemStateText1 extends State<CriticListViewItem> {
+  CriticBean data;
+
+  ListItemStateText1({this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    return new Container(
+        width: window.physicalSize.width,
+        margin: const EdgeInsets.fromLTRB(0, 35.0, 0, 0),
+        padding: const EdgeInsets.fromLTRB(17.0, 17.0, 17.0, 17.0),
+        color: FontUtil.getSummaryBackgroundColor(),
+        child: new Text(data == null ? 'empty' : data.text1,
+            style: FontUtil.getSummaryFont()));
+  }
+}
+
+class ListItemStateDivider extends State<CriticListViewItem> {
+  @override
+  Widget build(BuildContext context) {
+    return new Container(
+      margin: const EdgeInsets.fromLTRB(0, 20.0, 0, 10.0),
+      height: 0.5,
+      color: FontUtil.getLineShixinColor(),
+    );
+  }
+}
+
+class ListItemStateBrief extends State<CriticListViewItem> {
+  CriticBean data;
+
+  ListItemStateBrief({this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    return new Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        new Text("剧情简介",
+            style: new TextStyle(
+                fontSize: 18.0, color: FontUtil.getBriefFontColor())),
+        new Container(
+            margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
+            child: new Image.network(
+              data == null ? '' : "http://images.shigeten.net/" + data.image1,
+              height: (window.physicalSize.width * 9) /
+                  (16 * window.devicePixelRatio),
+              width: window.physicalSize.width / window.devicePixelRatio,
+              fit: BoxFit.cover,
+            )),
+      ],
+    );
+  }
+}
+
+class ListItemStateText2 extends State<CriticListViewItem> {
+  CriticBean data;
+
+  ListItemStateText2({this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    return new Text(
+        data == null
+            ? 'empty'
+            : data.text2
+                .toString()
+                .replaceAll("剧情介绍\r\n", "")
+                .replaceAll("剧情简介\r\n", "")
+                .replaceAll("剧情简介 \r\n", ""),
+        style: FontUtil.getContentFont());
+  }
+}
+
+class ListItemStateDivider2 extends State<CriticListViewItem> {
+  @override
+  Widget build(BuildContext context) {
+    return new Container(
+      margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
+      height: 0.5,
+      color: FontUtil.getLineShixinColor(),
+    );
+  }
+}
+
+class ListItemStateRealTitle extends State<CriticListViewItem> {
+  CriticBean data;
+
+  ListItemStateRealTitle({this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    return new Text(data == null ? 'empty' : data.realtitle,
+        style:
+            new TextStyle(fontSize: 18.0, color: FontUtil.getBriefFontColor()));
+  }
+}
+
+class ListItemStateImage2 extends State<CriticListViewItem> {
+  CriticBean data;
+
+  ListItemStateImage2({this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    return new Container(
+        margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
+        child: new Image.network(
+          data == null ? '' : "http://images.shigeten.net/" + data.image2,
+          height:
+              (window.physicalSize.width * 9) / (16 * window.devicePixelRatio),
+          width: window.physicalSize.width / window.devicePixelRatio,
+          fit: BoxFit.cover,
+        ));
+  }
+}
+
+class ListItemStateText3 extends State<CriticListViewItem> {
+  CriticBean data;
+
+  ListItemStateText3({this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    return new Text(data == null ? 'empty' : data.text3,
+        style: FontUtil.getContentFont());
+  }
+}
+
+class ListItemStateText4 extends State<CriticListViewItem> {
+  CriticBean data;
+
+  ListItemStateText4({this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    return new Text(data == null ? 'empty' : data.text4,
+        style: FontUtil.getContentFont());
+  }
+}
+
+class ListItemStateText5 extends State<CriticListViewItem> {
+  CriticBean data;
+
+  ListItemStateText5({this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    return new Text(data == null ? 'empty' : data.text5,
+        style: FontUtil.getContentFont());
+  }
+}
+
+class ListItemStateImage3 extends State<CriticListViewItem> {
+  CriticBean data;
+
+  ListItemStateImage3({this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    return new Container(
+        margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 0),
+        child: new Image.network(
+          data == null ? '' : "http://images.shigeten.net/" + data.image3,
+          height:
+              (window.physicalSize.width * 9) / (16 * window.devicePixelRatio),
+          width: window.physicalSize.width / window.devicePixelRatio,
+          fit: BoxFit.cover,
+        ));
+  }
+}
+
+class ListItemStateImage4 extends State<CriticListViewItem> {
+  CriticBean data;
+
+  ListItemStateImage4({this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    return new Container(
+        margin: const EdgeInsets.fromLTRB(0, 1.0, 0, 0),
+        child: new Image.network(
+          data == null ? '' : "http://images.shigeten.net/" + data.image4,
+          height:
+              (window.physicalSize.width * 9) / (16 * window.devicePixelRatio),
+          width: window.physicalSize.width / window.devicePixelRatio,
+          fit: BoxFit.cover,
+        ));
+  }
+}
+
+class ListItemStateImage5 extends State<CriticListViewItem> {
+  CriticBean data;
+
+  ListItemStateImage5({this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    return new Container(
+        margin: const EdgeInsets.fromLTRB(0, 1.0, 0, 0),
+        child: new Image.network(
+          data == null ? '' : "http://images.shigeten.net/" + data.image5,
+          height: data == null || data.image5 == null || data.image5 == ""
+              ? 0
+              : (window.physicalSize.width * 9) /
+                  (16 * window.devicePixelRatio),
+          width: window.physicalSize.width / window.devicePixelRatio,
+          fit: BoxFit.cover,
+        ));
+  }
+}
+
+class ListItemStateDivider3 extends State<CriticListViewItem> {
+  @override
+  Widget build(BuildContext context) {
+    return new Container(
+      margin: const EdgeInsets.fromLTRB(0, 26.0, 0, 10.0),
+      height: 0.5,
+      color: FontUtil.getLineShixinColor(),
+    );
+  }
+}
+
+class ListItemStateAuthorBelow extends State<CriticListViewItem> {
+  CriticBean data;
+
+  ListItemStateAuthorBelow({this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    return new Container(
+        margin: const EdgeInsets.fromLTRB(0, 8.0, 0, 10.0),
+        child: new Text(data == null ? 'empty' : data.author,
+            style: FontUtil.getAuthorBelowFont()));
+  }
+}
+
+class ListItemStateAuthorBrief extends State<CriticListViewItem> {
+  CriticBean data;
+
+  ListItemStateAuthorBrief({this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    return new Container(
+        margin: const EdgeInsets.fromLTRB(0, 0, 0, 10.0),
+        child: new Text(
+            data == null || data.authorbrief == null
+                ? '十个 每晚十点推送:一篇影评,一篇美文,一组美图,每晚入睡前用上十分钟读到最美内容.'
+                : data.authorbrief,
+            style: FontUtil.getAuthorBrief()));
   }
 }
