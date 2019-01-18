@@ -77,12 +77,10 @@ class CriticPageState extends State<CriticPage> {
   }
 
   _pageChange(int index) {
-    setState(() {
-      if (_currentPageIndex != index) {
-        _currentPageIndex = index;
-        widget.scrollToNextPageCallback(_listBean.result[_currentPageIndex]);
-      }
-    });
+    if (_currentPageIndex != index) {
+      _currentPageIndex = index;
+      widget.scrollToNextPageCallback(_listBean.result[_currentPageIndex]);
+    }
   }
 
   Widget _buildItem(BuildContext context, int index) {
@@ -103,6 +101,7 @@ class CriticPageState extends State<CriticPage> {
       if (data != null) {
         _showLoading = false;
         setState(() {
+          print("_getList setstate");
           _listBean = new ListBean.fromJson(data);
           if (_listBean.result.length > 0) {
             widget.scrollToNextPageCallback(_listBean.result[0]);
@@ -130,7 +129,7 @@ class CriticItem extends StatefulWidget {
 
 class CriticItemState extends State<CriticItem> {
   CriticItemState({this.id}) {
-    _getCritic(id);
+//    _getCritic(id);
   }
 
   bool _showLoading = true;
@@ -345,6 +344,7 @@ class CriticItemState extends State<CriticItem> {
           _showLoading = false;
           if (data != null) {
             setState(() {
+              print("_getCritic setstate");
               _critic = new CriticBean.fromJson(data);
             });
           }

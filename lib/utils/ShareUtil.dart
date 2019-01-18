@@ -11,7 +11,7 @@ import 'package:fake_weibo/fake_weibo.dart';
 
 class SINAShareUtil {
   static SINAShareUtil _singleton;
-  static String WEIBO_APP_KEY = '3393861383';
+  static String WEIBO_APP_KEY = '1471162418';
   static FakeWeibo weibo;
 
   SINAShareUtil._();

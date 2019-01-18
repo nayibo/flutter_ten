@@ -154,12 +154,12 @@ class NovelItemState extends State<NovelItem> {
           children: <Widget>[
             new Container(
               margin: const EdgeInsets.fromLTRB(0, 15.0, 0, 5.0),
-              child: new Text(_novel == null ? 'empty' : _novel.title,
+              child: new Text(_novel == null ? '' : _novel.title,
                   style: FontUtil.getContentTitleFont()),
             ),
             new Row(
               children: <Widget>[
-                new Text(_novel == null ? 'empty' : '作者: ' + _novel.author,
+                new Text(_novel == null ? '' : '作者: ' + _novel.author,
                     style: FontUtil.getAuthorFont()),
                 new Container(
                   height: 12.0,
@@ -170,7 +170,7 @@ class NovelItemState extends State<NovelItem> {
                 ),
                 new Text(
                     _novel == null
-                        ? 'empty'
+                        ? ''
                         : '阅读量: ' + _novel.times.toString(),
                     style: FontUtil.getAuthorFont())
               ],
@@ -195,9 +195,9 @@ class NovelItemState extends State<NovelItem> {
                 margin: const EdgeInsets.fromLTRB(0, 15.0, 0, 15.0),
                 padding: const EdgeInsets.fromLTRB(17.0, 17.0, 17.0, 17.0),
                 color: FontUtil.getSummaryBackgroundColor(),
-                child: new Text(_novel == null ? 'empty' : _novel.summary,
+                child: new Text(_novel == null ? '' : _novel.summary,
                     style: FontUtil.getSummaryFont())),
-            new Text(_novel == null ? 'empty' : _novel.text,
+            new Text(_novel == null ? '' : _novel.text,
                 style: FontUtil.getContentFont()),
             new Container(
               margin: const EdgeInsets.fromLTRB(0, 16.0, 0, 0.0),
@@ -206,12 +206,12 @@ class NovelItemState extends State<NovelItem> {
             ),
             new Container(
               margin: const EdgeInsets.fromLTRB(0, 8.0, 0, 0.0),
-              child: new Text(_novel == null ? 'empty' : _novel.author,
+              child: new Text(_novel == null ? '' : _novel.author,
                   style: FontUtil.getAuthorBelowFont()),
             ),
             new Container(
               margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 59.0),
-              child: new Text(_novel == null ? 'empty' : _novel.authorbrief,
+              child: new Text(_novel == null ? '' : _novel.authorbrief,
                   style: FontUtil.getAuthorBrief()),
             )
           ],
