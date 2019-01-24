@@ -40,37 +40,44 @@ class HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        body: new Container(
-            color: FontUtil.getMainBgColor(),
-            child: new Stack(
-              children: <Widget>[
-                new PageView(
-                    children: [
-                      new ContentPage(
-                          type: CommonConstant.PAGE_CRITIC,
-                          scrollCallback: (double level) {
-                            homepageBottomBar.refresh(level);
-                          }),
-                      new ContentPage(
-                          type: CommonConstant.PAGE_NOVEL,
-                          scrollCallback: (double level) {
-                            homepageBottomBar.refresh(level);
-                          }),
-                      new ContentPage(
-                          type: CommonConstant.PAGE_DIAGRAM,
-                          scrollCallback: (double level) {
-                            homepageBottomBar.refresh(level);
-                          }),
-                      new SettingPage(
-                        settingNightModeCallback: () {
-                          homepageBottomBar.refreshUI();
-                        },
-                      ),
-                    ],
-                    controller: _pageController,
-                    physics: new NeverScrollableScrollPhysics()),
-                homepageBottomBar,
-              ],
-            )));
+      body: new WillPopScope(
+        onWillPop: () {
+          return Future.value(false);
+        },
+        child: new Container(
+          color: FontUtil.getMainBgColor(),
+          child: new Stack(
+            children: <Widget>[
+              new PageView(
+                  children: [
+                    new ContentPage(
+                        type: CommonConstant.PAGE_CRITIC,
+                        scrollCallback: (double level) {
+                          homepageBottomBar.refresh(level);
+                        }),
+                    new ContentPage(
+                        type: CommonConstant.PAGE_NOVEL,
+                        scrollCallback: (double level) {
+                          homepageBottomBar.refresh(level);
+                        }),
+                    new ContentPage(
+                        type: CommonConstant.PAGE_DIAGRAM,
+                        scrollCallback: (double level) {
+                          homepageBottomBar.refresh(level);
+                        }),
+                    new SettingPage(
+                      settingNightModeCallback: () {
+                        homepageBottomBar.refreshUI();
+                      },
+                    ),
+                  ],
+                  controller: _pageController,
+                  physics: new NeverScrollableScrollPhysics()),
+              homepageBottomBar,
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
