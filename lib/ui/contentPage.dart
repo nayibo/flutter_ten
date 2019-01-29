@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_tenge/bean/ListBean.dart';
 import 'package:flutter_tenge/constant/common.dart';
+import 'package:flutter_tenge/constant/data.dart';
 import 'package:flutter_tenge/ui/callback.dart';
 import 'package:flutter_tenge/ui/critic.dart';
 import 'package:flutter_tenge/ui/diagram.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_tenge/ui/header.dart';
 import 'package:flutter_tenge/ui/novel.dart';
 import 'package:flutter_tenge/ui/shareicon.dart';
 import 'package:flutter_tenge/utils/FontUtil.dart';
+import 'package:flutter_tenge/utils/SharedPreferencesUtil.dart';
 
 class ContentPage extends StatefulWidget {
   ScrollCallback scrollCallback;
@@ -25,17 +27,44 @@ class ContentPage extends StatefulWidget {
   }
 }
 
-class ContentPageState extends State<ContentPage> {
+class ContentPageState extends State<ContentPage>
+    with SingleTickerProviderStateMixin {
   ScrollController scrollController = new ScrollController();
   HomepageHeader homepageHeader;
   ShareIcon shareIcon;
+  Animation<double> animation;
+  AnimationController _controller;
+  bool _helperVisibility = true;
 
   @override
   void initState() {
     super.initState();
-    print('contentPage init begin');
     loadAsync();
-    print('contentPage init complete');
+    _readHelper().then((value) {
+      setState(() {
+        if (value == null || !value) {
+          _saveHelper();
+          _helperVisibility = false;
+        }
+      });
+    });
+
+    _controller = new AnimationController(
+        duration: const Duration(milliseconds: 600), value: 0, vsync: this);
+
+    animation = new Tween(begin: 0.0, end: 40.0).animate(_controller)
+      ..addListener(() {
+        setState(() {
+          if (animation.status == AnimationStatus.completed) {
+            _controller.reverse();
+          } else if (animation.status == AnimationStatus.dismissed) {
+            _controller.forward();
+          }
+        });
+      });
+
+    _controller.forward();
+
     shareIcon = new ShareIcon();
     homepageHeader = new HomepageHeader(type: widget.type);
     scrollController.addListener(() {
@@ -59,12 +88,34 @@ class ContentPageState extends State<ContentPage> {
     });
   }
 
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   void loadAsync() {
     if (!FontUtil.isReady()) {
       FontUtil.getInstance().then((FontUtil font) {
         print('waiting for FontUtil init complete');
       });
     }
+  }
+
+  Future<bool> _readHelper() async {
+    await SpUtil.getInstance();
+    bool showed = SpUtil.getBool(SPConstant.SP_HELPER_SHOWED);
+
+    if (showed == null) {
+      showed = false;
+    }
+
+    return showed;
+  }
+
+  void _saveHelper() async {
+    await SpUtil.getInstance();
+    SpUtil.putBool(SPConstant.SP_HELPER_SHOWED, true);
   }
 
   @override
@@ -81,6 +132,28 @@ class ContentPageState extends State<ContentPage> {
             _getPage(),
             shareIcon,
             homepageHeader,
+            Offstage(
+                offstage: _helperVisibility,
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _helperVisibility = true;
+                    });
+                  },
+                  child: Container(
+                    padding:
+                        new EdgeInsets.fromLTRB(0.0, 0.0, animation.value, 0.0),
+                    decoration: new BoxDecoration(
+                        image: new DecorationImage(
+                            fit: BoxFit.fill,
+                            image:
+                                new AssetImage('assets/images/helper_bg.png'))),
+                    height: window.physicalSize.height -
+                        MediaQueryData.fromWindow(window).padding.top,
+                    width: window.physicalSize.width,
+                    child: new Image.asset('assets/images/helper.png'),
+                  ),
+                )),
           ],
         ));
   }

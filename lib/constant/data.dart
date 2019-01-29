@@ -6,6 +6,7 @@ class SPConstant {
   static String SP_QQ_OPEN_ID = 'sp_qq_open_id';
   static String SP_QQ_EXPIRES_TIME_SEC = 'sp_qq_expires_time_sec';
   static String SP_USER_ID = 'sp_user_id';
+  static String SP_HELPER_SHOWED = 'sp_helper_showed';
 }
 
 class DBConstant {
