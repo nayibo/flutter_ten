@@ -42,12 +42,18 @@ class ContentPageState extends State<ContentPage>
     loadAsync();
     _readHelper().then((value) {
       setState(() {
+        print("init read helper setState");
         if (value == null || !value) {
           _saveHelper();
           _helperVisibility = false;
+          _controller.forward();
         }
       });
     });
+
+    if (!_helperVisibility) {
+      _controller.forward();
+    }
 
     _controller = new AnimationController(
         duration: const Duration(milliseconds: 600), value: 0, vsync: this);
@@ -55,6 +61,7 @@ class ContentPageState extends State<ContentPage>
     animation = new Tween(begin: 0.0, end: 40.0).animate(_controller)
       ..addListener(() {
         setState(() {
+          print("helper animation setState");
           if (animation.status == AnimationStatus.completed) {
             _controller.reverse();
           } else if (animation.status == AnimationStatus.dismissed) {
@@ -62,8 +69,6 @@ class ContentPageState extends State<ContentPage>
           }
         });
       });
-
-    _controller.forward();
 
     shareIcon = new ShareIcon();
     homepageHeader = new HomepageHeader(type: widget.type);
@@ -137,7 +142,9 @@ class ContentPageState extends State<ContentPage>
                 child: GestureDetector(
                   onTap: () {
                     setState(() {
+                      print("helper tap setState");
                       _helperVisibility = true;
+                      _controller.stop();
                     });
                   },
                   child: Container(
