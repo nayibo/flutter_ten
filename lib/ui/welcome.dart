@@ -5,6 +5,7 @@ import 'package:flutter_tenge/bean/Favorite.dart';
 import 'package:flutter_tenge/ui/homepage.dart';
 import 'package:flutter_tenge/utils/FavoriteUtil.dart';
 import 'package:flutter_tenge/utils/FontUtil.dart';
+import 'package:umeng_analytics/umeng_analytics.dart';
 
 class WelcomePage extends StatefulWidget {
   @override
@@ -12,7 +13,6 @@ class WelcomePage extends StatefulWidget {
     return new WelcomePageState();
   }
 }
-
 
 class WelcomePageState extends State<WelcomePage>
     with SingleTickerProviderStateMixin {
@@ -23,8 +23,12 @@ class WelcomePageState extends State<WelcomePage>
   @override
   void initState() {
     super.initState();
-    FavoriteUtil.getInstance().fetchFavorites().then((
-        List<FavoriteBean> favList) {
+    UmengAnalytics.init('551380b9fd98c539bf000c37',
+        policy: Policy.BATCH, encrypt: true, reportCrash: false);
+
+    FavoriteUtil.getInstance()
+        .fetchFavorites()
+        .then((List<FavoriteBean> favList) {
       print("welcome favlist: " + favList.length.toString());
       FavoriteUtil.getInstance().setFavoriteListData(favList);
     });
@@ -35,7 +39,8 @@ class WelcomePageState extends State<WelcomePage>
     _animation = new Tween(begin: 0.0, end: 1.0).animate(_controller)
       ..addListener(() {
         if (_animation.status == AnimationStatus.completed) {
-          Navigator.push(context, new MaterialPageRoute(builder: (context) => new Homepage()));
+          Navigator.push(context,
+              new MaterialPageRoute(builder: (context) => new Homepage()));
         }
         setState(() {
           _alignmentX = _animation.value;

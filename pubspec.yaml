@@ -35,7 +35,9 @@ dependencies:
   fake_tencent:
       git:
         url: https://github.com/v7lin/fake_tencent.git
-
+  umeng_analytics:
+      git:
+        url: https://github.com/zileyuan/umeng_analytics.git
 dev_dependencies:
   flutter_test:
     sdk: flutter
